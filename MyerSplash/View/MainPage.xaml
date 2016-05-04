@@ -9,33 +9,99 @@
     xmlns:uc="using:MyerSplash.UC"
     xmlns:model="using:MyerSplash.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    Background="{StaticResource MyerSplashThemeColor}"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Background="Black">
+    mc:Ignorable="d">
     <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid x:Name="TitleGrid" Background="{StaticResource MyerSplashThemeColor}">
-            <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="Myer" FontSize="20"/>
-                <TextBlock Text="Splash" FontSize="20" FontWeight="Bold"/>
-                <TextBlock Text=" (ALPHA)" FontSize="12" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
-            </StackPanel>
-            <uc:HamburgerButton HorizontalAlignment="Left" Width="70" Background="White"/>
-        </Grid>
-        <Grid Grid.Row="1">
-            <uc:ImageListControl DataContext="{x:Bind MainVM,Mode=OneWay}"/>
-            <Button x:Name="RefreshBtn" HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{x:Bind MainVM.RefreshCommand,Mode=OneWay}" Margin="20" Style="{StaticResource ButtonCommonStyle}" Foreground="White" Background="{x:Null}">
+        <Grid Grid.Row="1" x:Name="ContentGrid">
+            <control:AdaptiveGridView
+                x:Name="ImageGridView"
+                ItemsSource="{x:Bind MainVM.Images,Mode=OneWay}"
+                SelectionMode="None"
+                IsItemClickEnabled="True"
+                ItemClick="ImageGridView_ItemClick"
+                ShowsScrollingPlaceholders="False"
+                ItemContainerTransitions="{x:Null}"
+                ContainerContentChanging="AdaptiveGridView_ContainerContentChanging"
+                attach:ScrollViewerStyleChanger.Style="{StaticResource ScrollViewerCommonStyle}"
+                MinItemHeight="200"
+                MinItemWidth="300">
+                <control:AdaptiveGridView.ItemTemplate>
+                    <DataTemplate x:DataType="model:UnSplashImage">
+                        <Grid>
+                            <Border Background="#FF333333"/>
+                            <Image Source="{x:Bind SmallBitmap,Mode=OneWay}" Stretch="UniformToFill"/>
+                        </Grid>
+                    </DataTemplate>
+                </control:AdaptiveGridView.ItemTemplate>
+                <control:AdaptiveGridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="HorizontalContentAlignment"
+                            Value="Stretch" />
+                        <Setter Property="HorizontalAlignment"
+                            Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment"
+                            Value="Stretch" />
+                        <Setter Property="VerticalAlignment"
+                            Value="Stretch" />
+                        <Setter Property="Margin"
+                            Value="0" />
+                    </Style>
+                </control:AdaptiveGridView.ItemContainerStyle>
+            </control:AdaptiveGridView>
+            <Button x:Name="RefreshBtn" HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{x:Bind MainVM.RefreshCommand,Mode=OneWay}" Margin="20" Style="{StaticResource ButtonCommonStyle}" Foreground="White" Background="{x:Null}" Grid.RowSpan="2">
                 <Grid Width="50" Height="50">
                     <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
                     <SymbolIcon Symbol="Refresh" Foreground="White"/>
                 </Grid>
             </Button>
-            <!--<Grid x:Name="LoadingGrid" HorizontalAlignment="Center" VerticalAlignment="Top" >
+
+            <Grid x:Name="LoadingGrid" HorizontalAlignment="Center" VerticalAlignment="Top" >
                 <Ellipse Width="50" Height="50" Fill="#FFE5E5E5"/>
-                <SymbolIcon x:Name="RefreshSymbol" RenderTransformOrigin="0.5 0.5" Symbol="Refresh" Foreground="{StaticResource PlantSitterThemeColor}"/>
-            </Grid>-->
+                <SymbolIcon x:Name="RefreshSymbol" RenderTransformOrigin="0.5 0.5" Symbol="Refresh" Foreground="{StaticResource MyerSplashThemeColor}"/>
+            </Grid>
         </Grid>
+        <Grid x:Name="TitleGrid" Background="{StaticResource MyerSplashThemeColor}">
+            <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Myer" FontSize="25"/>
+                <TextBlock Text="Splash" FontSize="25" FontWeight="Bold"/>
+                <TextBlock Text=" (ALPHA)" FontSize="15" VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+            </StackPanel>
+            <uc:HamburgerButton HorizontalAlignment="Left" Width="70" Background="White"/>
+            <Button Style="{StaticResource ButtonCommonStyle2}" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="70">
+                <Border>
+                    <SymbolIcon Symbol="Zoom"/>
+                </Border>
+            </Button>
+        </Grid>
+        <Grid x:Name="DetailGrid" Margin="0 5 0 0" Grid.RowSpan="5" SizeChanged="DetailGrid_SizeChanged">
+            <Border x:Name="MaskBorder" Tapped="MaskBorder_Tapped" Background="Black" Opacity="0.8"/>
+            <Grid x:Name="DetailContentGrid" MaxWidth="600" Background="Black">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="100"/>
+                </Grid.RowDefinitions>
+                <Image x:Name="LargeImage" Stretch="UniformToFill"/>
+                <Grid x:Name="InfoGrid" Grid.Row="1">
+                    <StackPanel Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <TextBlock x:Name="ByTB" Text="by" Foreground="#CCFFFFFF" FontSize="12"/>
+                        <TextBlock x:Name="NameTB" Text="JuniperPhoton" Foreground="#CCFFFFFF" FontSize="20" FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,75" Grid.RowSpan="2">
+                    <Button x:Name="DownloadBtn" Click="DownloadBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2">
+                        <Grid>
+                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
+                            <SymbolIcon Symbol="Download" Foreground="White"/>
+                        </Grid>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
     </Grid>
 </common:BindablePage>

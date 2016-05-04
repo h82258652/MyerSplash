@@ -1,5 +1,6 @@
 ﻿using MyerSplash.Common;
 using MyerSplash.View;
+using MyerSplashShared.API;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,8 @@ namespace MyerSplash
     /// </summary>
     sealed partial class App : Application
     {
+        public static CacheUtil CacheUtilInstance { get; set; }
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -42,7 +45,7 @@ namespace MyerSplash
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
 
 #if DEBUG
@@ -51,6 +54,8 @@ namespace MyerSplash
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+            CacheUtilInstance = new CacheUtil();
+            await CacheUtilInstance.LoadAsync();
 
             Frame rootFrame = Window.Current.Content as Frame;
 

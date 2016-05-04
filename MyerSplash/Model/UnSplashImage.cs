@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media.Imaging;
 using System;
+using Windows.Storage;
+using Windows.UI.Xaml.Media;
+using JP.Utils.UI;
 
 namespace MyerSplash.Model
 {
@@ -56,6 +59,44 @@ namespace MyerSplash.Model
             }
         }
 
+        private SolidColorBrush _majorColor;
+        public SolidColorBrush MajorColor
+        {
+            get
+            {
+                return _majorColor;
+            }
+            set
+            {
+                if (_majorColor != value)
+                {
+                    _majorColor = value;
+                    RaisePropertyChanged(() => MajorColor);
+                }
+            }
+        }
+
+        public double Width { get; set; }
+
+        public double Height { get; set; }
+
+        private UnSplashUser _owner;
+        public UnSplashUser Owner
+        {
+            get
+            {
+                return _owner;
+            }
+            set
+            {
+                if (_owner != value)
+                {
+                    _owner = value;
+                    RaisePropertyChanged(() => Owner);
+                }
+            }
+        }
+
 
         public UnSplashImage()
         {
@@ -65,7 +106,8 @@ namespace MyerSplash.Model
         public async Task DownloadSmallImage()
         {
             if (string.IsNullOrEmpty(SmallImageUrl)) return;
-            using (var stream = await APIHelper.GetIRandomAccessStreamFromUrlAsync(SmallImageUrl))
+            var file = await App.CacheUtilInstance.DownloadImageAsync(SmallImageUrl);
+            using (var stream = await file.OpenAsync(FileAccessMode.Read))
             {
                 SmallBitmap = new BitmapImage();
                 await SmallBitmap.SetSourceAsync(stream);
@@ -86,7 +128,7 @@ namespace MyerSplash.Model
         {
             var list = new ObservableCollection<UnSplashImage>();
             var array = JsonArray.Parse(json);
-            foreach(var item in array)
+            foreach (var item in array)
             {
                 var unsplashImage = ParseObjectFromJson(item.ToString());
                 list.Add(unsplashImage);
@@ -103,15 +145,23 @@ namespace MyerSplash.Model
             var regularImageUrl = JsonParser.GetStringFromJsonObj(urls, "regular");
             var thumbImageUrl = JsonParser.GetStringFromJsonObj(urls, "thumb");
             var rawImageUrl = JsonParser.GetStringFromJsonObj(urls, "raw");
+            var color = JsonParser.GetStringFromJsonObj(obj, "color");
+            var width = JsonParser.GetNumberFromJsonObj(obj, "width");
+            var height = JsonParser.GetNumberFromJsonObj(obj, "height");
+            var userObj = JsonParser.GetJsonObjFromJsonObj(obj, "user");
+            var userName = JsonParser.GetStringFromJsonObj(userObj, "name");
 
-            var unsplashImage = new UnSplashImage();
-            unsplashImage.SmallImageUrl = smallImageUrl;
-            unsplashImage.FullImageUrl = fullImageUrl;
-            unsplashImage.RegularImageUrl = regularImageUrl;
-            unsplashImage.ThumbImageUrl = thumbImageUrl;
-            unsplashImage.RawImageUrl = rawImageUrl;
-
-            return unsplashImage;
+            var img = new UnSplashImage();
+            img.SmallImageUrl = smallImageUrl;
+            img.FullImageUrl = fullImageUrl;
+            img.RegularImageUrl = regularImageUrl;
+            img.ThumbImageUrl = thumbImageUrl;
+            img.RawImageUrl = rawImageUrl;
+            img.MajorColor = new SolidColorBrush(ColorConverter.HexToColor(color).Value);
+            img.Width = width;
+            img.Height = height;
+            img.Owner = new UnSplashUser() { Name = userName };
+            return img;
         }
     }
 }

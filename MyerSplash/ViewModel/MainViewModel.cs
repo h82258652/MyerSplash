@@ -50,16 +50,34 @@ namespace MyerSplash.ViewModel
             }
         }
 
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get
+            {
+                return _isLoading;
+            }
+            set
+            {
+                if (_isLoading != value)
+                {
+                    _isLoading = value;
+                    RaisePropertyChanged(() => IsLoading);
+                }
+            }
+        }
+
 
         public MainViewModel()
         {
-
+            Images = new ObservableCollection<UnSplashImage>();
         }
 
         private async Task Refresh()
         {
             try
             {
+                IsLoading = true;
                 var result = await CloudService.GetImages(1, 30, CTSFactory.MakeCTS(10000).Token);
                 if (result.IsSuccessful)
                 {
@@ -83,6 +101,10 @@ namespace MyerSplash.ViewModel
             {
                 var task = ExceptionHelper.WriteRecordAsync(e, nameof(Refresh), nameof(MainViewModel));
                 ToastService.SendToast("请求超时");
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
