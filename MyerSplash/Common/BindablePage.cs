@@ -1,21 +1,16 @@
-﻿using JP.Utils.Helper;
-using MyerList.Helper;
-using MyerList.Interface;
-using MyerListUWP.Helper;
+﻿using JP.Utils.Framework;
+using JP.Utils.Helper;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Windows.ApplicationModel.Core;
 using Windows.Phone.UI.Input;
-using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
-namespace MyerList.Base
+namespace MyerSplash.Common
 {
     public class BindablePage : Page
     {
@@ -24,10 +19,19 @@ namespace MyerList.Base
         public BindablePage()
         {
             SetUpPageAnimation();
-            SetUpTitleBar();
             SetUpNavigationCache();
             IsTextScaleFactorEnabled = false;
+            this.Loaded += BindablePage_Loaded;
         }
+
+        private void BindablePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(this.DataContext is INavigable)
+            {
+                (this.DataContext as INavigable).OnLoaded();
+            }
+        }
+
         protected virtual void SetUpTitleBarExtend()
         {
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
@@ -53,11 +57,6 @@ namespace MyerList.Base
         protected virtual void SetUpNavigationCache()
         {
             NavigationCacheMode = NavigationCacheMode.Enabled;
-        }
-
-        protected virtual void SetUpTitleBar()
-        {
-            TitleBarHelper.SetUpForeBlackTitleBar();
         }
 
         protected virtual void SetUpStatusBar()
@@ -149,8 +148,6 @@ namespace MyerList.Base
             }
 
             SetNavigationBackBtn();
-            SetUpTitleBarExtend();
-            SetUpTitleBar();
 
             RegisterHandleBackLogic();
 

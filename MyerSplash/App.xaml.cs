@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyerSplash.Common;
+using MyerSplash.View;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -79,6 +81,8 @@ namespace MyerSplash
             }
             // Ensure the current window is active
             Window.Current.Activate();
+
+            TitleBarHelper.SetUpThemeTitleBar();
         }
 
         /// <summary>

@@ -1,10 +1,6 @@
-﻿using MyerListUWP;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Windows.ApplicationModel.Resources;
+﻿using Windows.ApplicationModel.Resources;
 
-namespace MyerList.Helper
+namespace MyerSplash.Common
 {
     public class ResourcesHelper
     {

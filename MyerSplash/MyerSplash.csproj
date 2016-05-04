@@ -103,10 +103,19 @@
     <Compile Include="Common\AppSettings.cs" />
     <Compile Include="Common\BindablePage.cs" />
     <Compile Include="Common\ResourcesHelper.cs" />
-    <Compile Include="Common\SerializerFiles.cs" />
     <Compile Include="Common\StatusBarHelper.cs" />
     <Compile Include="Common\TitleBarHelper.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Model\UnSplashImage.cs" />
+    <Compile Include="Model\UnSplashUser.cs" />
+    <Compile Include="UC\HamburgerButton.xaml.cs">
+      <DependentUpon>HamburgerButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UC\ImageListControl.xaml.cs">
+      <DependentUpon>ImageListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,15 +141,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="UC\HamburgerButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UC\ImageListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ResourceDictionary\ColorDictionary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionary\ConverterDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -152,15 +165,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResourceDictionary\TemplateDictionary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\JP.Utils.UWP\JP.Utils.UWP\JP.Utils.UWP.csproj">
       <Project>{357c51db-765e-4a88-950f-cda24f7184c3}</Project>
       <Name>JP.Utils.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyerSplashCustomControl\MyerSplashCustomControl.csproj">
+      <Project>{8efb922e-f05e-4e74-945d-ab6db8d85224}</Project>
+      <Name>MyerSplashCustomControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyerSplashShared\MyerSplashShared.csproj">
+      <Project>{56f19610-c6e1-412f-9048-74293d893021}</Project>
+      <Name>MyerSplashShared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -168,11 +185,7 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="ViewModel\" />
-    <Folder Include="View\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
