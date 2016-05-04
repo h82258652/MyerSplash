@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -36,6 +37,8 @@ namespace MyerSplash.View
         private Visual _containerVisual;
         private Visual _downloadBtnVisual;
         private Visual _infoGridVisual;
+        private Visual _downloadingBtnVisual;
+        private Visual _okVisual;
 
         private int _zindex = 1;
 
@@ -64,6 +67,23 @@ namespace MyerSplash.View
             this.InitializeComponent();
             this.DataContext = MainVM = new MainViewModel();
 
+            InitComposition();
+            InitBinding();
+        }
+
+        private void InitBinding()
+        {
+            var b = new Binding()
+            {
+                Source = MainVM,
+                Path = new PropertyPath("IsLoading"),
+                Mode = BindingMode.TwoWay,
+            };
+            this.SetBinding(IsLoadingProperty, b);
+        }
+
+        private void InitComposition()
+        {
             _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
             _loadingVisual = ElementCompositionPreview.GetElementVisual(LoadingGrid);
             _refreshVisual = ElementCompositionPreview.GetElementVisual(RefreshSymbol);
@@ -72,19 +92,16 @@ namespace MyerSplash.View
             _borderGridVisual = ElementCompositionPreview.GetElementVisual(MaskBorder);
             _downloadBtnVisual = ElementCompositionPreview.GetElementVisual(DownloadBtn);
             _infoGridVisual = ElementCompositionPreview.GetElementVisual(InfoGrid);
+            _downloadingBtnVisual = ElementCompositionPreview.GetElementVisual(LoadingHintBtn);
+            _okVisual = ElementCompositionPreview.GetElementVisual(OKBtn);
 
             _infoGridVisual.Offset = new Vector3(0f, 100f, 0);
             _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
             _detailGridVisual.Opacity = 0;
-            DetailGrid.Visibility = Visibility.Collapsed;
+            _okVisual.Offset = new Vector3(100f, 0f, 0f);
+            _downloadingBtnVisual.Offset = new Vector3(100f, 0f, 0f);
 
-            var b = new Binding()
-            {
-                Source = MainVM,
-                Path = new PropertyPath("IsLoading"),
-                Mode = BindingMode.TwoWay,
-            };
-            this.SetBinding(IsLoadingProperty, b);
+            DetailGrid.Visibility = Visibility.Collapsed;
         }
 
         #region Loading Animation
@@ -164,7 +181,6 @@ namespace MyerSplash.View
         }
         #endregion
 
-
         private async void ImageGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             DetailGrid.Visibility = Visibility.Visible;
@@ -198,10 +214,11 @@ namespace MyerSplash.View
             var targetOffsetY = targetPos.Y - currentPos.Y;
 
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
-            ShowItemDetailAnimation(new Vector3((float)targetOffsetX, (float)targetOffsetY, 0f), (float)targetRatio);
+            MoveItemAnimation(new Vector3((float)targetOffsetX, (float)targetOffsetY, 0f), (float)targetRatio);
+            ToggleDetailGridAnimation(true);
             batch.Completed += (senderx, ex) =>
             {
-                ToggleDetailGridAnimation(true);
+
             };
             batch.End();
         }
@@ -219,24 +236,31 @@ namespace MyerSplash.View
             var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
             fadeAnimation.InsertKeyFrame(1f, show ? 1f : 0f);
             fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
+            fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 300 : 0);
 
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
             _detailGridVisual.StartAnimation("Opacity", fadeAnimation);
-            StartBtnAnimation();
+            ToggleDownloadBtnAnimation(true);
             StartInfoGridAnimation();
             batch.Completed += (sender, e) =>
             {
                 if (!show)
                 {
+                    _downloadingBtnVisual.Offset = new Vector3(100f, 0f, 0f);
+                    _okVisual.Offset = new Vector3(100f, 0f, 0f);
                     _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
                     _infoGridVisual.Offset = new Vector3(0f, 100f, 0f);
                     DetailGrid.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    _containerVisual.Opacity = 1;
                 }
             };
             batch.End();
         }
 
-        private void ShowItemDetailAnimation(Vector3 targetOffset, float widthRatio)
+        private void MoveItemAnimation(Vector3 targetOffset, float widthRatio)
         {
             var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
             offsetAnimation.InsertKeyFrame(1f, targetOffset);
@@ -246,9 +270,14 @@ namespace MyerSplash.View
             scaleAnimation.InsertKeyFrame(1f, widthRatio);
             scaleAnimation.Duration = TimeSpan.FromMilliseconds(500);
 
+            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeAnimation.InsertKeyFrame(1f, 0.5f);
+            fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
+
             _containerVisual.StartAnimation("Offset", offsetAnimation);
             _containerVisual.StartAnimation("Scale.x", scaleAnimation);
             _containerVisual.StartAnimation("Scale.y", scaleAnimation);
+            _containerVisual.StartAnimation("Opacity", fadeAnimation);
         }
 
         private void HideItemDetailAnimation()
@@ -266,14 +295,34 @@ namespace MyerSplash.View
             _containerVisual.StartAnimation("Scale.y", scaleAnimation);
         }
 
-        private void StartBtnAnimation()
+        private void ToggleDownloadBtnAnimation(bool show)
         {
             var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            offsetAnimation.InsertKeyFrame(1f, new Vector3(0f, 0f, 0f));
+            offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 100f, 0f, 0f));
+            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
+            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show?300:0);
+
+            _downloadBtnVisual.StartAnimation("Offset", offsetAnimation);
+        }
+
+        private void ToggleDownloadingBtnAnimation(bool show)
+        {
+            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
+            offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 100f, 0f, 0f));
             offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
             offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(200);
 
-            _downloadBtnVisual.StartAnimation("Offset", offsetAnimation);
+            _downloadingBtnVisual.StartAnimation("Offset", offsetAnimation);
+        }
+
+        private void ToggleOkBtnAnimation(bool show)
+        {
+            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
+            offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 100f, 0f, 0f));
+            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
+            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(200);
+
+            _okVisual.StartAnimation("Offset", offsetAnimation);
         }
 
         private void StartInfoGridAnimation()
@@ -281,7 +330,7 @@ namespace MyerSplash.View
             var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
             offsetAnimation.InsertKeyFrame(1f, new Vector3(0f, 0f, 0f));
             offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(200);
+            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(500);
 
             _infoGridVisual.StartAnimation("Offset", offsetAnimation);
         }
@@ -293,8 +342,16 @@ namespace MyerSplash.View
             { Rect = new Rect(0, 0, DetailContentGrid.ActualWidth, DetailContentGrid.Height) };
         }
 
-        private void DownloadBtn_Click(object sender, RoutedEventArgs e)
+        private async void DownloadBtn_Click(object sender, RoutedEventArgs e)
         {
+            ToggleDownloadBtnAnimation(false);
+            await Task.Delay(100);
+            ToggleDownloadingBtnAnimation(true);
+            await Task.Delay(1000);
+            ToggleDownloadingBtnAnimation(false);
+            await Task.Delay(300);
+            ToggleOkBtnAnimation(true);
+            await Task.Delay(200);
             ToastService.SendToast("Saved :D", TimeSpan.FromMilliseconds(1000));
         }
     }
