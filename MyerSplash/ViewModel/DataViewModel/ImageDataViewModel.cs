@@ -6,7 +6,9 @@ using MyerSplashCustomControl;
 using MyerSplashShared.API;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI;
 using Windows.UI.Xaml.Media;
 
 namespace MyerSplash.ViewModel
@@ -20,8 +22,13 @@ namespace MyerSplash.ViewModel
             this.OnLoadIncrementalDataCompleted += async (list, index) =>
             {
                 var tasks = new List<Task>();
-                foreach (var item in list)
+                for (var i = 0; i < list.Count(); i++)
                 {
+                    var item = list.ElementAt(i);
+
+                    if (i % 2 == 0) item.BackColor = new SolidColorBrush(Colors.Black);
+                    else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
+
                     tasks.Add(item.DownloadImgForList());
                     item.MajorColor = new SolidColorBrush(ColorConverter.HexToColor(item.ColorValue).Value);
                 }

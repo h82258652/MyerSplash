@@ -10,6 +10,7 @@ using System;
 using Windows.Storage;
 using Windows.UI.Xaml.Media;
 using JP.Utils.UI;
+using Windows.UI;
 
 namespace MyerSplash.Model
 {
@@ -80,6 +81,23 @@ namespace MyerSplash.Model
             }
         }
 
+        private SolidColorBrush _backColor;
+        public SolidColorBrush BackColor
+        {
+            get
+            {
+                return _backColor;
+            }
+            set
+            {
+                if (_backColor != value)
+                {
+                    _backColor = value;
+                    RaisePropertyChanged(() => BackColor);
+                }
+            }
+        }
+
         public string ColorValue { get; set; }
 
         public double Width { get; set; }
@@ -103,10 +121,9 @@ namespace MyerSplash.Model
             }
         }
 
-
         public UnSplashImage()
         {
-
+            BackColor = new SolidColorBrush(Colors.Black);
         }
 
         public async Task DownloadImgForList()

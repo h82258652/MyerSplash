@@ -6,7 +6,7 @@
     xmlns:common="using:MyerSplash.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Background="{StaticResource MyerSplashDarkColor}">
+    mc:Ignorable="d">
     <common:BindablePage.Resources>
         <Style x:Key="ToggleSwitchStyle1" TargetType="ToggleSwitch">
             <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
@@ -183,7 +183,95 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Thickness x:Key="ComboBoxItemPadding">11,5,11,7</Thickness>
+        <Style x:Key="ComboBoxItemStyle1" TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="TabNavigation" Value="Local"/>
+            <Setter Property="Padding" Value="{StaticResource ComboBoxItemPadding}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="UseSystemFocusVisuals" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Grid x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Control.IsTemplateFocusTarget="True">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="LayoutRoot"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="LayoutRoot">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="LayoutRoot"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="LayoutRoot">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListMediumBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="LayoutRoot"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="LayoutRoot">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MyerSplashThemeColor}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="LayoutRoot"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="SelectedUnfocused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="LayoutRoot">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListAccentLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="SelectedDisabled"/>
+                                    <VisualState x:Name="SelectedPointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="LayoutRoot">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MyerSplashThemeColor}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="LayoutRoot"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="SelectedPressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="LayoutRoot">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MyerSplashThemeColor}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="InputModeStates">
+                                    <VisualState x:Name="InputModeDefault"/>
+                                    <VisualState x:Name="TouchInputMode">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ComboBoxItemThemeTouchPadding}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Foreground="White"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </common:BindablePage.Resources>
+    <common:BindablePage.Background>
+        <StaticResource ResourceKey="MyerSplashThemeColor"/>
+    </common:BindablePage.Background>
     <Grid Background="{StaticResource MyerSplashDarkColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -205,16 +293,16 @@
                 </Grid>
                 <TextBlock Text="SAVING SETTINGS" Foreground="{StaticResource MyerSplashThemeColor}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,20,0,0" FontSize="20" FontWeight="Bold"/>
                 <TextBlock Text="Load quality" Foreground="White" VerticalAlignment="Center" Margin="10,10,0,0"/>
-                <ComboBox SelectedIndex="{Binding Source={StaticResource AppSettings},Path=LoadQuality,Mode=TwoWay}" Margin="10,10,18,0" HorizontalAlignment="Stretch" RequestedTheme="Dark">
-                    <ComboBoxItem Content="Large"/>
-                    <ComboBoxItem Content="Small"/>
-                    <ComboBoxItem Content="Thumb"/>
+                <ComboBox BorderThickness="1" SelectedIndex="{Binding Source={StaticResource AppSettings},Path=LoadQuality,Mode=TwoWay}" Margin="10,10,18,0" HorizontalAlignment="Stretch" RequestedTheme="Dark">
+                    <ComboBoxItem Content="Large" Style="{StaticResource ComboBoxItemStyle1}"/>
+                    <ComboBoxItem Content="Small" Style="{StaticResource ComboBoxItemStyle1}"/>
+                    <ComboBoxItem Content="Thumb" Style="{StaticResource ComboBoxItemStyle1}"/>
                 </ComboBox>
                 <TextBlock Text="Save quality" Foreground="White" VerticalAlignment="Center" Margin="10,10,0,0"/>
-                <ComboBox SelectedIndex="{Binding Source={StaticResource AppSettings},Path=SaveQuality,Mode=TwoWay}" Margin="10,10,18,0" HorizontalAlignment="Stretch" RequestedTheme="Dark">
-                    <ComboBoxItem Content="Highest(Up to 8MB)"/>
-                    <ComboBoxItem Content="High(Up to 3MB)"/>
-                    <ComboBoxItem Content="High(500 KB)"/>
+                <ComboBox BorderThickness="1" SelectedIndex="{Binding Source={StaticResource AppSettings},Path=SaveQuality,Mode=TwoWay}" Margin="10,10,18,0" HorizontalAlignment="Stretch" RequestedTheme="Dark">
+                    <ComboBoxItem Content="Highest(Up to 8MB)" Style="{StaticResource ComboBoxItemStyle1}"/>
+                    <ComboBoxItem Content="High(Up to 3MB)" Style="{StaticResource ComboBoxItemStyle1}"/>
+                    <ComboBoxItem Content="High(500 KB)" Style="{StaticResource ComboBoxItemStyle1}"/>
                 </ComboBox>
                 <TextBlock Text="Save position" Foreground="White" VerticalAlignment="Center" Margin="10,10,0,0"/>
                 <Grid Height="50" Margin="0,10,0,0">

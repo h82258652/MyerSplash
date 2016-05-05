@@ -32,7 +32,7 @@
                 <control:AdaptiveGridView.ItemTemplate>
                     <DataTemplate x:DataType="model:UnSplashImage">
                         <Grid>
-                            <Border Background="{StaticResource MyerSplashPlaceHolderColor}"/>
+                            <Border Background="{x:Bind BackColor,Mode=OneWay}"/>
                             <Image Source="{x:Bind ListImageBitmap,Mode=OneWay}" Stretch="UniformToFill"/>
                         </Grid>
                     </DataTemplate>
