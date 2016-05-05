@@ -261,7 +261,7 @@ namespace MyerSplash.View
             _containerVisual = ElementCompositionPreview.GetElementVisual(container);
 
             _currentImg = item as UnSplashImage;
-            this.LargeImage.Source = _currentImg.SmallBitmap;
+            this.LargeImage.Source = _currentImg.ListImageBitmap;
             this.InfoGrid.Background = _currentImg.MajorColor;
             this.NameTB.Text = _currentImg.Owner.Name;
             if (ColorConverter.IsLight(_currentImg.MajorColor.Color))
@@ -417,7 +417,7 @@ namespace MyerSplash.View
             await Task.Delay(100);
             ToggleDownloadingBtnAnimation(true);
 
-            await _currentImg.DownloadToLib();
+            await _currentImg.DownloadFullImage();
 
             ToggleDownloadingBtnAnimation(false);
             await Task.Delay(300);

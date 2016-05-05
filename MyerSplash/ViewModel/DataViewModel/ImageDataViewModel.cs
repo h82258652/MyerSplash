@@ -1,5 +1,6 @@
 ﻿using JP.Utils.UI;
 using MyerSplash.Common;
+using MyerSplash.LiveTile;
 using MyerSplash.Model;
 using MyerSplashCustomControl;
 using MyerSplashShared.API;
@@ -16,19 +17,21 @@ namespace MyerSplash.ViewModel
 
         public ImageDataViewModel()
         {
-            this.OnLoadIncrementalDataCompleted += (list,index)=>
+            this.OnLoadIncrementalDataCompleted += async (list, index) =>
             {
+                var tasks = new List<Task>();
                 foreach (var item in list)
                 {
-                    var task = item.DownloadSmallImage();
+                    tasks.Add(item.DownloadImgForList());
                     item.MajorColor = new SolidColorBrush(ColorConverter.HexToColor(item.ColorValue).Value);
                 }
+                await Task.WhenAll(tasks);
             };
         }
 
         protected override void ClickItem(UnSplashImage item)
         {
-            
+
         }
 
         protected async override Task<IEnumerable<UnSplashImage>> GetList(int pageIndex)

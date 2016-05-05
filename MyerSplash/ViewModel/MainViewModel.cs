@@ -2,7 +2,9 @@
 using GalaSoft.MvvmLight.Command;
 using JP.Utils.Framework;
 using MyerSplash.Common;
+using MyerSplash.LiveTile;
 using MyerSplash.View;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
@@ -119,7 +121,6 @@ namespace MyerSplash.ViewModel
             }
         }
 
-
         public MainViewModel()
         {
             DataVM = new ImageDataViewModel() { MainVM = this };
@@ -131,6 +132,13 @@ namespace MyerSplash.ViewModel
             IsRefreshing = true;
             await DataVM.RefreshAsync();
             IsRefreshing = false;
+
+            var list = new List<string>();
+            foreach(var item in DataVM.DataList)
+            {
+                list.Add(item.ListImageCachedFilePath);
+            }
+            await LiveTileUpdater.UpdateImagesTileAsync(list);
         }
 
         public void Activate(object param)

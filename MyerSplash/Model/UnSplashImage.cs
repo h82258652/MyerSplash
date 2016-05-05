@@ -27,22 +27,24 @@ namespace MyerSplash.Model
 
         public string ThumbImageUrl { get; set; }
 
-        private BitmapImage _smallBitmap;
-        public BitmapImage SmallBitmap
+        private BitmapImage _listImageBitmap;
+        public BitmapImage ListImageBitmap
         {
             get
             {
-                return _smallBitmap;
+                return _listImageBitmap;
             }
             set
             {
-                if (_smallBitmap != value)
+                if (_listImageBitmap != value)
                 {
-                    _smallBitmap = value;
-                    RaisePropertyChanged(() => SmallBitmap);
+                    _listImageBitmap = value;
+                    RaisePropertyChanged(() => ListImageBitmap);
                 }
             }
         }
+
+        public string ListImageCachedFilePath { get; set; }
 
         private BitmapImage _largeBitmap;
         public BitmapImage LargeBitmap
@@ -107,33 +109,49 @@ namespace MyerSplash.Model
 
         }
 
-        public async Task DownloadSmallImage()
+        public async Task DownloadImgForList()
         {
-            if (string.IsNullOrEmpty(RegularImageUrl)) return;
-            var file = await App.CacheUtilInstance.DownloadImageAsync(RegularImageUrl);
+            var url = GetListImageUrlFromSettings();
+            if (string.IsNullOrEmpty(url)) return;
+            var file = await App.CacheUtilInstance.DownloadImageAsync(url);
+            ListImageCachedFilePath = file.Path;
             using (var stream = await file.OpenAsync(FileAccessMode.Read))
             {
-                SmallBitmap = new BitmapImage();
-                await SmallBitmap.SetSourceAsync(stream);
+                ListImageBitmap = new BitmapImage();
+                await ListImageBitmap.SetSourceAsync(stream);
             }
         }
 
-        public async Task DownloadLargeImage()
+        public string GetListImageUrlFromSettings()
         {
-            if (string.IsNullOrEmpty(RegularImageUrl)) return;
-            var file = await App.CacheUtilInstance.DownloadImageAsync(RegularImageUrl);
-            using (var stream = await file.OpenAsync(FileAccessMode.Read))
+            var quality = App.AppSettings.LoadQuality;
+            switch(quality)
             {
-                LargeBitmap = new BitmapImage();
-                await LargeBitmap.SetSourceAsync(stream);
+                case 0: return RegularImageUrl;
+                case 1:return SmallImageUrl;
+                case 2:return ThumbImageUrl;
+                default:return "";
             }
         }
 
-        public async Task DownloadToLib()
+        public string GetSaveImageUrlFromSettings()
         {
-            if (string.IsNullOrEmpty(FullImageUrl)) return;
+            var quality = App.AppSettings.SaveQuality;
+            switch (quality)
+            {
+                case 0: return RawImageUrl;
+                case 1: return FullImageUrl;
+                case 2: return RegularImageUrl;
+                default: return "";
+            }
+        }
+
+        public async Task DownloadFullImage()
+        {
+            var url = GetSaveImageUrlFromSettings();
+            if (string.IsNullOrEmpty(url)) return;
             var folder =await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
-            using (var stream = await APIHelper.GetIRandomAccessStreamFromUrlAsync(FullImageUrl))
+            using (var stream = await APIHelper.GetIRandomAccessStreamFromUrlAsync(url))
             {
                 var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
                 var bytes = new byte[stream.AsStream().Length];

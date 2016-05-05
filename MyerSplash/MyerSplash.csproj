@@ -108,6 +108,8 @@
     <Compile Include="Common\AppSettings.cs" />
     <Compile Include="Common\BindablePage.cs" />
     <Compile Include="Common\NavigationService.cs" />
+    <Compile Include="LiveTile\LiveTileUpdater.cs" />
+    <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\DataViewModel\DataViewModelBase.cs" />
     <Compile Include="Common\IncrementalLoadingCollection.cs" />
     <Compile Include="Common\ResourcesHelper.cs" />

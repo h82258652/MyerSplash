@@ -1,4 +1,5 @@
-﻿using MyerSplash.Common;
+﻿using JP.Utils.Debug;
+using MyerSplash.Common;
 using MyerSplash.View;
 using MyerSplashShared.API;
 using System;
@@ -27,6 +28,14 @@ namespace MyerSplash
     {
         public static CacheUtil CacheUtilInstance { get; set; }
 
+        public static AppSettings AppSettings
+        {
+            get
+            {
+                return App.Current.Resources["AppSettings"] as AppSettings;
+            }
+        }
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -38,6 +47,13 @@ namespace MyerSplash
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.UnhandledException += App_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var task = ExceptionHelper.WriteRecordAsync(e.Exception, nameof(App), nameof(App_UnhandledException));
+            e.Handled = false;
         }
 
         /// <summary>
