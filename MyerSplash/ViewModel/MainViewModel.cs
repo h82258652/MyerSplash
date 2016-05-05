@@ -14,7 +14,7 @@ namespace MyerSplash.ViewModel
 
         public bool IsInView { get; set; }
 
-        public bool IsFirstActived { get; set; }
+        public bool IsFirstActived { get; set; } = true;
 
         private RelayCommand _refreshCommand;
         public RelayCommand RefreshCommand
@@ -145,7 +145,11 @@ namespace MyerSplash.ViewModel
 
         public async void OnLoaded()
         {
-            await Refresh();
+            if(IsFirstActived)
+            {
+                IsFirstActived = false;
+                await Refresh();
+            }
         }
     }
 }

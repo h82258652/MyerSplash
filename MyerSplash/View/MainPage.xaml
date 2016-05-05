@@ -74,8 +74,8 @@
         <Grid x:Name="TitleGrid" Background="{StaticResource MyerSplashThemeColor}">
             <StackPanel Tapped="StackPanel_Tapped" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="Myer" FontSize="25"/>
-                <TextBlock Text="Splash" FontSize="25" FontWeight="Bold"/>
-                <TextBlock Text=" (ALPHA)" FontSize="15" VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+                <Image Height="30" Source="ms-appx:///Assets/Icon/Logo_black.png" Margin="-7,3,-7,0"/>
+                <TextBlock Text="plash" FontSize="25" FontWeight="Bold"/>
             </StackPanel>
             <uc:HamburgerButton Command="{x:Bind MainVM.OpenDrawerCommand,Mode=OneWay}" HorizontalAlignment="Left" Width="70" Background="White"/>
             <Button Style="{StaticResource ButtonCommonStyle2}" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="70">
@@ -84,7 +84,7 @@
                 </Border>
             </Button>
         </Grid>
-        <Grid x:Name="DetailGrid" Margin="0 5 0 0" Grid.RowSpan="5" SizeChanged="DetailGrid_SizeChanged">
+        <Grid x:Name="DetailGrid" d:IsHidden="True"  Margin="0 5 0 0" Grid.RowSpan="5" SizeChanged="DetailGrid_SizeChanged">
             <Border x:Name="MaskBorder" Tapped="MaskBorder_Tapped" Background="Black" Opacity="0.8"/>
             <Grid x:Name="DetailContentGrid" MaxWidth="600" Background="Transparent">
                 <Grid.RowDefinitions>
@@ -120,7 +120,7 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Border x:Name="DrawerMaskBorder" attach:UIElementTapCommand.ItemTapCommand="{x:Bind MainVM.OpenDrawerCommand,Mode=OneWay}" Background="#CC000000" Grid.RowSpan="2"/>
-        <uc:DrawerControl x:Name="DrawerControl" DataContext="{x:Bind MainVM,Mode=OneWay}" Grid.RowSpan="2" Width="300" HorizontalAlignment="Left"/>
+        <Border x:Name="DrawerMaskBorder" d:IsHidden="True" attach:UIElementTapCommand.ItemTapCommand="{x:Bind MainVM.OpenDrawerCommand,Mode=OneWay}" Background="#CC000000" Grid.RowSpan="2"/>
+        <uc:DrawerControl x:Name="DrawerControl" d:IsHidden="True" DataContext="{x:Bind MainVM,Mode=OneWay}" Grid.RowSpan="2" Width="300" HorizontalAlignment="Left"/>
     </Grid>
 </common:BindablePage>

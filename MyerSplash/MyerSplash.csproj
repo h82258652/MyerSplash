@@ -142,7 +142,9 @@
     <None Include="MyerSplash_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Icon\Logo_black.png" />
     <Content Include="Assets\Icon\Logo_trans.png" />
+    <Content Include="Assets\Icon\Logo_white.png" />
     <Content Include="Assets\Image\The Watchtower.png" />
     <Content Include="Assets\Logo-500.png" />
     <Content Include="Assets\NewStoreLogo.scale-100.png" />
