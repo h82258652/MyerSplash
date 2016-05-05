@@ -50,7 +50,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="&#xE735;" FontFamily="Segoe MDL2 Assets" AutomationProperties.Name="Favorite" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="17.333" />
-                        <TextBlock FontSize="17" Text="LOVED" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock FontSize="17" Text="FEATURED" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
                     </Grid>
                 </ListBox.Items>
             </ListBox>
@@ -59,7 +59,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Style="{StaticResource ButtonCommonStyle2}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}">
+                <Button Command="{x:Bind MainVM.GoToSettingsCommand,Mode=OneWay}" Style="{StaticResource ButtonCommonStyle2}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50"/>
@@ -69,7 +69,7 @@
                         <TextBlock FontSize="17" Text="SETTINGS" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
-                <Button Style="{StaticResource ButtonCommonStyle2}" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}">
+                <Button Command="{x:Bind MainVM.GoToAboutCommand,Mode=OneWay}" Style="{StaticResource ButtonCommonStyle2}" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50"/>

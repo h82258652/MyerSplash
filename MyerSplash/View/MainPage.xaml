@@ -26,8 +26,6 @@
                 IsItemClickEnabled="True"
                 ItemClick="ImageGridView_ItemClick"
                 ShowsScrollingPlaceholders="False"
-                ItemContainerTransitions="{x:Null}"
-                ContainerContentChanging="AdaptiveGridView_ContainerContentChanging"
                 attach:ScrollViewerStyleChanger.Style="{StaticResource ScrollViewerCommonStyle}"
                 MinItemHeight="200"
                 MinItemWidth="300">
@@ -88,7 +86,7 @@
         </Grid>
         <Grid x:Name="DetailGrid" Margin="0 5 0 0" Grid.RowSpan="5" SizeChanged="DetailGrid_SizeChanged">
             <Border x:Name="MaskBorder" Tapped="MaskBorder_Tapped" Background="Black" Opacity="0.8"/>
-            <Grid x:Name="DetailContentGrid" MaxWidth="600" Background="Black">
+            <Grid x:Name="DetailContentGrid" MaxWidth="600" Background="Transparent">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="100"/>
@@ -123,6 +121,6 @@
             </Grid>
         </Grid>
         <Border x:Name="DrawerMaskBorder" attach:UIElementTapCommand.ItemTapCommand="{x:Bind MainVM.OpenDrawerCommand,Mode=OneWay}" Background="#CC000000" Grid.RowSpan="2"/>
-        <uc:DrawerControl x:Name="DrawerControl" Grid.RowSpan="2" Width="300" HorizontalAlignment="Left"/>
+        <uc:DrawerControl x:Name="DrawerControl" DataContext="{x:Bind MainVM,Mode=OneWay}" Grid.RowSpan="2" Width="300" HorizontalAlignment="Left"/>
     </Grid>
 </common:BindablePage>

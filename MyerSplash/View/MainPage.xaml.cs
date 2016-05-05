@@ -51,7 +51,6 @@ namespace MyerSplash.View
         public static readonly DependencyProperty IsLoadingProperty =
             DependencyProperty.Register("IsLoading", typeof(bool), typeof(MainPage), new PropertyMetadata(false, OnLoadingPropertyChanged));
 
-
         public static void OnLoadingPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var page = d as MainPage;
@@ -183,7 +182,7 @@ namespace MyerSplash.View
         {
             var offsetAnim = _compositor.CreateScalarKeyFrameAnimation();
             offsetAnim.InsertKeyFrame(1f, show ? 0f : -(float)Window.Current.Bounds.Width);
-            offsetAnim.Duration = TimeSpan.FromMilliseconds(500);
+            offsetAnim.Duration = TimeSpan.FromMilliseconds(300);
 
             _drawerVisual.StartAnimation("Offset.x", offsetAnim);
         }
@@ -262,7 +261,7 @@ namespace MyerSplash.View
             _containerVisual = ElementCompositionPreview.GetElementVisual(container);
 
             _currentImg = item as UnSplashImage;
-            var task = DownloadImageAndSet(_currentImg);
+            this.LargeImage.Source = _currentImg.SmallBitmap;
             this.InfoGrid.Background = _currentImg.MajorColor;
             this.NameTB.Text = _currentImg.Owner.Name;
             if (ColorConverter.IsLight(_currentImg.MajorColor.Color))
@@ -290,12 +289,6 @@ namespace MyerSplash.View
 
             };
             batch.End();
-        }
-
-        private async Task DownloadImageAndSet(UnSplashImage img)
-        {
-            await img.DownloadLargeImage();
-            this.LargeImage.Source = img.LargeBitmap;
         }
 
         private void MaskBorder_Tapped(object sender, TappedRoutedEventArgs e)
@@ -352,7 +345,7 @@ namespace MyerSplash.View
             _containerVisual.StartAnimation("Offset", offsetAnimation);
             _containerVisual.StartAnimation("Scale.x", scaleAnimation);
             _containerVisual.StartAnimation("Scale.y", scaleAnimation);
-            _containerVisual.StartAnimation("Opacity", fadeAnimation);
+            //_containerVisual.StartAnimation("Opacity", fadeAnimation);
         }
 
         private void HideItemDetailAnimation()
@@ -392,7 +385,7 @@ namespace MyerSplash.View
 
         private void DetailGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.DetailContentGrid.Height = e.NewSize.Height * 0.7;
+            this.DetailContentGrid.Height = this.DetailContentGrid.ActualWidth / 1.5 + 100;
             this.DetailContentGrid.Clip = new RectangleGeometry()
             { Rect = new Rect(0, 0, DetailContentGrid.ActualWidth, DetailContentGrid.Height) };
         }

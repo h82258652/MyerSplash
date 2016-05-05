@@ -1,15 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using JP.Utils.Debug;
 using JP.Utils.Framework;
-using MyerSplash.Model;
-using MyerSplashCustomControl;
-using MyerSplashShared.API;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+using MyerSplash.Common;
+using MyerSplash.View;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
@@ -100,10 +93,36 @@ namespace MyerSplash.ViewModel
             }
         }
 
+        private RelayCommand _goToSettingsCommand;
+        public RelayCommand GoToSettingsCommand
+        {
+            get
+            {
+                if (_goToSettingsCommand != null) return _goToSettingsCommand;
+                return _goToSettingsCommand = new RelayCommand(() =>
+                  {
+                      NavigationService.NaivgateToPage(typeof(SettingsPage));
+                  });
+            }
+        }
+
+        private RelayCommand _goToAboutCommand;
+        public RelayCommand GoToAboutCommand
+        {
+            get
+            {
+                if (_goToAboutCommand != null) return _goToAboutCommand;
+                return _goToAboutCommand = new RelayCommand(() =>
+                  {
+                      NavigationService.NaivgateToPage(typeof(AboutPage));
+                  });
+            }
+        }
+
 
         public MainViewModel()
         {
-            DataVM = new ImageDataViewModel() { MainVM=this};
+            DataVM = new ImageDataViewModel() { MainVM = this };
             ShowFooterLoading = Visibility.Visible;
         }
 
