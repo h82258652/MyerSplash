@@ -1,27 +1,23 @@
-﻿using JP.Utils.UI;
+﻿using JP.API;
+using JP.Utils.UI;
 using MyerSplash.Common;
 using MyerSplash.Model;
 using MyerSplash.ViewModel;
 using MyerSplashCustomControl;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Numerics;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 namespace MyerSplash.View
 {
@@ -39,6 +35,10 @@ namespace MyerSplash.View
         private Visual _infoGridVisual;
         private Visual _downloadingBtnVisual;
         private Visual _okVisual;
+        private Visual _drawerVisual;
+        private Visual _drawerMaskVisual;
+
+        private UnSplashImage _currentImg;
 
         private int _zindex = 1;
 
@@ -62,39 +62,38 @@ namespace MyerSplash.View
             else page.ShowLoading();
         }
 
+        public bool DrawerOpended
+        {
+            get { return (bool)GetValue(DrawerOpendedProperty); }
+            set { SetValue(DrawerOpendedProperty, value); }
+        }
+
+        public static readonly DependencyProperty DrawerOpendedProperty =
+            DependencyProperty.Register("DrawerOpended", typeof(bool), typeof(MainPage), new PropertyMetadata(false, OnDrawerOpenedPropertyChanged));
+
+        public static void OnDrawerOpenedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var page = d as MainPage;
+            page.ToggleDrawerAnimation((bool)e.NewValue);
+            page.ToggleDrawerMaskAnimation((bool)e.NewValue);
+        }
+
         public MainPage()
         {
             this.InitializeComponent();
             this.DataContext = MainVM = new MainViewModel();
+            this.SizeChanged += MainPage_SizeChanged;
+            this.Loaded += MainPage_Loaded;
 
             InitComposition();
             InitBinding();
         }
 
-        private void InitBinding()
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var b = new Binding()
-            {
-                Source = MainVM,
-                Path = new PropertyPath("IsLoading"),
-                Mode = BindingMode.TwoWay,
-            };
-            this.SetBinding(IsLoadingProperty, b);
-        }
-
-        private void InitComposition()
-        {
-            _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
-            _loadingVisual = ElementCompositionPreview.GetElementVisual(LoadingGrid);
-            _refreshVisual = ElementCompositionPreview.GetElementVisual(RefreshSymbol);
-            _loadingVisual.Offset = new Vector3(0f, -50f, 0f);
-            _detailGridVisual = ElementCompositionPreview.GetElementVisual(DetailGrid);
-            _borderGridVisual = ElementCompositionPreview.GetElementVisual(MaskBorder);
-            _downloadBtnVisual = ElementCompositionPreview.GetElementVisual(DownloadBtn);
-            _infoGridVisual = ElementCompositionPreview.GetElementVisual(InfoGrid);
-            _downloadingBtnVisual = ElementCompositionPreview.GetElementVisual(LoadingHintBtn);
-            _okVisual = ElementCompositionPreview.GetElementVisual(OKBtn);
-
+            _loadingVisual.Offset = new Vector3(0f, -60f, 0f);
+            _drawerMaskVisual.Opacity = 0;
+            _drawerVisual.Offset = new Vector3(-(float)Window.Current.Bounds.Width, 0f, 0f);
             _infoGridVisual.Offset = new Vector3(0f, 100f, 0);
             _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
             _detailGridVisual.Opacity = 0;
@@ -102,10 +101,53 @@ namespace MyerSplash.View
             _downloadingBtnVisual.Offset = new Vector3(100f, 0f, 0f);
 
             DetailGrid.Visibility = Visibility.Collapsed;
+            DrawerMaskBorder.Visibility = Visibility.Collapsed;
+        }
+
+        private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if(!DrawerOpended)
+            {
+                _drawerVisual.Offset = new Vector3(-(float)Window.Current.Bounds.Width, 0f, 0f);
+            }
+        }
+
+        private void InitBinding()
+        {
+            var b = new Binding()
+            {
+                Source = MainVM,
+                Path = new PropertyPath("IsRefreshing"),
+                Mode = BindingMode.TwoWay,
+            };
+            this.SetBinding(IsLoadingProperty, b);
+
+            var b2 = new Binding()
+            {
+                Source = MainVM,
+                Path = new PropertyPath("DrawerOpened"),
+                Mode = BindingMode.TwoWay,
+            };
+            this.SetBinding(DrawerOpendedProperty, b2);
+        }
+
+        private void InitComposition()
+        {
+            _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+            _loadingVisual = ElementCompositionPreview.GetElementVisual(LoadingGrid);
+            _refreshVisual = ElementCompositionPreview.GetElementVisual(RefreshSymbol);
+            _detailGridVisual = ElementCompositionPreview.GetElementVisual(DetailGrid);
+            _borderGridVisual = ElementCompositionPreview.GetElementVisual(MaskBorder);
+            _downloadBtnVisual = ElementCompositionPreview.GetElementVisual(DownloadBtn);
+            _infoGridVisual = ElementCompositionPreview.GetElementVisual(InfoGrid);
+            _downloadingBtnVisual = ElementCompositionPreview.GetElementVisual(LoadingHintBtn);
+            _okVisual = ElementCompositionPreview.GetElementVisual(OKBtn);
+            _drawerVisual = ElementCompositionPreview.GetElementVisual(DrawerControl);
+            _drawerMaskVisual = ElementCompositionPreview.GetElementVisual(DrawerMaskBorder);
         }
 
         #region Loading Animation
-        public void ShowLoading()
+        private void ShowLoading()
         {
             var showAnimation = _compositor.CreateVector3KeyFrameAnimation();
             showAnimation.InsertKeyFrame(1, new Vector3(0f, 50f, 0f));
@@ -126,13 +168,41 @@ namespace MyerSplash.View
             _loadingVisual.StartAnimation("Offset", showAnimation);
         }
 
-        public void HideLoading()
+        private void HideLoading()
         {
             var showAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            showAnimation.InsertKeyFrame(1, -50f);
+            showAnimation.InsertKeyFrame(1, -60f);
             showAnimation.Duration = TimeSpan.FromMilliseconds(500);
 
             _loadingVisual.StartAnimation("Offset.y", showAnimation);
+        }
+        #endregion
+
+        #region Drawer
+        private void ToggleDrawerAnimation(bool show)
+        {
+            var offsetAnim = _compositor.CreateScalarKeyFrameAnimation();
+            offsetAnim.InsertKeyFrame(1f, show ? 0f : -(float)Window.Current.Bounds.Width);
+            offsetAnim.Duration = TimeSpan.FromMilliseconds(500);
+
+            _drawerVisual.StartAnimation("Offset.x", offsetAnim);
+        }
+
+        private void ToggleDrawerMaskAnimation(bool show)
+        {
+            if (show) DrawerMaskBorder.Visibility = Visibility.Visible;
+
+            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeAnimation.InsertKeyFrame(1f, show ? 1f : 0f,_compositor.CreateLinearEasingFunction());
+            fadeAnimation.Duration = TimeSpan.FromMilliseconds(300);
+
+            var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+            _drawerMaskVisual.StartAnimation("Opacity", fadeAnimation);
+            batch.Completed += (sender, e) =>
+              {
+                  if (!show) DrawerMaskBorder.Visibility = Visibility.Collapsed;
+              };
+            batch.End();
         }
         #endregion
 
@@ -181,7 +251,7 @@ namespace MyerSplash.View
         }
         #endregion
 
-        private async void ImageGridView_ItemClick(object sender, ItemClickEventArgs e)
+        private void ImageGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             DetailGrid.Visibility = Visibility.Visible;
 
@@ -191,12 +261,11 @@ namespace MyerSplash.View
 
             _containerVisual = ElementCompositionPreview.GetElementVisual(container);
 
-            var img = item as UnSplashImage;
-            await img.DownloadLargeImage();
-            this.LargeImage.Source = img.LargeBitmap;
-            this.InfoGrid.Background = img.MajorColor;
-            this.NameTB.Text = img.Owner.Name;
-            if (ColorConverter.IsLight(img.MajorColor.Color))
+            _currentImg = item as UnSplashImage;
+            var task = DownloadImageAndSet(_currentImg);
+            this.InfoGrid.Background = _currentImg.MajorColor;
+            this.NameTB.Text = _currentImg.Owner.Name;
+            if (ColorConverter.IsLight(_currentImg.MajorColor.Color))
             {
                 this.NameTB.Foreground = new SolidColorBrush(Colors.Black);
                 this.ByTB.Foreground = new SolidColorBrush(Colors.Black);
@@ -221,6 +290,12 @@ namespace MyerSplash.View
 
             };
             batch.End();
+        }
+
+        private async Task DownloadImageAndSet(UnSplashImage img)
+        {
+            await img.DownloadLargeImage();
+            this.LargeImage.Source = img.LargeBitmap;
         }
 
         private void MaskBorder_Tapped(object sender, TappedRoutedEventArgs e)
@@ -305,6 +380,24 @@ namespace MyerSplash.View
             _downloadBtnVisual.StartAnimation("Offset", offsetAnimation);
         }
 
+        private void StartInfoGridAnimation()
+        {
+            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
+            offsetAnimation.InsertKeyFrame(1f, new Vector3(0f, 0f, 0f));
+            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
+            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(500);
+
+            _infoGridVisual.StartAnimation("Offset", offsetAnimation);
+        }
+
+        private void DetailGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.DetailContentGrid.Height = e.NewSize.Height * 0.7;
+            this.DetailContentGrid.Clip = new RectangleGeometry()
+            { Rect = new Rect(0, 0, DetailContentGrid.ActualWidth, DetailContentGrid.Height) };
+        }
+
+        #region Download animation
         private void ToggleDownloadingBtnAnimation(bool show)
         {
             var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
@@ -325,34 +418,25 @@ namespace MyerSplash.View
             _okVisual.StartAnimation("Offset", offsetAnimation);
         }
 
-        private void StartInfoGridAnimation()
-        {
-            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            offsetAnimation.InsertKeyFrame(1f, new Vector3(0f, 0f, 0f));
-            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(500);
-
-            _infoGridVisual.StartAnimation("Offset", offsetAnimation);
-        }
-
-        private void DetailGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.DetailContentGrid.Height = e.NewSize.Height * 0.7;
-            this.DetailContentGrid.Clip = new RectangleGeometry()
-            { Rect = new Rect(0, 0, DetailContentGrid.ActualWidth, DetailContentGrid.Height) };
-        }
-
         private async void DownloadBtn_Click(object sender, RoutedEventArgs e)
         {
             ToggleDownloadBtnAnimation(false);
             await Task.Delay(100);
             ToggleDownloadingBtnAnimation(true);
-            await Task.Delay(1000);
+
+            await _currentImg.DownloadToLib();
+
             ToggleDownloadingBtnAnimation(false);
             await Task.Delay(300);
             ToggleOkBtnAnimation(true);
             await Task.Delay(200);
             ToastService.SendToast("Saved :D", TimeSpan.FromMilliseconds(1000));
+        }
+        #endregion
+
+        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ImageGridView.GetScrollViewer().ChangeView(null, 0, null);
         }
     }
 }

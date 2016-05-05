@@ -68,5 +68,14 @@ namespace MyerSplashShared.API
                 CachedFiles = new Dictionary<string, string>();
             }
         }
+
+        public async Task<StorageFile> GetCachedFile(string url)
+        {
+            if (CachedFiles.ContainsKey(url))
+            {
+                return await StorageFile.GetFileFromPathAsync(CachedFiles[url]);
+            }
+            return null;
+        }
     }
 }

@@ -11,27 +11,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace MyerSplash.ViewModel
 {
     public class MainViewModel : ViewModelBase, INavigable
     {
-        private ObservableCollection<UnSplashImage> _images;
-        public ObservableCollection<UnSplashImage> Images
-        {
-            get
-            {
-                return _images;
-            }
-            set
-            {
-                if (_images != value)
-                {
-                    _images = value;
-                    RaisePropertyChanged(() => Images);
-                }
-            }
-        }
+        public ImageDataViewModel DataVM { get; set; }
 
         public bool IsInView { get; set; }
 
@@ -43,26 +29,73 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_refreshCommand != null) return _refreshCommand;
-                return _refreshCommand = new RelayCommand(async() =>
+                return _refreshCommand = new RelayCommand(async () =>
                   {
                       await Refresh();
                   });
             }
         }
 
-        private bool _isLoading;
-        public bool IsLoading
+        private RelayCommand _openDrawerCommand;
+        public RelayCommand OpenDrawerCommand
         {
             get
             {
-                return _isLoading;
+                if (_openDrawerCommand != null) return _openDrawerCommand;
+                return _openDrawerCommand = new RelayCommand(() =>
+                  {
+                      DrawerOpened = !DrawerOpened;
+                  });
+            }
+        }
+
+        private bool _drawerOpened;
+        public bool DrawerOpened
+        {
+            get
+            {
+                return _drawerOpened;
             }
             set
             {
-                if (_isLoading != value)
+                if (_drawerOpened != value)
                 {
-                    _isLoading = value;
-                    RaisePropertyChanged(() => IsLoading);
+                    _drawerOpened = value;
+                    RaisePropertyChanged(() => DrawerOpened);
+                }
+            }
+        }
+
+        private bool _isRefreshing;
+        public bool IsRefreshing
+        {
+            get
+            {
+                return _isRefreshing;
+            }
+            set
+            {
+                if (_isRefreshing != value)
+                {
+                    _isRefreshing = value;
+                    RaisePropertyChanged(() => IsRefreshing);
+                }
+            }
+        }
+
+        private Visibility _showFooterLoading;
+        public Visibility ShowFooterLoading
+        {
+            get
+            {
+                return _showFooterLoading;
+            }
+            set
+            {
+                if (_showFooterLoading != value)
+                {
+                    _showFooterLoading = value;
+                    RaisePropertyChanged(() => ShowFooterLoading);
                 }
             }
         }
@@ -70,42 +103,15 @@ namespace MyerSplash.ViewModel
 
         public MainViewModel()
         {
-            Images = new ObservableCollection<UnSplashImage>();
+            DataVM = new ImageDataViewModel() { MainVM=this};
+            ShowFooterLoading = Visibility.Visible;
         }
 
         private async Task Refresh()
         {
-            try
-            {
-                IsLoading = true;
-                var result = await CloudService.GetImages(1, 30, CTSFactory.MakeCTS(10000).Token);
-                if (result.IsSuccessful)
-                {
-                    var list = UnSplashImage.ParseListFromJson(result.JsonSrc);
-                    this.Images = list;
-                    foreach (var item in Images)
-                    {
-                        var task = item.DownloadSmallImage();
-                    }
-                }
-                else
-                {
-                    throw new ArgumentException();
-                }
-            }
-            catch (ArgumentException)
-            {
-                ToastService.SendToast("请求失败");
-            }
-            catch (TaskCanceledException e)
-            {
-                var task = ExceptionHelper.WriteRecordAsync(e, nameof(Refresh), nameof(MainViewModel));
-                ToastService.SendToast("请求超时");
-            }
-            finally
-            {
-                IsLoading = false;
-            }
+            IsRefreshing = true;
+            await DataVM.RefreshAsync();
+            IsRefreshing = false;
         }
 
         public void Activate(object param)

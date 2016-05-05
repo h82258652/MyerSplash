@@ -15,6 +15,8 @@ namespace MyerSplash.Model
 {
     public class UnSplashImage : ViewModelBase
     {
+        public string ID { get; set; }
+
         public string RawImageUrl { get; set; }
 
         public string FullImageUrl { get; set; }
@@ -76,6 +78,8 @@ namespace MyerSplash.Model
             }
         }
 
+        public string ColorValue { get; set; }
+
         public double Width { get; set; }
 
         public double Height { get; set; }
@@ -105,8 +109,8 @@ namespace MyerSplash.Model
 
         public async Task DownloadSmallImage()
         {
-            if (string.IsNullOrEmpty(SmallImageUrl)) return;
-            var file = await App.CacheUtilInstance.DownloadImageAsync(SmallImageUrl);
+            if (string.IsNullOrEmpty(RegularImageUrl)) return;
+            var file = await App.CacheUtilInstance.DownloadImageAsync(RegularImageUrl);
             using (var stream = await file.OpenAsync(FileAccessMode.Read))
             {
                 SmallBitmap = new BitmapImage();
@@ -117,10 +121,24 @@ namespace MyerSplash.Model
         public async Task DownloadLargeImage()
         {
             if (string.IsNullOrEmpty(RegularImageUrl)) return;
-            using (var stream = await APIHelper.GetIRandomAccessStreamFromUrlAsync(RegularImageUrl))
+            var file = await App.CacheUtilInstance.DownloadImageAsync(RegularImageUrl);
+            using (var stream = await file.OpenAsync(FileAccessMode.Read))
             {
                 LargeBitmap = new BitmapImage();
                 await LargeBitmap.SetSourceAsync(stream);
+            }
+        }
+
+        public async Task DownloadToLib()
+        {
+            if (string.IsNullOrEmpty(FullImageUrl)) return;
+            var folder =await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
+            using (var stream = await APIHelper.GetIRandomAccessStreamFromUrlAsync(FullImageUrl))
+            {
+                var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
+                var bytes = new byte[stream.AsStream().Length];
+                await stream.AsStream().ReadAsync(bytes, 0, (int)stream.AsStream().Length);
+                await FileIO.WriteBytesAsync(newFile, bytes);
             }
         }
 
@@ -150,6 +168,7 @@ namespace MyerSplash.Model
             var height = JsonParser.GetNumberFromJsonObj(obj, "height");
             var userObj = JsonParser.GetJsonObjFromJsonObj(obj, "user");
             var userName = JsonParser.GetStringFromJsonObj(userObj, "name");
+            var id = JsonParser.GetStringFromJsonObj(obj, "id");
 
             var img = new UnSplashImage();
             img.SmallImageUrl = smallImageUrl;
@@ -157,10 +176,12 @@ namespace MyerSplash.Model
             img.RegularImageUrl = regularImageUrl;
             img.ThumbImageUrl = thumbImageUrl;
             img.RawImageUrl = rawImageUrl;
-            img.MajorColor = new SolidColorBrush(ColorConverter.HexToColor(color).Value);
+            img.ColorValue = color;
             img.Width = width;
             img.Height = height;
             img.Owner = new UnSplashUser() { Name = userName };
+            img.ID = id;
+
             return img;
         }
     }

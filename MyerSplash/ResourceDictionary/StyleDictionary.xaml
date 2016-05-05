@@ -33,20 +33,20 @@
                                     <VisualTransition From="Pressed" GeneratedDuration="0:0:0.3" To="Normal"/>
                                     <VisualTransition From="PointerOver" GeneratedDuration="0:0:0.3" To="Normal"/>
                                     <VisualTransition From="Normal" GeneratedDuration="0:0:0.3" To="PointerOver">
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="0:0:0.3" To="0.9" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ContentPresenter"/>
-                                        </Storyboard>
+                                        <!--<Storyboard>
+                                            <DoubleAnimation Duration="0:0:0.3" To="0.8" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ContentPresenter"/>
+                                        </Storyboard>-->
                                     </VisualTransition>
                                 </VisualStateGroup.Transitions>
                                 <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="0.2" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MaskBorder" />
+                                        <DoubleAnimation Duration="0" To="0.1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MaskBorder" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="0.4" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MaskBorder" />
+                                        <DoubleAnimation Duration="0" To="0.3" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MaskBorder" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -58,7 +58,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
     <Style x:Key="MenuListBoxItemStyle" TargetType="ListBoxItem">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="TabNavigation" Value="Local" />

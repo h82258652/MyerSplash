@@ -34,5 +34,16 @@ namespace MyerSplashShared.API
             var result = await APIHelper.SendGetRequestAsync(UrlHelper.MakeFullUrlForGetReq(UrlHelper.GetImages, param), token);
             return result;
         }
+
+        public static async Task<CommonRespMsg> SearchImages(int page, int pageCount, string query, CancellationToken token)
+        {
+            var param = GetDefaultParam();
+            param.Add(new KeyValuePair<string, string>("page", page.ToString()));
+            param.Add(new KeyValuePair<string, string>("per_page", pageCount.ToString()));
+            param.Add(new KeyValuePair<string, string>("query", query));
+
+            var result = await APIHelper.SendGetRequestAsync(UrlHelper.MakeFullUrlForGetReq(UrlHelper.SearchImages, param), token);
+            return result;
+        }
     }
 }

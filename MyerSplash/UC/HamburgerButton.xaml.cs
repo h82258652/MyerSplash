@@ -1,32 +1,29 @@
-﻿using Windows.UI.Xaml;
+﻿using System.Windows.Input;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace MyerSplash.UC
 {
     public sealed partial class HamburgerButton : UserControl
     {
-        public event RoutedEventHandler ButtonClick;
+        public ICommand Command
+        {
+            get { return (ICommand)GetValue(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty CommandProperty =
+            DependencyProperty.Register("Command", typeof(ICommand), typeof(HamburgerButton), new PropertyMetadata(null));
 
         public HamburgerButton()
         {
             this.InitializeComponent();
-            this.HamburgerBtn.Click += ButtonClick;
+            this.HamburgerBtn.Click += HamClick;
         }
 
-        public void PlayHamInStory()
+        private void HamClick(object sender, RoutedEventArgs e)
         {
-            //HamInStory.Begin();
-        }
-
-        public void PlayHamOutStory()
-        {
-            //HamOutStory.Begin();
-        }
-
-        private void HamClick(object sender,RoutedEventArgs e)
-        {
-            //PlayHamInStory();
-            ButtonClick(sender, e);
+            Command?.Execute(null);
         }
     }
 }
