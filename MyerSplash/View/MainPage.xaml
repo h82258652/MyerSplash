@@ -43,11 +43,11 @@
                 <TextBlock Text="plash" FontSize="25" FontWeight="Bold"/>
             </StackPanel>
             <uc:HamburgerButton Command="{x:Bind MainVM.OpenDrawerCommand,Mode=OneWay}" HorizontalAlignment="Left" Width="70" Background="White"/>
-            <Button Style="{StaticResource ButtonCommonStyle2}" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="70">
+            <!--<Button Style="{StaticResource ButtonCommonStyle2}" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="70">
                 <Border>
                     <SymbolIcon Symbol="Zoom"/>
                 </Border>
-            </Button>
+            </Button>-->
         </Grid>
         <uc:PhotoDetailControl x:Name="DetailControl" OnHideControl="DetailControl_OnHideControl" Grid.RowSpan="2"/>
         <Border x:Name="DrawerMaskBorder" d:IsHidden="True" attach:UIElementTapCommand.ItemTapCommand="{x:Bind MainVM.OpenDrawerCommand,Mode=OneWay}" Background="#CC000000" Grid.RowSpan="2"/>

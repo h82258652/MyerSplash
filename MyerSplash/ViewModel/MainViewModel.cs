@@ -157,7 +157,10 @@ namespace MyerSplash.ViewModel
             {
                 list.Add(item.ListImageCachedFilePath);
             }
-            await LiveTileUpdater.UpdateImagesTileAsync(list);
+            if(App.AppSettings.EnableTile)
+            {
+                await LiveTileUpdater.UpdateImagesTileAsync(list);
+            }
         }
 
         public void Activate(object param)

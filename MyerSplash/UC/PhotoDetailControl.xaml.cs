@@ -211,5 +211,13 @@ namespace MyerSplash.UC
             Clipboard.SetContent(dataPackage);
             ToastService.SendToast("Copied :D");
         }
+
+        private void DetailGrid_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            if (Math.Abs(e.Cumulative.Translation.Y) > 30)
+            {
+                MaskBorder_Tapped(null, null);
+            }
+        }
     }
 }

@@ -281,7 +281,7 @@
             <TextBlock FontSize="20" Text="SETTINGS" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="10,0,0,0"/>
         </Grid>
         <Grid MaxWidth="600" Grid.Row="1">
-            <StackPanel>
+            <StackPanel Margin="0,20,0,0">
                 <TextBlock Text="PERSONALIZATION" Foreground="{StaticResource MyerSplashThemeColor}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,10,0,0" FontSize="20" FontWeight="Bold"/>
                 <Grid Height="50">
                     <Grid.ColumnDefinitions>
@@ -322,7 +322,7 @@
                 <TextBlock Text="OTHER" Foreground="{StaticResource MyerSplashThemeColor}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,20,0,0" FontSize="20" FontWeight="Bold"/>
                 <Button Style="{StaticResource ButtonCommonStyle}" Margin="10,10,10,0" HorizontalAlignment="Stretch">
                     <Border Background="{StaticResource MyerSplashThemeColor}">
-                        <TextBlock Margin="10" Text="Clear up cache"/>
+                        <TextBlock Margin="10" Text="Clear up cache" HorizontalAlignment="Center"/>
                     </Border>
                 </Button>
             </StackPanel>
