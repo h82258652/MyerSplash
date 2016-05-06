@@ -3,6 +3,7 @@ using MyerSplash.Model;
 using MyerSplashCustomControl;
 using System;
 using System.Numerics;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Composition;
@@ -22,6 +23,7 @@ namespace MyerSplash.UC
         private Visual _detailGridVisual;
         private Visual _borderGridVisual;
         private Visual _downloadBtnVisual;
+        private Visual _likeBtnVisual;
         private Visual _infoGridVisual;
         private Visual _downloadingBtnVisual;
         private Visual _okVisual;
@@ -46,11 +48,15 @@ namespace MyerSplash.UC
             {
                 control.NameTB.Foreground = new SolidColorBrush(Colors.Black);
                 control.ByTB.Foreground = new SolidColorBrush(Colors.Black);
+                control.CopyUrlBorder.Background = new SolidColorBrush(Colors.Black);
+                control.CopyUrlTB.Foreground = new SolidColorBrush(Colors.White);
             }
             else
             {
                 control.NameTB.Foreground = new SolidColorBrush(Colors.White);
                 control.ByTB.Foreground = new SolidColorBrush(Colors.White);
+                control.CopyUrlBorder.Background = new SolidColorBrush(Colors.White);
+                control.CopyUrlTB.Foreground = new SolidColorBrush(Colors.Black);
             }
         }
 
@@ -69,9 +75,11 @@ namespace MyerSplash.UC
             _infoGridVisual = ElementCompositionPreview.GetElementVisual(InfoGrid);
             _downloadingBtnVisual = ElementCompositionPreview.GetElementVisual(LoadingHintBtn);
             _okVisual = ElementCompositionPreview.GetElementVisual(OKBtn);
+            _likeBtnVisual = ElementCompositionPreview.GetElementVisual(LikeBtn);
 
             _infoGridVisual.Offset = new Vector3(0f, 100f, 0);
             _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
+            _likeBtnVisual.Offset = new Vector3(200f, 0f, 0f);
             _detailGridVisual.Opacity = 0;
             _okVisual.Offset = new Vector3(100f, 0f, 0f);
             _downloadingBtnVisual.Offset = new Vector3(100f, 0f, 0f);
@@ -94,7 +102,10 @@ namespace MyerSplash.UC
 
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
             _detailGridVisual.StartAnimation("Opacity", fadeAnimation);
+
             ToggleDownloadBtnAnimation(true);
+            ToggleLikeBtnAnimation(true);
+
             StartInfoGridAnimation();
             batch.Completed += (sender, e) =>
             {
@@ -103,6 +114,7 @@ namespace MyerSplash.UC
                     _downloadingBtnVisual.Offset = new Vector3(100f, 0f, 0f);
                     _okVisual.Offset = new Vector3(100f, 0f, 0f);
                     _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
+                    _likeBtnVisual.Offset = new Vector3(200f, 0f, 0f);
                     _infoGridVisual.Offset = new Vector3(0f, 100f, 0f);
                     DetailGrid.Visibility = Visibility.Collapsed;
                 }
@@ -118,6 +130,16 @@ namespace MyerSplash.UC
             offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 300 : 0);
 
             _downloadBtnVisual.StartAnimation("Offset", offsetAnimation);
+        }
+
+        private void ToggleLikeBtnAnimation(bool show)
+        {
+            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
+            offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 200f, 0f, 0f));
+            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
+            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 300 : 0);
+
+            _likeBtnVisual.StartAnimation("Offset", offsetAnimation);
         }
 
         private void StartInfoGridAnimation()
@@ -175,6 +197,19 @@ namespace MyerSplash.UC
             {
                 return this.DetailContentGrid;
             }
+        }
+
+        private void LikeBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CopyUlrBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DataPackage dataPackage = new DataPackage();
+            dataPackage.SetText(UnsplashImage.GetSaveImageUrlFromSettings());
+            Clipboard.SetContent(dataPackage);
+            ToastService.SendToast("Copied :D");
         }
     }
 }

@@ -17,12 +17,12 @@ namespace MyerSplash.ViewModel
         public static int DEFAULT_PAGE_INDEX => 1;
         public static uint DEFAULT_PER_PAGE => 20u;
 
-        private int _pageIndex = DEFAULT_PAGE_INDEX;
+        private int PageIndex { get; set; } = DEFAULT_PAGE_INDEX;
 
         /// <summary>
         /// 列表增量加载完成后发生，此回调在UI线程进行
         /// </summary>
-        public event Action<IEnumerable<T>,int> OnLoadIncrementalDataCompleted;
+        public event Action<IEnumerable<T>, int> OnLoadIncrementalDataCompleted;
         public event Action<bool> OnHasMoreItemChanged;
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace MyerSplash.ViewModel
         {
             DataList = new IncrementalLoadingCollection<T>(count =>
             {
-                return Task.Run(() => GetIncrementalListData(_pageIndex++));
+                return Task.Run(() => GetIncrementalListData(PageIndex++));
             });
         }
 
@@ -86,8 +86,12 @@ namespace MyerSplash.ViewModel
                     return false;
                 }
 
-                DataList.Clear();
-                _pageIndex = DEFAULT_PAGE_INDEX;
+                PageIndex = DEFAULT_PAGE_INDEX;
+                DataList = new IncrementalLoadingCollection<T>(count =>
+                {
+                    return Task.Run(() => GetIncrementalListData(PageIndex++));
+                });
+
                 await Task.Delay(200);
                 await DataList.LoadMoreItemsAsync(DEFAULT_PER_PAGE);
 
@@ -120,7 +124,7 @@ namespace MyerSplash.ViewModel
                 await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     OnHasMoreItemChanged?.Invoke(HasMoreItems);
-                    OnLoadIncrementalDataCompleted?.Invoke(newList,pageIndex);
+                    LoadMoreItemCompleted(newList, pageIndex);
                 });
             }
             catch (Exception e)
@@ -133,5 +137,7 @@ namespace MyerSplash.ViewModel
         protected abstract Task<IEnumerable<T>> GetList(int pageIndex);
 
         protected abstract void ClickItem(T item);
+
+        protected abstract void LoadMoreItemCompleted(IEnumerable<T> list, int index);
     }
 }

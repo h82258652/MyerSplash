@@ -20,21 +20,6 @@ namespace MyerSplash.ViewModel
 
         public ImageDataViewModel()
         {
-            this.OnLoadIncrementalDataCompleted += async (list, index) =>
-            {
-                var tasks = new List<Task>();
-                for (var i = 0; i < list.Count(); i++)
-                {
-                    var item = list.ElementAt(i);
-
-                    if (i % 2 == 0) item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF2E2E2E").Value);
-                    else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
-
-                    tasks.Add(item.DownloadImgForList());
-                    item.MajorColor = new SolidColorBrush(ColorConverter.HexToColor(item.ColorValue).Value);
-                }
-                await Task.WhenAll(tasks);
-            };
         }
 
         protected override void ClickItem(UnsplashImage item)
@@ -64,7 +49,8 @@ namespace MyerSplash.ViewModel
                     MainVM.ShowFooterLoading = Visibility.Collapsed;
                     MainVM.IsRefreshing = false;
                     if (MainVM.DataVM.DataList.Count == 0)
-                        MainVM.ShowNoItemHint =Visibility.Visible;
+                        MainVM.ShowNoItemHint = Visibility.Visible;
+                    else MainVM.ShowNoItemHint = Visibility.Collapsed;
                     ToastService.SendToast("请求失败");
                 });
                 return new List<UnsplashImage>();
@@ -75,8 +61,9 @@ namespace MyerSplash.ViewModel
                 {
                     MainVM.ShowFooterLoading = Visibility.Collapsed;
                     MainVM.IsRefreshing = false;
-                    if(MainVM.DataVM.DataList.Count==0)
+                    if (MainVM.DataVM.DataList.Count == 0)
                         MainVM.ShowNoItemHint = Visibility.Visible;
+                    else MainVM.ShowNoItemHint = Visibility.Collapsed;
                     ToastService.SendToast("请求超时");
                 });
                 return new List<UnsplashImage>();
@@ -86,6 +73,22 @@ namespace MyerSplash.ViewModel
                 var task = ExceptionHelper.WriteRecordAsync(e, nameof(ImageDataViewModel), nameof(GetList));
                 return new List<UnsplashImage>();
             }
+        }
+
+        protected async override void LoadMoreItemCompleted(IEnumerable<UnsplashImage> list, int index)
+        {
+            var tasks = new List<Task>();
+            for (var i = 0; i < list.Count(); i++)
+            {
+                var item = list.ElementAt(i);
+
+                if (i % 2 == 0) item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF2E2E2E").Value);
+                else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
+
+                tasks.Add(item.DownloadImgForList());
+                item.MajorColor = new SolidColorBrush(ColorConverter.HexToColor(item.ColorValue).Value);
+            }
+            await Task.WhenAll(tasks);
         }
     }
 }

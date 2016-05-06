@@ -28,13 +28,8 @@ namespace MyerSplash.View
         private Compositor _compositor;
         private Visual _loadingVisual;
         private Visual _refreshVisual;
-        private Visual _containerVisual;
         private Visual _drawerVisual;
         private Visual _drawerMaskVisual;
-
-        private UnsplashImage _currentImg;
-
-        private int _zindex = 1;
 
         public bool IsLoading
         {
@@ -87,14 +82,14 @@ namespace MyerSplash.View
             _loadingVisual.Offset = new Vector3(0f, -60f, 0f);
             _drawerMaskVisual.Opacity = 0;
             _drawerVisual.Offset = new Vector3(-(float)Window.Current.Bounds.Width, 0f, 0f);
-            
+
             DetailControl.Visibility = Visibility.Collapsed;
             DrawerMaskBorder.Visibility = Visibility.Collapsed;
         }
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if(!DrawerOpended)
+            if (!DrawerOpended)
             {
                 _drawerVisual.Offset = new Vector3(-(float)Window.Current.Bounds.Width, 0f, 0f);
             }
@@ -175,7 +170,7 @@ namespace MyerSplash.View
             if (show) DrawerMaskBorder.Visibility = Visibility.Visible;
 
             var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            fadeAnimation.InsertKeyFrame(1f, show ? 1f : 0f,_compositor.CreateLinearEasingFunction());
+            fadeAnimation.InsertKeyFrame(1f, show ? 1f : 0f, _compositor.CreateLinearEasingFunction());
             fadeAnimation.Duration = TimeSpan.FromMilliseconds(300);
 
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
@@ -188,63 +183,20 @@ namespace MyerSplash.View
         }
         #endregion
 
-        #region List Animation
-        private void AdaptiveGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            int index = args.ItemIndex;
-
-            if (!args.InRecycleQueue)
-            {
-                args.ItemContainer.Loaded -= ItemContainer_Loaded;
-                args.ItemContainer.Loaded += ItemContainer_Loaded;
-            }
+            ListControl.ScrollToTop();
         }
 
-        private void ItemContainer_Loaded(object sender, RoutedEventArgs e)
+        private void DetailControl_OnHideControl()
         {
-            var itemsPanel = (ItemsWrapGrid)ImageGridView.ItemsPanelRoot;
-            var itemContainer = (GridViewItem)sender;
-            var itemIndex = ImageGridView.IndexFromContainer(itemContainer);
-
-            // Don't animate if we're not in the visible viewport
-            if (itemIndex >= itemsPanel.FirstVisibleIndex && itemIndex <= itemsPanel.LastVisibleIndex)
-            {
-                var itemVisual = ElementCompositionPreview.GetElementVisual(itemContainer);
-
-                itemVisual.Opacity = 0f;
-                itemVisual.Offset = new Vector3(50, 0, 0);
-
-                // Create KeyFrameAnimations
-                var offsetAnimation = _compositor.CreateScalarKeyFrameAnimation();
-                offsetAnimation.InsertExpressionKeyFrame(1f, "0");
-                offsetAnimation.Duration = TimeSpan.FromMilliseconds(700);
-                offsetAnimation.DelayTime = TimeSpan.FromMilliseconds((itemIndex * 100));
-
-                var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
-                fadeAnimation.InsertExpressionKeyFrame(1f, "1");
-                fadeAnimation.Duration = TimeSpan.FromMilliseconds(700);
-                fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
-
-                // Start animations
-                itemVisual.StartAnimation("Offset.X", offsetAnimation);
-                itemVisual.StartAnimation("Opacity", fadeAnimation);
-            }
-            itemContainer.Loaded -= ItemContainer_Loaded;
+            ListControl.HideItemDetailAnimation();
         }
-        #endregion
 
-        private void ImageGridView_ItemClick(object sender, ItemClickEventArgs e)
+        private void ListControl_OnClickItemStarted(UnsplashImage img, FrameworkElement container)
         {
             DetailControl.Visibility = Visibility.Visible;
-
-            var item = e.ClickedItem;
-            var container = ImageGridView.ContainerFromItem(item) as FrameworkElement;
-            Canvas.SetZIndex(container, ++_zindex);
-
-            _containerVisual = ElementCompositionPreview.GetElementVisual(container);
-
-            _currentImg = item as UnsplashImage;
-            DetailControl.UnsplashImage = _currentImg;
+            DetailControl.UnsplashImage = img;
 
             var currentPos = container.TransformToVisual(DetailControl).TransformPoint(new Point(0, 0));
             var targetPos = DetailControl.ContentGrid.TransformToVisual(DetailControl).TransformPoint(new Point(0, 0));
@@ -252,59 +204,8 @@ namespace MyerSplash.View
             var targetOffsetX = targetPos.X - currentPos.X;
             var targetOffsetY = targetPos.Y - currentPos.Y;
 
-            var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
-            MoveItemAnimation(new Vector3((float)targetOffsetX, (float)targetOffsetY, 0f), (float)targetRatio);
+            ListControl.MoveItemAnimation(new Vector3((float)targetOffsetX, (float)targetOffsetY, 0f), (float)targetRatio);
             DetailControl.ToggleDetailGridAnimation(true);
-            batch.Completed += (senderx, ex) =>
-            {
-
-            };
-            batch.End();
-        }
-
-        private void MoveItemAnimation(Vector3 targetOffset, float widthRatio)
-        {
-            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            offsetAnimation.InsertKeyFrame(1f, targetOffset);
-            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-
-            var scaleAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            scaleAnimation.InsertKeyFrame(1f, widthRatio);
-            scaleAnimation.Duration = TimeSpan.FromMilliseconds(500);
-
-            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            fadeAnimation.InsertKeyFrame(1f, 0.5f);
-            fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
-
-            _containerVisual.StartAnimation("Offset", offsetAnimation);
-            _containerVisual.StartAnimation("Scale.x", scaleAnimation);
-            _containerVisual.StartAnimation("Scale.y", scaleAnimation);
-            //_containerVisual.StartAnimation("Opacity", fadeAnimation);
-        }
-
-        private void HideItemDetailAnimation()
-        {
-            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            offsetAnimation.InsertKeyFrame(1f, new Vector3(0, 0, 0));
-            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-
-            var scaleAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            scaleAnimation.InsertKeyFrame(1f, 1f);
-            scaleAnimation.Duration = TimeSpan.FromMilliseconds(500);
-
-            _containerVisual.StartAnimation("Offset", offsetAnimation);
-            _containerVisual.StartAnimation("Scale.x", scaleAnimation);
-            _containerVisual.StartAnimation("Scale.y", scaleAnimation);
-        }
-
-        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            ImageGridView.GetScrollViewer().ChangeView(null, 0, null);
-        }
-
-        private void DetailControl_OnHideControl()
-        {
-            HideItemDetailAnimation();
         }
     }
 }

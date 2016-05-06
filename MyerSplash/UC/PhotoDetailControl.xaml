@@ -22,27 +22,41 @@
                     <TextBlock x:Name="ByTB" Text="by" Foreground="#CCFFFFFF" FontSize="12"/>
                     <TextBlock x:Name="NameTB" Text="JuniperPhoton" Foreground="#CCFFFFFF" FontSize="20" FontWeight="Bold"/>
                 </StackPanel>
-            </Grid>
-            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,75" Grid.RowSpan="2">
-                <Button x:Name="LoadingHintBtn" IsEnabled="True" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
+                <Button x:Name="CopyUlrBtn" Click="CopyUlrBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,22" Grid.RowSpan="2" Background="{x:Null}">
                     <Grid>
-                        <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                        <ProgressRing IsActive="True" Foreground="White"/>
-                    </Grid>
-                </Button>
-                <Button x:Name="OKBtn" IsEnabled="False" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
-                    <Grid>
-                        <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                        <SymbolIcon Symbol="Accept" Foreground="White"/>
-                    </Grid>
-                </Button>
-                <Button x:Name="DownloadBtn" Click="DownloadBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
-                    <Grid>
-                        <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                        <SymbolIcon Symbol="Download" Foreground="White"/>
+                        <Border x:Name="CopyUrlBorder" Background="White" CornerRadius="2" Opacity="0.6"/>
+                        <TextBlock x:Name="CopyUrlTB" Margin="15,5" Text="COPY URL" Foreground="Black" FontWeight="Bold"/>
                     </Grid>
                 </Button>
             </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-25">
+                <Button x:Name="LikeBtn" Click="LikeBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0" Grid.RowSpan="2" Background="{x:Null}">
+                    <Grid>
+                        <Ellipse Width="40" Height="40" Fill="{StaticResource MyerSplashLikeHeartColor}"/>
+                        <TextBlock Text="&#xE006;" FontFamily="Segoe MDL2 Assets" AutomationProperties.Name="Favorite" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </Button>
+                <Grid Grid.RowSpan="2" Margin="0,0,10,0">
+                    <Button x:Name="LoadingHintBtn" IsEnabled="True" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
+                        <Grid>
+                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
+                            <ProgressRing IsActive="True" Foreground="White"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="OKBtn" IsEnabled="False" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
+                        <Grid>
+                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
+                            <SymbolIcon Symbol="Accept" Foreground="White"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="DownloadBtn" Click="DownloadBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
+                        <Grid>
+                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
+                            <SymbolIcon Symbol="Download" Foreground="White"/>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </Grid>
     </Grid>
 

@@ -10,6 +10,7 @@
     <SolidColorBrush x:Key="MyerSplashThemeColor">#00bebe</SolidColorBrush>
     <SolidColorBrush x:Key="MyerSplashThemeLightColor">#FF10D6D6</SolidColorBrush>
     <SolidColorBrush x:Key="MyerSplashThemeDarkColor">#FF06AEAE</SolidColorBrush>
+    <SolidColorBrush x:Key="MyerSplashLikeHeartColor">#FFD93A58</SolidColorBrush>
     <SolidColorBrush x:Key="MyerSplashDarkColor">#FF1D1D1D</SolidColorBrush>
     <SolidColorBrush x:Key="MyerSplashPlaceHolderColor">#FF383838</SolidColorBrush>
 </ResourceDictionary>

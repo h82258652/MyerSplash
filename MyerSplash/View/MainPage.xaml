@@ -24,6 +24,7 @@
                     <TextBlock FontSize="20" Text="Can't connect to server" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Grid>
+            <uc:ImageListControl x:Name="ListControl" OnClickItemStarted="ListControl_OnClickItemStarted" DataContext="{x:Bind MainVM,Mode=OneWay}"/>
             <Button x:Name="RefreshBtn" HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{x:Bind MainVM.RefreshCommand,Mode=OneWay}" Margin="20" Style="{StaticResource ButtonCommonStyle}" Foreground="White" Background="{x:Null}" Grid.RowSpan="2">
                 <Grid Width="50" Height="50">
                     <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>

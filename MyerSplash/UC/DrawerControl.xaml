@@ -44,14 +44,6 @@
                         <TextBlock Text="&#xE00B;" FontFamily="Segoe MDL2 Assets" AutomationProperties.Name="Favorite" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <TextBlock FontSize="17" Text="LOVED" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
                     </Grid>
-                    <Grid Height="60">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="&#xE735;" FontFamily="Segoe MDL2 Assets" AutomationProperties.Name="Favorite" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="17.333" />
-                        <TextBlock FontSize="17" Text="FEATURED" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
-                    </Grid>
                 </ListBox.Items>
             </ListBox>
             <Grid Height="60" VerticalAlignment="Bottom" Background="{StaticResource MyerSplashDarkColor}">
