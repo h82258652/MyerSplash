@@ -109,14 +109,20 @@
     <Compile Include="Common\BindablePage.cs" />
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="LiveTile\LiveTileUpdater.cs" />
+    <Compile Include="UC\ImageListControl.xaml.cs">
+      <DependentUpon>ImageListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UC\PhotoDetailControl.xaml.cs">
+      <DependentUpon>PhotoDetailControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\DataViewModel\DataViewModelBase.cs" />
     <Compile Include="Common\IncrementalLoadingCollection.cs" />
     <Compile Include="Common\ResourcesHelper.cs" />
     <Compile Include="Common\StatusBarHelper.cs" />
     <Compile Include="Common\TitleBarHelper.cs" />
-    <Compile Include="Model\UnSplashImage.cs" />
-    <Compile Include="Model\UnSplashUser.cs" />
+    <Compile Include="Model\UnsplashImage.cs" />
+    <Compile Include="Model\UnsplashUser.cs" />
     <Compile Include="UC\DrawerControl.xaml.cs">
       <DependentUpon>DrawerControl.xaml</DependentUpon>
     </Compile>
@@ -215,6 +221,14 @@
     <Page Include="UC\HamburgerButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UC\ImageListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UC\PhotoDetailControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AboutPage.xaml">
       <SubType>Designer</SubType>

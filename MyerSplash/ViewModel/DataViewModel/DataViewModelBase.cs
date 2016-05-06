@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using JP.Utils.Debug;
+using JP.Utils.Helper;
 using MyerSplash.Common;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace MyerSplash.ViewModel
 {
     public abstract class DataViewModelBase<T> : ViewModelBase
     {
-        private const int DEFAULT_PAGE_INDEX = 1;
+        public static int DEFAULT_PAGE_INDEX => 1;
+        public static uint DEFAULT_PER_PAGE => 20u;
 
         private int _pageIndex = DEFAULT_PAGE_INDEX;
 
@@ -86,8 +88,8 @@ namespace MyerSplash.ViewModel
 
                 DataList.Clear();
                 _pageIndex = DEFAULT_PAGE_INDEX;
-                await Task.Delay(100);
-                await DataList.LoadMoreItemsAsync(10);
+                await Task.Delay(200);
+                await DataList.LoadMoreItemsAsync(DEFAULT_PER_PAGE);
 
                 return true;
             }

@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Data;
 
 namespace MyerSplash.Common
@@ -42,11 +44,8 @@ namespace MyerSplash.Common
                 {
                     return new LoadMoreItemsResult() { Count = 0 };
                 }
+
                 IsBusy = true;
-                if (this.OnLoadMoreStarted != null)
-                {
-                    this.OnLoadMoreStarted(count);
-                }
 
                 // 我们忽略了CancellationToken，因为我们暂时不需要取消，需要的可以加上
                 var result = await this._dataFetchDelegate(count);
@@ -68,11 +67,11 @@ namespace MyerSplash.Common
                 // 是否还有更多
                 this.HasMoreItems = result.Item2;
 
-                // 加载完成事件
-                if (this.OnLoadMoreCompleted != null)
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    this.OnLoadMoreCompleted(items == null ? 0 : items.Count);
-                }
+                    // 加载完成事件
+                    this.OnLoadMoreCompleted?.Invoke(items == null ? 0 : items.Count);
+                });
 
                 return new LoadMoreItemsResult { Count = items == null ? 0 : (uint)items.Count };
             }

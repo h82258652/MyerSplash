@@ -18,48 +18,12 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" x:Name="ContentGrid">
-            <control:AdaptiveGridView
-                x:Name="ImageGridView"
-                ItemsSource="{x:Bind MainVM.DataVM.DataList,Mode=OneWay}"
-                SelectionMode="None"
-                Margin="0"
-                IsItemClickEnabled="True"
-                ItemClick="ImageGridView_ItemClick"
-                ShowsScrollingPlaceholders="False"
-                attach:ScrollViewerStyleChanger.Style="{StaticResource ScrollViewerCommonStyle}"
-                MinItemHeight="200"
-                MinItemWidth="300">
-                <control:AdaptiveGridView.ItemTemplate>
-                    <DataTemplate x:DataType="model:UnSplashImage">
-                        <Grid>
-                            <Border Background="{x:Bind BackColor,Mode=OneWay}"/>
-                            <Image Source="{x:Bind ListImageBitmap,Mode=OneWay}" Stretch="UniformToFill"/>
-                        </Grid>
-                    </DataTemplate>
-                </control:AdaptiveGridView.ItemTemplate>
-                <control:AdaptiveGridView.ItemContainerStyle>
-                    <Style TargetType="GridViewItem">
-                        <Setter Property="HorizontalContentAlignment"
-                            Value="Stretch" />
-                        <Setter Property="HorizontalAlignment"
-                            Value="Stretch" />
-                        <Setter Property="VerticalContentAlignment"
-                            Value="Stretch" />
-                        <Setter Property="VerticalAlignment"
-                            Value="Stretch" />
-                        <Setter Property="Margin"
-                            Value="0" />
-                    </Style>
-                </control:AdaptiveGridView.ItemContainerStyle>
-                <control:AdaptiveGridView.Footer>
-                    <Grid Height="50" Visibility="{x:Bind MainVM.ShowFooterLoading,Mode=OneWay}">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <ProgressRing IsActive="True" Foreground="{StaticResource MyerSplashThemeDarkColor}"/>
-                            <TextBlock Text="LOADING..." Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </Grid>
-                </control:AdaptiveGridView.Footer>
-            </control:AdaptiveGridView>
+            <Grid x:Name="NoItemHint" Visibility="{x:Bind MainVM.ShowNoItemHint,Mode=OneWay}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.3">
+                    <TextBlock FontSize="50" Text=":-(" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock FontSize="20" Text="Can't connect to server" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
             <Button x:Name="RefreshBtn" HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{x:Bind MainVM.RefreshCommand,Mode=OneWay}" Margin="20" Style="{StaticResource ButtonCommonStyle}" Foreground="White" Background="{x:Null}" Grid.RowSpan="2">
                 <Grid Width="50" Height="50">
                     <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
@@ -84,42 +48,7 @@
                 </Border>
             </Button>
         </Grid>
-        <Grid x:Name="DetailGrid" d:IsHidden="True"  Margin="0 5 0 0" Grid.RowSpan="5" SizeChanged="DetailGrid_SizeChanged">
-            <Border x:Name="MaskBorder" Tapped="MaskBorder_Tapped" Background="Black" Opacity="0.8"/>
-            <Grid x:Name="DetailContentGrid" MaxWidth="600" Background="Transparent">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="100"/>
-                </Grid.RowDefinitions>
-                <Image x:Name="LargeImage" Stretch="UniformToFill"/>
-                <Grid x:Name="InfoGrid" Grid.Row="1">
-                    <StackPanel Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left">
-                        <TextBlock x:Name="ByTB" Text="by" Foreground="#CCFFFFFF" FontSize="12"/>
-                        <TextBlock x:Name="NameTB" Text="JuniperPhoton" Foreground="#CCFFFFFF" FontSize="20" FontWeight="Bold"/>
-                    </StackPanel>
-                </Grid>
-                <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,75" Grid.RowSpan="2">
-                    <Button x:Name="LoadingHintBtn" IsEnabled="True" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
-                        <Grid>
-                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                            <ProgressRing IsActive="True" Foreground="White"/>
-                        </Grid>
-                    </Button>
-                    <Button x:Name="OKBtn" IsEnabled="False" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
-                        <Grid>
-                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                            <SymbolIcon Symbol="Accept" Foreground="White"/>
-                        </Grid>
-                    </Button>
-                    <Button x:Name="DownloadBtn" Click="DownloadBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
-                        <Grid>
-                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                            <SymbolIcon Symbol="Download" Foreground="White"/>
-                        </Grid>
-                    </Button>
-                </Grid>
-            </Grid>
-        </Grid>
+        <uc:PhotoDetailControl x:Name="DetailControl" OnHideControl="DetailControl_OnHideControl" Grid.RowSpan="2"/>
         <Border x:Name="DrawerMaskBorder" d:IsHidden="True" attach:UIElementTapCommand.ItemTapCommand="{x:Bind MainVM.OpenDrawerCommand,Mode=OneWay}" Background="#CC000000" Grid.RowSpan="2"/>
         <uc:DrawerControl x:Name="DrawerControl" d:IsHidden="True" DataContext="{x:Bind MainVM,Mode=OneWay}" Grid.RowSpan="2" Width="300" HorizontalAlignment="Left"/>
     </Grid>

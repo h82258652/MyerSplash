@@ -14,7 +14,7 @@ using Windows.UI;
 
 namespace MyerSplash.Model
 {
-    public class UnSplashImage : ViewModelBase
+    public class UnsplashImage : ViewModelBase
     {
         public string ID { get; set; }
 
@@ -104,8 +104,8 @@ namespace MyerSplash.Model
 
         public double Height { get; set; }
 
-        private UnSplashUser _owner;
-        public UnSplashUser Owner
+        private UnsplashUser _owner;
+        public UnsplashUser Owner
         {
             get
             {
@@ -121,9 +121,9 @@ namespace MyerSplash.Model
             }
         }
 
-        public UnSplashImage()
+        public UnsplashImage()
         {
-            BackColor = new SolidColorBrush(Colors.Black);
+            
         }
 
         public async Task DownloadImgForList()
@@ -177,9 +177,9 @@ namespace MyerSplash.Model
             }
         }
 
-        public static ObservableCollection<UnSplashImage> ParseListFromJson(string json)
+        public static ObservableCollection<UnsplashImage> ParseListFromJson(string json)
         {
-            var list = new ObservableCollection<UnSplashImage>();
+            var list = new ObservableCollection<UnsplashImage>();
             var array = JsonArray.Parse(json);
             foreach (var item in array)
             {
@@ -189,7 +189,7 @@ namespace MyerSplash.Model
             return list;
         }
 
-        private static UnSplashImage ParseObjectFromJson(string json)
+        private static UnsplashImage ParseObjectFromJson(string json)
         {
             var obj = JsonObject.Parse(json);
             var urls = JsonParser.GetJsonObjFromJsonObj(obj, "urls");
@@ -205,7 +205,7 @@ namespace MyerSplash.Model
             var userName = JsonParser.GetStringFromJsonObj(userObj, "name");
             var id = JsonParser.GetStringFromJsonObj(obj, "id");
 
-            var img = new UnSplashImage();
+            var img = new UnsplashImage();
             img.SmallImageUrl = smallImageUrl;
             img.FullImageUrl = fullImageUrl;
             img.RegularImageUrl = regularImageUrl;
@@ -214,7 +214,7 @@ namespace MyerSplash.Model
             img.ColorValue = color;
             img.Width = width;
             img.Height = height;
-            img.Owner = new UnSplashUser() { Name = userName };
+            img.Owner = new UnsplashUser() { Name = userName };
             img.ID = id;
 
             return img;

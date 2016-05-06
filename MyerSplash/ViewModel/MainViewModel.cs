@@ -95,6 +95,24 @@ namespace MyerSplash.ViewModel
             }
         }
 
+        private Visibility _showNoItemHint;
+        public Visibility ShowNoItemHint
+        {
+            get
+            {
+                return _showNoItemHint;
+            }
+            set
+            {
+                if (_showNoItemHint != value)
+                {
+                    _showNoItemHint = value;
+                    RaisePropertyChanged(() => ShowNoItemHint);
+                }
+            }
+        }
+
+
         private RelayCommand _goToSettingsCommand;
         public RelayCommand GoToSettingsCommand
         {
@@ -125,6 +143,7 @@ namespace MyerSplash.ViewModel
         {
             DataVM = new ImageDataViewModel() { MainVM = this };
             ShowFooterLoading = Visibility.Visible;
+            ShowNoItemHint = Visibility.Collapsed;
         }
 
         private async Task Refresh()

@@ -1,4 +1,5 @@
-﻿using NotificationsExtensions.Tiles;
+﻿using JP.Utils.Debug;
+using NotificationsExtensions.Tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace MyerSplash.LiveTile
         {
             try
             {
+                await ClearAllTileFile();
+
                 var tile = new TileBinding();
                 var photosContent = new TileBindingContentPhotos();
 
@@ -38,13 +41,19 @@ namespace MyerSplash.LiveTile
                 tileContent.Visual.TileLarge = tile;
 
                 TileUpdateManager.CreateTileUpdaterForApplication().Clear();
-                TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
                 TileUpdateManager.CreateTileUpdaterForApplication().Update(new TileNotification(tileContent.GetXml()));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                var task = ExceptionHelper.WriteRecordAsync(e, nameof(LiveTileUpdater), nameof(UpdateImagesTileAsync));
             }
+        }
+
+        public async static Task ClearAllTileFile()
+        {
+            var folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("temptile", CreationCollisionOption.OpenIfExists);
+            var files = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.DefaultQuery);
+            files.ToList().ForEach(async f => await f.DeleteAsync(StorageDeleteOption.PermanentDelete));
         }
 
         public static void CleanUpTile()

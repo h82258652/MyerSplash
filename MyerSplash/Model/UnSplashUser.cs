@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyerSplash.Model
 {
-    public class UnSplashUser:ViewModelBase
+    public class UnsplashUser:ViewModelBase
     {
         private string _name;
         public string Name
@@ -27,7 +27,7 @@ namespace MyerSplash.Model
         }
 
 
-        public UnSplashUser()
+        public UnsplashUser()
         {
 
         }

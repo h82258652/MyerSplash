@@ -28,17 +28,11 @@ namespace MyerSplash.View
         private Compositor _compositor;
         private Visual _loadingVisual;
         private Visual _refreshVisual;
-        private Visual _detailGridVisual;
-        private Visual _borderGridVisual;
         private Visual _containerVisual;
-        private Visual _downloadBtnVisual;
-        private Visual _infoGridVisual;
-        private Visual _downloadingBtnVisual;
-        private Visual _okVisual;
         private Visual _drawerVisual;
         private Visual _drawerMaskVisual;
 
-        private UnSplashImage _currentImg;
+        private UnsplashImage _currentImg;
 
         private int _zindex = 1;
 
@@ -93,13 +87,8 @@ namespace MyerSplash.View
             _loadingVisual.Offset = new Vector3(0f, -60f, 0f);
             _drawerMaskVisual.Opacity = 0;
             _drawerVisual.Offset = new Vector3(-(float)Window.Current.Bounds.Width, 0f, 0f);
-            _infoGridVisual.Offset = new Vector3(0f, 100f, 0);
-            _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
-            _detailGridVisual.Opacity = 0;
-            _okVisual.Offset = new Vector3(100f, 0f, 0f);
-            _downloadingBtnVisual.Offset = new Vector3(100f, 0f, 0f);
-
-            DetailGrid.Visibility = Visibility.Collapsed;
+            
+            DetailControl.Visibility = Visibility.Collapsed;
             DrawerMaskBorder.Visibility = Visibility.Collapsed;
         }
 
@@ -135,12 +124,6 @@ namespace MyerSplash.View
             _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
             _loadingVisual = ElementCompositionPreview.GetElementVisual(LoadingGrid);
             _refreshVisual = ElementCompositionPreview.GetElementVisual(RefreshSymbol);
-            _detailGridVisual = ElementCompositionPreview.GetElementVisual(DetailGrid);
-            _borderGridVisual = ElementCompositionPreview.GetElementVisual(MaskBorder);
-            _downloadBtnVisual = ElementCompositionPreview.GetElementVisual(DownloadBtn);
-            _infoGridVisual = ElementCompositionPreview.GetElementVisual(InfoGrid);
-            _downloadingBtnVisual = ElementCompositionPreview.GetElementVisual(LoadingHintBtn);
-            _okVisual = ElementCompositionPreview.GetElementVisual(OKBtn);
             _drawerVisual = ElementCompositionPreview.GetElementVisual(DrawerControl);
             _drawerMaskVisual = ElementCompositionPreview.GetElementVisual(DrawerMaskBorder);
         }
@@ -252,7 +235,7 @@ namespace MyerSplash.View
 
         private void ImageGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            DetailGrid.Visibility = Visibility.Visible;
+            DetailControl.Visibility = Visibility.Visible;
 
             var item = e.ClickedItem;
             var container = ImageGridView.ContainerFromItem(item) as FrameworkElement;
@@ -260,70 +243,21 @@ namespace MyerSplash.View
 
             _containerVisual = ElementCompositionPreview.GetElementVisual(container);
 
-            _currentImg = item as UnSplashImage;
-            this.LargeImage.Source = _currentImg.ListImageBitmap;
-            this.InfoGrid.Background = _currentImg.MajorColor;
-            this.NameTB.Text = _currentImg.Owner.Name;
-            if (ColorConverter.IsLight(_currentImg.MajorColor.Color))
-            {
-                this.NameTB.Foreground = new SolidColorBrush(Colors.Black);
-                this.ByTB.Foreground = new SolidColorBrush(Colors.Black);
-            }
-            else
-            {
-                this.NameTB.Foreground = new SolidColorBrush(Colors.White);
-                this.ByTB.Foreground = new SolidColorBrush(Colors.White);
-            }
+            _currentImg = item as UnsplashImage;
+            DetailControl.UnsplashImage = _currentImg;
 
-            var currentPos = container.TransformToVisual(DetailGrid).TransformPoint(new Point(0, 0));
-            var targetPos = DetailContentGrid.TransformToVisual(DetailGrid).TransformPoint(new Point(0, 0));
-            var targetRatio = DetailContentGrid.ActualWidth / container.ActualWidth;
+            var currentPos = container.TransformToVisual(DetailControl).TransformPoint(new Point(0, 0));
+            var targetPos = DetailControl.ContentGrid.TransformToVisual(DetailControl).TransformPoint(new Point(0, 0));
+            var targetRatio = DetailControl.ContentGrid.ActualWidth / container.ActualWidth;
             var targetOffsetX = targetPos.X - currentPos.X;
             var targetOffsetY = targetPos.Y - currentPos.Y;
 
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
             MoveItemAnimation(new Vector3((float)targetOffsetX, (float)targetOffsetY, 0f), (float)targetRatio);
-            ToggleDetailGridAnimation(true);
+            DetailControl.ToggleDetailGridAnimation(true);
             batch.Completed += (senderx, ex) =>
             {
 
-            };
-            batch.End();
-        }
-
-        private void MaskBorder_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            HideItemDetailAnimation();
-            ToggleDetailGridAnimation(false);
-        }
-
-        private void ToggleDetailGridAnimation(bool show)
-        {
-            DetailGrid.Visibility = Visibility.Visible;
-
-            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            fadeAnimation.InsertKeyFrame(1f, show ? 1f : 0f);
-            fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
-            fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 300 : 0);
-
-            var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
-            _detailGridVisual.StartAnimation("Opacity", fadeAnimation);
-            ToggleDownloadBtnAnimation(true);
-            StartInfoGridAnimation();
-            batch.Completed += (sender, e) =>
-            {
-                if (!show)
-                {
-                    _downloadingBtnVisual.Offset = new Vector3(100f, 0f, 0f);
-                    _okVisual.Offset = new Vector3(100f, 0f, 0f);
-                    _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
-                    _infoGridVisual.Offset = new Vector3(0f, 100f, 0f);
-                    DetailGrid.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    _containerVisual.Opacity = 1;
-                }
             };
             batch.End();
         }
@@ -363,73 +297,14 @@ namespace MyerSplash.View
             _containerVisual.StartAnimation("Scale.y", scaleAnimation);
         }
 
-        private void ToggleDownloadBtnAnimation(bool show)
-        {
-            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 100f, 0f, 0f));
-            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show?300:0);
-
-            _downloadBtnVisual.StartAnimation("Offset", offsetAnimation);
-        }
-
-        private void StartInfoGridAnimation()
-        {
-            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            offsetAnimation.InsertKeyFrame(1f, new Vector3(0f, 0f, 0f));
-            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(500);
-
-            _infoGridVisual.StartAnimation("Offset", offsetAnimation);
-        }
-
-        private void DetailGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.DetailContentGrid.Height = this.DetailContentGrid.ActualWidth / 1.5 + 100;
-            this.DetailContentGrid.Clip = new RectangleGeometry()
-            { Rect = new Rect(0, 0, DetailContentGrid.ActualWidth, DetailContentGrid.Height) };
-        }
-
-        #region Download animation
-        private void ToggleDownloadingBtnAnimation(bool show)
-        {
-            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 100f, 0f, 0f));
-            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(200);
-
-            _downloadingBtnVisual.StartAnimation("Offset", offsetAnimation);
-        }
-
-        private void ToggleOkBtnAnimation(bool show)
-        {
-            var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 100f, 0f, 0f));
-            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(200);
-
-            _okVisual.StartAnimation("Offset", offsetAnimation);
-        }
-
-        private async void DownloadBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleDownloadBtnAnimation(false);
-            await Task.Delay(100);
-            ToggleDownloadingBtnAnimation(true);
-
-            await _currentImg.DownloadFullImage();
-
-            ToggleDownloadingBtnAnimation(false);
-            await Task.Delay(300);
-            ToggleOkBtnAnimation(true);
-            await Task.Delay(200);
-            ToastService.SendToast("Saved :D", TimeSpan.FromMilliseconds(1000));
-        }
-        #endregion
-
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
             ImageGridView.GetScrollViewer().ChangeView(null, 0, null);
+        }
+
+        private void DetailControl_OnHideControl()
+        {
+            HideItemDetailAnimation();
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿using JP.Utils.UI;
-using MyerSplash.Common;
-using MyerSplash.LiveTile;
+﻿using JP.Utils.Debug;
+using JP.Utils.UI;
 using MyerSplash.Model;
 using MyerSplashCustomControl;
 using MyerSplashShared.API;
@@ -8,12 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.UI;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml;
 
 namespace MyerSplash.ViewModel
 {
-    public class ImageDataViewModel : DataViewModelBase<UnSplashImage>
+    public class ImageDataViewModel : DataViewModelBase<UnsplashImage>
     {
         public MainViewModel MainVM { get; set; }
 
@@ -26,7 +27,7 @@ namespace MyerSplash.ViewModel
                 {
                     var item = list.ElementAt(i);
 
-                    if (i % 2 == 0) item.BackColor = new SolidColorBrush(Colors.Black);
+                    if (i % 2 == 0) item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF2E2E2E").Value);
                     else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
 
                     tasks.Add(item.DownloadImgForList());
@@ -36,19 +37,19 @@ namespace MyerSplash.ViewModel
             };
         }
 
-        protected override void ClickItem(UnSplashImage item)
+        protected override void ClickItem(UnsplashImage item)
         {
 
         }
 
-        protected async override Task<IEnumerable<UnSplashImage>> GetList(int pageIndex)
+        protected async override Task<IEnumerable<UnsplashImage>> GetList(int pageIndex)
         {
             try
             {
-                var result = await CloudService.GetImages(pageIndex, 10, CTSFactory.MakeCTS(10000).Token);
+                var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(10000).Token);
                 if (result.IsSuccessful)
                 {
-                    var list = UnSplashImage.ParseListFromJson(result.JsonSrc);
+                    var list = UnsplashImage.ParseListFromJson(result.JsonSrc);
                     return list;
                 }
                 else
@@ -58,17 +59,32 @@ namespace MyerSplash.ViewModel
             }
             catch (ArgumentException)
             {
-                ToastService.SendToast("请求失败");
-                return new List<UnSplashImage>();
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    MainVM.ShowFooterLoading = Visibility.Collapsed;
+                    MainVM.IsRefreshing = false;
+                    if (MainVM.DataVM.DataList.Count == 0)
+                        MainVM.ShowNoItemHint =Visibility.Visible;
+                    ToastService.SendToast("请求失败");
+                });
+                return new List<UnsplashImage>();
             }
             catch (TaskCanceledException)
             {
-                ToastService.SendToast("请求超时");
-                return new List<UnSplashImage>();
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    MainVM.ShowFooterLoading = Visibility.Collapsed;
+                    MainVM.IsRefreshing = false;
+                    if(MainVM.DataVM.DataList.Count==0)
+                        MainVM.ShowNoItemHint = Visibility.Visible;
+                    ToastService.SendToast("请求超时");
+                });
+                return new List<UnsplashImage>();
             }
             catch (Exception e)
             {
-                return new List<UnSplashImage>();
+                var task = ExceptionHelper.WriteRecordAsync(e, nameof(ImageDataViewModel), nameof(GetList));
+                return new List<UnsplashImage>();
             }
         }
     }
