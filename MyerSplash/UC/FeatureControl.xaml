@@ -1,0 +1,23 @@
+﻿<UserControl
+    x:Class="MyerSplash.UC.FeatureControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyerSplash.UC"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="700"
+    d:DesignWidth="400">
+
+    <Grid Background="{StaticResource MyerSplashThemeColor}">
+        <ScrollViewer Style="{StaticResource ScrollViewerCommonStyle}">
+            <StackPanel MaxWidth="600" Margin="10" VerticalAlignment="Center">
+                <TextBlock Text="RESERVED" FontWeight="Bold" Margin="0,10,0,0"/>
+                <TextBlock Text="All photos in MyerSplash is from Unsplash, a high-quality photography website, you can feel free to download all the photos and use them wherever you want them to be." TextWrapping="Wrap" Margin="0,5,0,0"/>
+                <TextBlock Text="TUTORIAL" FontWeight="Bold" Margin="0,20,0,0"/>
+                <Image Source="ms-appx:///Assets/Image/Tutorial.png" Margin="0,10,0,0"/>
+                <TextBlock Text="The default quality of photo to be download is high, which will probably up to 3MB, and you can change it in the settings page. For better downloading, you can copy the download url and paste to other program to download it." TextWrapping="Wrap" Margin="0,10,0,0"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
