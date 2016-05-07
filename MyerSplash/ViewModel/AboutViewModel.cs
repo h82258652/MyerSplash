@@ -17,7 +17,7 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_feedbackCommand != null) return _feedbackCommand;
-                return _feedbackCommand = new RelayCommand(async() =>
+                return _feedbackCommand = new RelayCommand(async () =>
                   {
                       EmailRecipient rec = new EmailRecipient("dengweichao@hotmail.com");
                       EmailMessage mes = new EmailMessage();
@@ -41,7 +41,7 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_rateCommand != null) return _rateCommand;
-                return _rateCommand = new RelayCommand(async() =>
+                return _rateCommand = new RelayCommand(async () =>
                   {
                       await Launcher.LaunchUriAsync(new Uri("ms-windows-store://review/?PFN=" + Package.Current.Id.FamilyName));
                   });
