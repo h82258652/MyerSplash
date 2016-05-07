@@ -26,6 +26,7 @@ namespace MyerSplash.LiveTile
                 {
                     var path = imagesFilePath.ElementAt(i);
                     if (string.IsNullOrEmpty(path)) continue;
+
                     var file = await StorageFile.GetFileFromPathAsync(path);
                     var folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("temptile", CreationCollisionOption.OpenIfExists);
                     var newFile = await file.CopyAsync(folder, "tiles", NameCollisionOption.GenerateUniqueName);
