@@ -107,6 +107,8 @@
     </Compile>
     <Compile Include="Common\AppSettings.cs" />
     <Compile Include="Common\BindablePage.cs" />
+    <Compile Include="Common\CachedFileNames.cs" />
+    <Compile Include="Common\CachedFilesUtils.cs" />
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="LiveTile\LiveTileUpdater.cs" />
     <Compile Include="UC\FeatureControl.xaml.cs">

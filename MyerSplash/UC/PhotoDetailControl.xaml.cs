@@ -77,9 +77,14 @@ namespace MyerSplash.UC
             _okVisual = ElementCompositionPreview.GetElementVisual(OKBtn);
             _likeBtnVisual = ElementCompositionPreview.GetElementVisual(LikeBtn);
 
-            _infoGridVisual.Offset = new Vector3(0f, 100f, 0);
+            ResetVisualInitState();
+        }
+
+        private void ResetVisualInitState()
+        {
+            _infoGridVisual.Offset = new Vector3(0f, -100f, 0);
             _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
-            _likeBtnVisual.Offset = new Vector3(200f, 0f, 0f);
+            _likeBtnVisual.Offset = new Vector3(150f, 0f, 0f);
             _detailGridVisual.Opacity = 0;
             _okVisual.Offset = new Vector3(100f, 0f, 0f);
             _downloadingBtnVisual.Offset = new Vector3(100f, 0f, 0f);
@@ -111,11 +116,7 @@ namespace MyerSplash.UC
             {
                 if (!show)
                 {
-                    _downloadingBtnVisual.Offset = new Vector3(100f, 0f, 0f);
-                    _okVisual.Offset = new Vector3(100f, 0f, 0f);
-                    _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
-                    _likeBtnVisual.Offset = new Vector3(200f, 0f, 0f);
-                    _infoGridVisual.Offset = new Vector3(0f, 100f, 0f);
+                    ResetVisualInitState();
                     DetailGrid.Visibility = Visibility.Collapsed;
                 }
             };
@@ -126,8 +127,8 @@ namespace MyerSplash.UC
         {
             var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
             offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 100f, 0f, 0f));
-            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 300 : 0);
+            offsetAnimation.Duration = TimeSpan.FromMilliseconds(1000);
+            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 500 : 0);
 
             _downloadBtnVisual.StartAnimation("Offset", offsetAnimation);
         }
@@ -135,9 +136,9 @@ namespace MyerSplash.UC
         private void ToggleLikeBtnAnimation(bool show)
         {
             var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 200f, 0f, 0f));
-            offsetAnimation.Duration = TimeSpan.FromMilliseconds(500);
-            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 300 : 0);
+            offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 150f, 0f, 0f));
+            offsetAnimation.Duration = TimeSpan.FromMilliseconds(1000);
+            offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 400 : 0);
 
             _likeBtnVisual.StartAnimation("Offset", offsetAnimation);
         }
@@ -218,6 +219,12 @@ namespace MyerSplash.UC
             {
                 MaskBorder_Tapped(null, null);
             }
+        }
+
+        private void InfoPlaceHolderGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var grid = sender as Grid;
+            grid.Clip = new RectangleGeometry() { Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height) };
         }
     }
 }

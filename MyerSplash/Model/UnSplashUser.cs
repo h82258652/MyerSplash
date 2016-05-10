@@ -26,7 +26,6 @@ namespace MyerSplash.Model
             }
         }
 
-
         public UnsplashUser()
         {
 

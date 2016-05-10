@@ -16,18 +16,23 @@
                 <RowDefinition/>
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
-            <Image x:Name="LargeImage" Stretch="UniformToFill"/>
-            <Grid x:Name="InfoGrid" Grid.Row="1">
-                <StackPanel Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left">
-                    <TextBlock x:Name="ByTB" Text="by" Foreground="#CCFFFFFF" FontSize="12"/>
-                    <TextBlock x:Name="NameTB" Text="JuniperPhoton" Foreground="#CCFFFFFF" FontSize="20" FontWeight="Bold"/>
-                </StackPanel>
-                <Button x:Name="CopyUlrBtn" Click="CopyUlrBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,22" Grid.RowSpan="2" Background="{x:Null}">
-                    <Grid>
-                        <Border x:Name="CopyUrlBorder" Background="White" CornerRadius="2" Opacity="0.6"/>
-                        <TextBlock x:Name="CopyUrlTB" Margin="15,5" Text="COPY URL" Foreground="Black" FontWeight="Bold"/>
-                    </Grid>
-                </Button>
+            <Grid Grid.Row="1" x:Name="InfoPlaceHolderGrid" SizeChanged="InfoPlaceHolderGrid_SizeChanged">
+                <Grid x:Name="InfoGrid" Grid.Row="1">
+                    <StackPanel Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <TextBlock x:Name="ByTB" Text="by" Foreground="#CCFFFFFF" FontSize="12"/>
+                        <TextBlock x:Name="NameTB" Text="JuniperPhoton" Foreground="#CCFFFFFF" FontSize="20" FontWeight="Bold"/>
+                    </StackPanel>
+                    <Button x:Name="CopyUlrBtn" Click="CopyUlrBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,22" Grid.RowSpan="2" Background="{x:Null}">
+                        <Grid>
+                            <Border x:Name="CopyUrlBorder" Background="White" CornerRadius="2" Opacity="0.6"/>
+                            <TextBlock x:Name="CopyUrlTB" Margin="15,5" Text="COPY URL" Foreground="Black" FontWeight="Bold"/>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </Grid>
+            <Grid>
+                <Border Background="Black"/>
+                <Image x:Name="LargeImage" Stretch="UniformToFill"/>
             </Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-25">
                 <Button x:Name="LikeBtn" Click="LikeBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0" Grid.RowSpan="2" Background="{x:Null}">

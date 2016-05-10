@@ -23,7 +23,7 @@
         </Grid>
         <Grid Grid.Row="1">
             <ListBox
-                        SelectedIndex="0"  
+                        SelectedIndex="{x:Bind MainVM.SelectedIndex,Mode=OneWay}"  
                         ItemContainerStyle="{StaticResource MenuListBoxItemStyle}" 
                         Background="{x:Null}"
                         HorizontalAlignment="Center" Margin="0,0,0,60">
@@ -51,7 +51,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Command="{x:Bind MainVM.GoToSettingsCommand,Mode=OneWay}" Style="{StaticResource ButtonCommonStyle2}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}">
+                <Button Command="{x:Bind MainVM.GoToSettingsCommand,Mode=OneWay}" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50"/>
@@ -61,7 +61,7 @@
                         <TextBlock FontSize="17" Text="SETTINGS" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
-                <Button Command="{x:Bind MainVM.GoToAboutCommand,Mode=OneWay}" Style="{StaticResource ButtonCommonStyle2}" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}">
+                <Button Command="{x:Bind MainVM.GoToAboutCommand,Mode=OneWay}" Style="{StaticResource ButtonCommonStyle}" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50"/>

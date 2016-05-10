@@ -83,7 +83,6 @@ namespace MyerSplash.View
             _drawerMaskVisual.Opacity = 0;
             _drawerVisual.Offset = new Vector3(-(float)Window.Current.Bounds.Width, 0f, 0f);
 
-            DetailControl.Visibility = Visibility.Collapsed;
             DrawerMaskBorder.Visibility = Visibility.Collapsed;
         }
 
@@ -196,6 +195,7 @@ namespace MyerSplash.View
         private void ListControl_OnClickItemStarted(UnsplashImage img, FrameworkElement container)
         {
             DetailControl.Visibility = Visibility.Visible;
+
             DetailControl.UnsplashImage = img;
 
             var currentPos = container.TransformToVisual(DetailControl).TransformPoint(new Point(0, 0));
@@ -206,6 +206,12 @@ namespace MyerSplash.View
 
             ListControl.MoveItemAnimation(new Vector3((float)targetOffsetX, (float)targetOffsetY, 0f), (float)targetRatio);
             DetailControl.ToggleDetailGridAnimation(true);
+        }
+
+        private void DetailControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            DetailControl.Visibility = Visibility.Collapsed;
+            DetailControl.Loaded -= DetailControl_Loaded;
         }
     }
 }

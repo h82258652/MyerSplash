@@ -16,6 +16,11 @@ namespace MyerSplash.Common
         // 这里为了简单使用了Tuple<IList<T>, bool>作为返回值，第一项是新项目集合，第二项是否还有更多，也可以自定义实体类
         Func<uint, Task<Tuple<List<T>, bool>>> _dataFetchDelegate = null;
 
+        public IncrementalLoadingCollection()
+        {
+
+        }
+
         public IncrementalLoadingCollection(Func<uint, Task<Tuple<List<T>, bool>>> dataFetchDelegate)
         {
             if (dataFetchDelegate == null) throw new ArgumentNullException("dataFetchDelegate");

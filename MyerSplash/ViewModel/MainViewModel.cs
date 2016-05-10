@@ -1,18 +1,72 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using JP.Utils.Data;
 using JP.Utils.Framework;
 using MyerSplash.Common;
 using MyerSplash.LiveTile;
+using MyerSplash.Model;
 using MyerSplash.View;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using System;
+using Windows.UI.Xaml.Media;
+using JP.Utils.UI;
 
 namespace MyerSplash.ViewModel
 {
     public class MainViewModel : ViewModelBase, INavigable
     {
-        public ImageDataViewModel DataVM { get; set; }
+        private ImageDataViewModel _mainDataVM;
+        public ImageDataViewModel MainDataVM
+        {
+            get
+            {
+                return _mainDataVM;
+            }
+            set
+            {
+                if (_mainDataVM != value)
+                {
+                    _mainDataVM = value;
+                }
+            }
+        }
+
+        private ObservableCollection<UnsplashImage> _likedList;
+        public ObservableCollection<UnsplashImage> LikeList
+        {
+            get
+            {
+                return _likedList;
+            }
+            set
+            {
+                if (_likedList != value)
+                {
+                    _likedList = value;
+                    RaisePropertyChanged(() => LikeList);
+                }
+            }
+        }
+
+        private ObservableCollection<UnsplashImage> _mainList;
+        public ObservableCollection<UnsplashImage> MainList
+        {
+            get
+            {
+                return _mainList;
+            }
+            set
+            {
+                if (_mainList != value)
+                {
+                    _mainList = value;
+                    RaisePropertyChanged(() => MainList);
+                }
+            }
+        }
 
         public bool IsInView { get; set; }
 
@@ -112,7 +166,6 @@ namespace MyerSplash.ViewModel
             }
         }
 
-
         private RelayCommand _goToSettingsCommand;
         public RelayCommand GoToSettingsCommand
         {
@@ -139,25 +192,78 @@ namespace MyerSplash.ViewModel
             }
         }
 
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get
+            {
+                return _selectedIndex;
+            }
+            set
+            {
+                if (_selectedIndex != value)
+                {
+                    _selectedIndex = value;
+                    RaisePropertyChanged(() => SelectedIndex);
+                    if (value == 0)
+                    {
+                        MainList = MainDataVM.DataList;
+                    }
+                    else if (value == 1)
+                    {
+                        MainList = LikeList;
+                    }
+                }
+            }
+        }
+
         public MainViewModel()
         {
-            DataVM = new ImageDataViewModel() { MainVM = this };
+            MainDataVM = new ImageDataViewModel() { MainVM = this };
             ShowFooterLoading = Visibility.Visible;
             ShowNoItemHint = Visibility.Collapsed;
+            SelectedIndex = -1;
+        }
+
+        private async Task RestoreData()
+        {
+            var file =await CachedFilesUtils.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.MainListFileName);
+            if(file!=null)
+            {
+                var list=await SerializerHelper.DeserializeFromJsonByFileName<ObservableCollection<UnsplashImage>>(CachedFileNames.MainListFileName, CachedFilesUtils.GetCachedFileFolder());
+                if(list!=null)
+                {
+                    this.MainList = list;
+                    for(int i=0;i<MainList.Count;i++)
+                    {
+                        var item = MainList[i];
+                        if (i % 2 == 0) item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF2E2E2E").Value);
+                        else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
+                        var task = item.RestoreAsync();
+                    }
+                    this.ShowNoItemHint = Visibility.Collapsed;
+                }
+            }
         }
 
         private async Task Refresh()
         {
             IsRefreshing = true;
-            await DataVM.RefreshAsync();
+            await MainDataVM.RefreshAsync();
             IsRefreshing = false;
 
+            if(this.MainDataVM.DataList.Count>0)
+            {
+                await SerializerHelper.SerializerToJson<ObservableCollection<UnsplashImage>>(this.MainDataVM.DataList, CachedFileNames.MainListFileName, CachedFilesUtils.GetCachedFileFolder());
+                MainList = MainDataVM.DataList;
+            }
+
             var list = new List<string>();
-            foreach(var item in DataVM.DataList)
+            foreach (var item in MainDataVM.DataList)
             {
                 list.Add(item.ListImageCachedFilePath);
             }
-            if(App.AppSettings.EnableTile && list.Count>0)
+            if (App.AppSettings.EnableTile && list.Count > 0)
             {
                 await LiveTileUpdater.UpdateImagesTileAsync(list);
             }
@@ -175,9 +281,10 @@ namespace MyerSplash.ViewModel
 
         public async void OnLoaded()
         {
-            if(IsFirstActived)
+            if (IsFirstActived)
             {
                 IsFirstActived = false;
+                await RestoreData();
                 await Refresh();
             }
         }

@@ -89,25 +89,29 @@
                                 <VisualStateGroup.Transitions>
                                     <VisualTransition GeneratedDuration="0:0:0.25" />
                                 </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Unselected" />
+                                <VisualState x:Name="Unselected">
+                                     <Storyboard>
+                                        <ColorAnimation To="Transparent" Storyboard.TargetName="InnerGrid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" />
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
                                         <ColorAnimation To="{StaticResource ListButtonSelected}" Storyboard.TargetName="InnerGrid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" />
                                         <ColorAnimation To="White" Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="(ContentPresenter.Foreground).(SolidColorBrush.Color)" />
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="SelectedUnfocused">
+                                <!--<VisualState x:Name="SelectedUnfocused">
                                     <Storyboard>
                                         <ColorAnimation To="{ThemeResource ListButtonSelected}" Storyboard.TargetName="InnerGrid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" />
                                         <ColorAnimation To="White" Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="(ContentPresenter.Foreground).(SolidColorBrush.Color)" />
                                     </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="SelectedDisabled">
+                                </VisualState>-->
+                                <!--<VisualState x:Name="SelectedDisabled">
                                     <Storyboard>
                                         <ColorAnimation To="{ThemeResource SystemBaseMediumColor}" Storyboard.TargetName="InnerGrid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" />
                                         <ColorAnimation To="{ThemeResource SystemBaseLowColor}" Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="(ContentPresenter.Foreground).(SolidColorBrush.Color)" />
                                     </Storyboard>
-                                </VisualState>
+                                </VisualState>-->
                                 <VisualState x:Name="SelectedPointerOver">
                                     <Storyboard>
                                         <ColorAnimation To="{ThemeResource ListButtonPointOver}" Storyboard.TargetName="InnerGrid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" />
@@ -121,7 +125,7 @@
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
-                            <VisualStateGroup x:Name="FocusStates">
+                            <!--<VisualStateGroup x:Name="FocusStates">
                                 <VisualState x:Name="Focused">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="FocusVisualWhite" Storyboard.TargetProperty="Opacity" To="1" Duration="0" />
@@ -130,7 +134,7 @@
                                 </VisualState>
                                 <VisualState x:Name="Unfocused" />
                                 <VisualState x:Name="PointerFocused" />
-                            </VisualStateGroup>
+                            </VisualStateGroup>-->
                         </VisualStateManager.VisualStateGroups>
                         <Grid x:Name="InnerGrid" Background="Transparent">
                             <Rectangle x:Name="PressedBackground" Fill="#B2000000" Opacity="0" />

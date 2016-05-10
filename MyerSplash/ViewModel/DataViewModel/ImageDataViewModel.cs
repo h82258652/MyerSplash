@@ -11,11 +11,13 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml;
+using System.Runtime.Serialization;
 
 namespace MyerSplash.ViewModel
 {
     public class ImageDataViewModel : DataViewModelBase<UnsplashImage>
     {
+        [IgnoreDataMember]
         public MainViewModel MainVM { get; set; }
 
         public ImageDataViewModel()
@@ -31,7 +33,7 @@ namespace MyerSplash.ViewModel
         {
             try
             {
-                var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(10000).Token);
+                var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(20000).Token);
                 if (result.IsSuccessful)
                 {
                     var list = UnsplashImage.ParseListFromJson(result.JsonSrc);
@@ -48,7 +50,7 @@ namespace MyerSplash.ViewModel
                 {
                     MainVM.ShowFooterLoading = Visibility.Collapsed;
                     MainVM.IsRefreshing = false;
-                    if (MainVM.DataVM.DataList.Count == 0)
+                    if (MainVM.MainList.Count == 0)
                         MainVM.ShowNoItemHint = Visibility.Visible;
                     else MainVM.ShowNoItemHint = Visibility.Collapsed;
                     ToastService.SendToast("请求失败");
@@ -61,7 +63,7 @@ namespace MyerSplash.ViewModel
                 {
                     MainVM.ShowFooterLoading = Visibility.Collapsed;
                     MainVM.IsRefreshing = false;
-                    if (MainVM.DataVM.DataList.Count == 0)
+                    if (MainVM.MainList.Count == 0)
                         MainVM.ShowNoItemHint = Visibility.Visible;
                     else MainVM.ShowNoItemHint = Visibility.Collapsed;
                     ToastService.SendToast("请求超时");
@@ -85,7 +87,7 @@ namespace MyerSplash.ViewModel
                 if (i % 2 == 0) item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF2E2E2E").Value);
                 else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
 
-                tasks.Add(item.DownloadImgForList());
+                tasks.Add(item.DownloadImgForListAsync());
                 item.MajorColor = new SolidColorBrush(ColorConverter.HexToColor(item.ColorValue).Value);
             }
             await Task.WhenAll(tasks);

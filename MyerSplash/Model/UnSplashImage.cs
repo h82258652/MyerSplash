@@ -9,8 +9,8 @@ using Windows.UI.Xaml.Media.Imaging;
 using System;
 using Windows.Storage;
 using Windows.UI.Xaml.Media;
+using System.Runtime.Serialization;
 using JP.Utils.UI;
-using Windows.UI;
 
 namespace MyerSplash.Model
 {
@@ -29,6 +29,7 @@ namespace MyerSplash.Model
         public string ThumbImageUrl { get; set; }
 
         private BitmapImage _listImageBitmap;
+        [IgnoreDataMember]
         public BitmapImage ListImageBitmap
         {
             get
@@ -48,6 +49,7 @@ namespace MyerSplash.Model
         public string ListImageCachedFilePath { get; set; }
 
         private BitmapImage _largeBitmap;
+        [IgnoreDataMember]
         public BitmapImage LargeBitmap
         {
             get
@@ -65,6 +67,7 @@ namespace MyerSplash.Model
         }
 
         private SolidColorBrush _majorColor;
+        [IgnoreDataMember]
         public SolidColorBrush MajorColor
         {
             get
@@ -82,6 +85,7 @@ namespace MyerSplash.Model
         }
 
         private SolidColorBrush _backColor;
+        [IgnoreDataMember]
         public SolidColorBrush BackColor
         {
             get
@@ -126,7 +130,13 @@ namespace MyerSplash.Model
             
         }
 
-        public async Task DownloadImgForList()
+        public async Task RestoreAsync()
+        {
+            this.MajorColor = new SolidColorBrush(ColorConverter.HexToColor(ColorValue).Value);
+            await DownloadImgForListAsync();
+        }
+
+        public async Task DownloadImgForListAsync()
         {
             var url = GetListImageUrlFromSettings();
             if (string.IsNullOrEmpty(url)) return;
