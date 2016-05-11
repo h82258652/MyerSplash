@@ -22,6 +22,7 @@ namespace MyerSplash.ViewModel
 
         public ImageDataViewModel()
         {
+
         }
 
         protected override void ClickItem(UnsplashImage item)

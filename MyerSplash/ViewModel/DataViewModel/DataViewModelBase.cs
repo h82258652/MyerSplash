@@ -15,7 +15,7 @@ namespace MyerSplash.ViewModel
     public abstract class DataViewModelBase<T> : ViewModelBase
     {
         public static int DEFAULT_PAGE_INDEX => 1;
-        public static uint DEFAULT_PER_PAGE => 20u;
+        public static uint DEFAULT_PER_PAGE { get; set; }= 20u;
 
         private int PageIndex { get; set; } = DEFAULT_PAGE_INDEX;
 
@@ -75,6 +75,7 @@ namespace MyerSplash.ViewModel
             {
                 return Task.Run(() => GetIncrementalListData(PageIndex++));
             });
+            DEFAULT_PER_PAGE = DeviceHelper.IsDesktop ? 20u : 10u;
         }
 
         public async Task<bool> RefreshAsync()

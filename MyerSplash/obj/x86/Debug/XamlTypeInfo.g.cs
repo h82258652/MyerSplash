@@ -156,7 +156,7 @@ namespace MyerSplash.MyerSplash_XamlTypeInfo
 
         private void InitTypeTables()
         {
-            _typeNameTable = new string[26];
+            _typeNameTable = new string[35];
             _typeNameTable[0] = "MyerSplash.ViewModel.ViewModelLocator";
             _typeNameTable[1] = "Object";
             _typeNameTable[2] = "MyerSplash.Common.AppSettings";
@@ -164,27 +164,36 @@ namespace MyerSplash.MyerSplash_XamlTypeInfo
             _typeNameTable[4] = "GalaSoft.MvvmLight.ObservableObject";
             _typeNameTable[5] = "Windows.Storage.ApplicationDataContainer";
             _typeNameTable[6] = "Boolean";
-            _typeNameTable[7] = "MyerSplash.UC.DrawerControl";
-            _typeNameTable[8] = "Windows.UI.Xaml.Controls.UserControl";
-            _typeNameTable[9] = "MyerSplash.UC.HamburgerButton";
-            _typeNameTable[10] = "System.Windows.Input.ICommand";
-            _typeNameTable[11] = "MyerSplash.Common.BindablePage";
-            _typeNameTable[12] = "Windows.UI.Xaml.Controls.Page";
-            _typeNameTable[13] = "JP.Utils.Framework.UIElementTapCommand";
-            _typeNameTable[14] = "Windows.UI.Xaml.DependencyObject";
-            _typeNameTable[15] = "MyerSplashCustomControl.AdaptiveGridView";
-            _typeNameTable[16] = "Windows.UI.Xaml.Controls.GridView";
-            _typeNameTable[17] = "Windows.UI.Xaml.Controls.ItemsControl";
-            _typeNameTable[18] = "Double";
-            _typeNameTable[19] = "JP.Utils.Framework.ScrollViewerStyleChanger";
-            _typeNameTable[20] = "Windows.UI.Xaml.Style";
-            _typeNameTable[21] = "MyerSplash.View.MainPage";
-            _typeNameTable[22] = "Windows.UI.Color";
-            _typeNameTable[23] = "System.ValueType";
-            _typeNameTable[24] = "Byte";
-            _typeNameTable[25] = "Windows.UI.Text.FontWeight";
+            _typeNameTable[7] = "String";
+            _typeNameTable[8] = "Int32";
+            _typeNameTable[9] = "MyerSplash.UC.DrawerControl";
+            _typeNameTable[10] = "Windows.UI.Xaml.Controls.UserControl";
+            _typeNameTable[11] = "MyerSplash.UC.FeatureControl";
+            _typeNameTable[12] = "MyerSplash.UC.HamburgerButton";
+            _typeNameTable[13] = "System.Windows.Input.ICommand";
+            _typeNameTable[14] = "MyerSplashCustomControl.AdaptiveGridView";
+            _typeNameTable[15] = "Windows.UI.Xaml.Controls.GridView";
+            _typeNameTable[16] = "Windows.UI.Xaml.Controls.ItemsControl";
+            _typeNameTable[17] = "Double";
+            _typeNameTable[18] = "JP.Utils.Framework.ScrollViewerStyleChanger";
+            _typeNameTable[19] = "Windows.UI.Xaml.Style";
+            _typeNameTable[20] = "Windows.UI.Xaml.DependencyObject";
+            _typeNameTable[21] = "MyerSplash.UC.ImageListControl";
+            _typeNameTable[22] = "MyerSplash.UC.PhotoDetailControl";
+            _typeNameTable[23] = "MyerSplash.Model.UnsplashImage";
+            _typeNameTable[24] = "Windows.UI.Xaml.Controls.Grid";
+            _typeNameTable[25] = "MyerSplash.Common.BindablePage";
+            _typeNameTable[26] = "Windows.UI.Xaml.Controls.Page";
+            _typeNameTable[27] = "MyerSplash.View.AboutPage";
+            _typeNameTable[28] = "JP.Utils.Framework.UIElementTapCommand";
+            _typeNameTable[29] = "MyerSplash.View.MainPage";
+            _typeNameTable[30] = "Windows.UI.Color";
+            _typeNameTable[31] = "System.ValueType";
+            _typeNameTable[32] = "Byte";
+            _typeNameTable[33] = "Windows.UI.Text.FontWeight";
+            _typeNameTable[34] = "MyerSplash.View.SettingsPage";
 
-            _typeTable = new global::System.Type[26];
+            _typeTable = new global::System.Type[35];
             _typeTable[0] = typeof(global::MyerSplash.ViewModel.ViewModelLocator);
             _typeTable[1] = typeof(global::System.Object);
             _typeTable[2] = typeof(global::MyerSplash.Common.AppSettings);
@@ -192,25 +201,34 @@ namespace MyerSplash.MyerSplash_XamlTypeInfo
             _typeTable[4] = typeof(global::GalaSoft.MvvmLight.ObservableObject);
             _typeTable[5] = typeof(global::Windows.Storage.ApplicationDataContainer);
             _typeTable[6] = typeof(global::System.Boolean);
-            _typeTable[7] = typeof(global::MyerSplash.UC.DrawerControl);
-            _typeTable[8] = typeof(global::Windows.UI.Xaml.Controls.UserControl);
-            _typeTable[9] = typeof(global::MyerSplash.UC.HamburgerButton);
-            _typeTable[10] = typeof(global::System.Windows.Input.ICommand);
-            _typeTable[11] = typeof(global::MyerSplash.Common.BindablePage);
-            _typeTable[12] = typeof(global::Windows.UI.Xaml.Controls.Page);
-            _typeTable[13] = typeof(global::JP.Utils.Framework.UIElementTapCommand);
-            _typeTable[14] = typeof(global::Windows.UI.Xaml.DependencyObject);
-            _typeTable[15] = typeof(global::MyerSplashCustomControl.AdaptiveGridView);
-            _typeTable[16] = typeof(global::Windows.UI.Xaml.Controls.GridView);
-            _typeTable[17] = typeof(global::Windows.UI.Xaml.Controls.ItemsControl);
-            _typeTable[18] = typeof(global::System.Double);
-            _typeTable[19] = typeof(global::JP.Utils.Framework.ScrollViewerStyleChanger);
-            _typeTable[20] = typeof(global::Windows.UI.Xaml.Style);
-            _typeTable[21] = typeof(global::MyerSplash.View.MainPage);
-            _typeTable[22] = typeof(global::Windows.UI.Color);
-            _typeTable[23] = typeof(global::System.ValueType);
-            _typeTable[24] = typeof(global::System.Byte);
-            _typeTable[25] = typeof(global::Windows.UI.Text.FontWeight);
+            _typeTable[7] = typeof(global::System.String);
+            _typeTable[8] = typeof(global::System.Int32);
+            _typeTable[9] = typeof(global::MyerSplash.UC.DrawerControl);
+            _typeTable[10] = typeof(global::Windows.UI.Xaml.Controls.UserControl);
+            _typeTable[11] = typeof(global::MyerSplash.UC.FeatureControl);
+            _typeTable[12] = typeof(global::MyerSplash.UC.HamburgerButton);
+            _typeTable[13] = typeof(global::System.Windows.Input.ICommand);
+            _typeTable[14] = typeof(global::MyerSplashCustomControl.AdaptiveGridView);
+            _typeTable[15] = typeof(global::Windows.UI.Xaml.Controls.GridView);
+            _typeTable[16] = typeof(global::Windows.UI.Xaml.Controls.ItemsControl);
+            _typeTable[17] = typeof(global::System.Double);
+            _typeTable[18] = typeof(global::JP.Utils.Framework.ScrollViewerStyleChanger);
+            _typeTable[19] = typeof(global::Windows.UI.Xaml.Style);
+            _typeTable[20] = typeof(global::Windows.UI.Xaml.DependencyObject);
+            _typeTable[21] = typeof(global::MyerSplash.UC.ImageListControl);
+            _typeTable[22] = typeof(global::MyerSplash.UC.PhotoDetailControl);
+            _typeTable[23] = typeof(global::MyerSplash.Model.UnsplashImage);
+            _typeTable[24] = typeof(global::Windows.UI.Xaml.Controls.Grid);
+            _typeTable[25] = typeof(global::MyerSplash.Common.BindablePage);
+            _typeTable[26] = typeof(global::Windows.UI.Xaml.Controls.Page);
+            _typeTable[27] = typeof(global::MyerSplash.View.AboutPage);
+            _typeTable[28] = typeof(global::JP.Utils.Framework.UIElementTapCommand);
+            _typeTable[29] = typeof(global::MyerSplash.View.MainPage);
+            _typeTable[30] = typeof(global::Windows.UI.Color);
+            _typeTable[31] = typeof(global::System.ValueType);
+            _typeTable[32] = typeof(global::System.Byte);
+            _typeTable[33] = typeof(global::Windows.UI.Text.FontWeight);
+            _typeTable[34] = typeof(global::MyerSplash.View.SettingsPage);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -248,12 +266,18 @@ namespace MyerSplash.MyerSplash_XamlTypeInfo
         private object Activate_0_ViewModelLocator() { return new global::MyerSplash.ViewModel.ViewModelLocator(); }
         private object Activate_2_AppSettings() { return new global::MyerSplash.Common.AppSettings(); }
         private object Activate_4_ObservableObject() { return new global::GalaSoft.MvvmLight.ObservableObject(); }
-        private object Activate_7_DrawerControl() { return new global::MyerSplash.UC.DrawerControl(); }
-        private object Activate_9_HamburgerButton() { return new global::MyerSplash.UC.HamburgerButton(); }
-        private object Activate_11_BindablePage() { return new global::MyerSplash.Common.BindablePage(); }
-        private object Activate_13_UIElementTapCommand() { return new global::JP.Utils.Framework.UIElementTapCommand(); }
-        private object Activate_15_AdaptiveGridView() { return new global::MyerSplashCustomControl.AdaptiveGridView(); }
-        private object Activate_21_MainPage() { return new global::MyerSplash.View.MainPage(); }
+        private object Activate_9_DrawerControl() { return new global::MyerSplash.UC.DrawerControl(); }
+        private object Activate_11_FeatureControl() { return new global::MyerSplash.UC.FeatureControl(); }
+        private object Activate_12_HamburgerButton() { return new global::MyerSplash.UC.HamburgerButton(); }
+        private object Activate_14_AdaptiveGridView() { return new global::MyerSplashCustomControl.AdaptiveGridView(); }
+        private object Activate_21_ImageListControl() { return new global::MyerSplash.UC.ImageListControl(); }
+        private object Activate_22_PhotoDetailControl() { return new global::MyerSplash.UC.PhotoDetailControl(); }
+        private object Activate_23_UnsplashImage() { return new global::MyerSplash.Model.UnsplashImage(); }
+        private object Activate_25_BindablePage() { return new global::MyerSplash.Common.BindablePage(); }
+        private object Activate_27_AboutPage() { return new global::MyerSplash.View.AboutPage(); }
+        private object Activate_28_UIElementTapCommand() { return new global::JP.Utils.Framework.UIElementTapCommand(); }
+        private object Activate_29_MainPage() { return new global::MyerSplash.View.MainPage(); }
+        private object Activate_34_SettingsPage() { return new global::MyerSplash.View.SettingsPage(); }
 
         private global::Windows.UI.Xaml.Markup.IXamlType CreateXamlType(int typeIndex)
         {
@@ -280,6 +304,10 @@ namespace MyerSplash.MyerSplash_XamlTypeInfo
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("GalaSoft.MvvmLight.ViewModelBase"));
                 userType.Activator = Activate_2_AppSettings;
                 userType.AddMemberName("LocalSettings");
+                userType.AddMemberName("EnableTile");
+                userType.AddMemberName("SaveFolderPath");
+                userType.AddMemberName("LoadQuality");
+                userType.AddMemberName("SaveQuality");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
@@ -306,93 +334,142 @@ namespace MyerSplash.MyerSplash_XamlTypeInfo
                 xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 7:   //  MyerSplash.UC.DrawerControl
+            case 7:   //  String
+                xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 8:   //  Int32
+                xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 9:   //  MyerSplash.UC.DrawerControl
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
-                userType.Activator = Activate_7_DrawerControl;
+                userType.Activator = Activate_9_DrawerControl;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 8:   //  Windows.UI.Xaml.Controls.UserControl
+            case 10:   //  Windows.UI.Xaml.Controls.UserControl
                 xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 9:   //  MyerSplash.UC.HamburgerButton
+            case 11:   //  MyerSplash.UC.FeatureControl
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
-                userType.Activator = Activate_9_HamburgerButton;
+                userType.Activator = Activate_11_FeatureControl;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 12:   //  MyerSplash.UC.HamburgerButton
+                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
+                userType.Activator = Activate_12_HamburgerButton;
                 userType.AddMemberName("Command");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 10:   //  System.Windows.Input.ICommand
+            case 13:   //  System.Windows.Input.ICommand
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, null);
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 11:   //  MyerSplash.Common.BindablePage
-                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_11_BindablePage;
-                userType.SetIsLocalType();
-                xamlType = userType;
-                break;
-
-            case 12:   //  Windows.UI.Xaml.Controls.Page
-                xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 13:   //  JP.Utils.Framework.UIElementTapCommand
-                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.Activator = Activate_13_UIElementTapCommand;
-                userType.AddMemberName("ItemTapCommand");
-                xamlType = userType;
-                break;
-
-            case 14:   //  Windows.UI.Xaml.DependencyObject
-                xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 15:   //  MyerSplashCustomControl.AdaptiveGridView
+            case 14:   //  MyerSplashCustomControl.AdaptiveGridView
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.GridView"));
-                userType.Activator = Activate_15_AdaptiveGridView;
+                userType.Activator = Activate_14_AdaptiveGridView;
                 userType.AddMemberName("MinItemHeight");
                 userType.AddMemberName("MinItemWidth");
                 xamlType = userType;
                 break;
 
-            case 16:   //  Windows.UI.Xaml.Controls.GridView
+            case 15:   //  Windows.UI.Xaml.Controls.GridView
                 xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 17:   //  Windows.UI.Xaml.Controls.ItemsControl
+            case 16:   //  Windows.UI.Xaml.Controls.ItemsControl
                 xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 18:   //  Double
+            case 17:   //  Double
                 xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 19:   //  JP.Utils.Framework.ScrollViewerStyleChanger
+            case 18:   //  JP.Utils.Framework.ScrollViewerStyleChanger
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
                 userType.AddMemberName("Style");
                 xamlType = userType;
                 break;
 
-            case 20:   //  Windows.UI.Xaml.Style
+            case 19:   //  Windows.UI.Xaml.Style
                 xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 21:   //  MyerSplash.View.MainPage
+            case 20:   //  Windows.UI.Xaml.DependencyObject
+                xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 21:   //  MyerSplash.UC.ImageListControl
+                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
+                userType.Activator = Activate_21_ImageListControl;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 22:   //  MyerSplash.UC.PhotoDetailControl
+                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
+                userType.Activator = Activate_22_PhotoDetailControl;
+                userType.AddMemberName("UnsplashImage");
+                userType.AddMemberName("ContentGrid");
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 23:   //  MyerSplash.Model.UnsplashImage
+                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("GalaSoft.MvvmLight.ViewModelBase"));
+                userType.SetIsReturnTypeStub();
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 24:   //  Windows.UI.Xaml.Controls.Grid
+                xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 25:   //  MyerSplash.Common.BindablePage
+                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
+                userType.Activator = Activate_25_BindablePage;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 26:   //  Windows.UI.Xaml.Controls.Page
+                xamlType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 27:   //  MyerSplash.View.AboutPage
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("MyerSplash.Common.BindablePage"));
-                userType.Activator = Activate_21_MainPage;
+                userType.Activator = Activate_27_AboutPage;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 28:   //  JP.Utils.Framework.UIElementTapCommand
+                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_28_UIElementTapCommand;
+                userType.AddMemberName("ItemTapCommand");
+                xamlType = userType;
+                break;
+
+            case 29:   //  MyerSplash.View.MainPage
+                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("MyerSplash.Common.BindablePage"));
+                userType.Activator = Activate_29_MainPage;
                 userType.AddMemberName("IsLoading");
                 userType.AddMemberName("DrawerOpended");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 22:   //  Windows.UI.Color
+            case 30:   //  Windows.UI.Color
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
                 userType.AddMemberName("A");
                 userType.AddMemberName("B");
@@ -401,19 +478,26 @@ namespace MyerSplash.MyerSplash_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 23:   //  System.ValueType
+            case 31:   //  System.ValueType
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
                 xamlType = userType;
                 break;
 
-            case 24:   //  Byte
+            case 32:   //  Byte
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 25:   //  Windows.UI.Text.FontWeight
+            case 33:   //  Windows.UI.Text.FontWeight
                 userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
+                xamlType = userType;
+                break;
+
+            case 34:   //  MyerSplash.View.SettingsPage
+                userType = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("MyerSplash.Common.BindablePage"));
+                userType.Activator = Activate_34_SettingsPage;
+                userType.SetIsLocalType();
                 xamlType = userType;
                 break;
             }
@@ -487,113 +571,168 @@ namespace MyerSplash.MyerSplash_XamlTypeInfo
             var that = (global::MyerSplash.Common.AppSettings)instance;
             that.LocalSettings = (global::Windows.Storage.ApplicationDataContainer)Value;
         }
-        private object get_1_ViewModelBase_IsInDesignMode(object instance)
+        private object get_1_AppSettings_EnableTile(object instance)
+        {
+            var that = (global::MyerSplash.Common.AppSettings)instance;
+            return that.EnableTile;
+        }
+        private void set_1_AppSettings_EnableTile(object instance, object Value)
+        {
+            var that = (global::MyerSplash.Common.AppSettings)instance;
+            that.EnableTile = (global::System.Boolean)Value;
+        }
+        private object get_2_AppSettings_SaveFolderPath(object instance)
+        {
+            var that = (global::MyerSplash.Common.AppSettings)instance;
+            return that.SaveFolderPath;
+        }
+        private void set_2_AppSettings_SaveFolderPath(object instance, object Value)
+        {
+            var that = (global::MyerSplash.Common.AppSettings)instance;
+            that.SaveFolderPath = (global::System.String)Value;
+        }
+        private object get_3_AppSettings_LoadQuality(object instance)
+        {
+            var that = (global::MyerSplash.Common.AppSettings)instance;
+            return that.LoadQuality;
+        }
+        private void set_3_AppSettings_LoadQuality(object instance, object Value)
+        {
+            var that = (global::MyerSplash.Common.AppSettings)instance;
+            that.LoadQuality = (global::System.Int32)Value;
+        }
+        private object get_4_AppSettings_SaveQuality(object instance)
+        {
+            var that = (global::MyerSplash.Common.AppSettings)instance;
+            return that.SaveQuality;
+        }
+        private void set_4_AppSettings_SaveQuality(object instance, object Value)
+        {
+            var that = (global::MyerSplash.Common.AppSettings)instance;
+            that.SaveQuality = (global::System.Int32)Value;
+        }
+        private object get_5_ViewModelBase_IsInDesignMode(object instance)
         {
             var that = (global::GalaSoft.MvvmLight.ViewModelBase)instance;
             return that.IsInDesignMode;
         }
-        private object get_2_HamburgerButton_Command(object instance)
+        private object get_6_HamburgerButton_Command(object instance)
         {
             var that = (global::MyerSplash.UC.HamburgerButton)instance;
             return that.Command;
         }
-        private void set_2_HamburgerButton_Command(object instance, object Value)
+        private void set_6_HamburgerButton_Command(object instance, object Value)
         {
             var that = (global::MyerSplash.UC.HamburgerButton)instance;
             that.Command = (global::System.Windows.Input.ICommand)Value;
         }
-        private object get_3_UIElementTapCommand_ItemTapCommand(object instance)
-        {
-            return global::JP.Utils.Framework.UIElementTapCommand.GetItemTapCommand((global::Windows.UI.Xaml.DependencyObject)instance);
-        }
-        private void set_3_UIElementTapCommand_ItemTapCommand(object instance, object Value)
-        {
-            global::JP.Utils.Framework.UIElementTapCommand.SetItemTapCommand((global::Windows.UI.Xaml.DependencyObject)instance, (global::System.Windows.Input.ICommand)Value);
-        }
-        private object get_4_AdaptiveGridView_MinItemHeight(object instance)
+        private object get_7_AdaptiveGridView_MinItemHeight(object instance)
         {
             var that = (global::MyerSplashCustomControl.AdaptiveGridView)instance;
             return that.MinItemHeight;
         }
-        private void set_4_AdaptiveGridView_MinItemHeight(object instance, object Value)
+        private void set_7_AdaptiveGridView_MinItemHeight(object instance, object Value)
         {
             var that = (global::MyerSplashCustomControl.AdaptiveGridView)instance;
             that.MinItemHeight = (global::System.Double)Value;
         }
-        private object get_5_AdaptiveGridView_MinItemWidth(object instance)
+        private object get_8_AdaptiveGridView_MinItemWidth(object instance)
         {
             var that = (global::MyerSplashCustomControl.AdaptiveGridView)instance;
             return that.MinItemWidth;
         }
-        private void set_5_AdaptiveGridView_MinItemWidth(object instance, object Value)
+        private void set_8_AdaptiveGridView_MinItemWidth(object instance, object Value)
         {
             var that = (global::MyerSplashCustomControl.AdaptiveGridView)instance;
             that.MinItemWidth = (global::System.Double)Value;
         }
-        private object get_6_ScrollViewerStyleChanger_Style(object instance)
+        private object get_9_ScrollViewerStyleChanger_Style(object instance)
         {
             return global::JP.Utils.Framework.ScrollViewerStyleChanger.GetStyle((global::Windows.UI.Xaml.DependencyObject)instance);
         }
-        private void set_6_ScrollViewerStyleChanger_Style(object instance, object Value)
+        private void set_9_ScrollViewerStyleChanger_Style(object instance, object Value)
         {
             global::JP.Utils.Framework.ScrollViewerStyleChanger.SetStyle((global::Windows.UI.Xaml.DependencyObject)instance, (global::Windows.UI.Xaml.Style)Value);
         }
-        private object get_7_MainPage_IsLoading(object instance)
+        private object get_10_PhotoDetailControl_UnsplashImage(object instance)
+        {
+            var that = (global::MyerSplash.UC.PhotoDetailControl)instance;
+            return that.UnsplashImage;
+        }
+        private void set_10_PhotoDetailControl_UnsplashImage(object instance, object Value)
+        {
+            var that = (global::MyerSplash.UC.PhotoDetailControl)instance;
+            that.UnsplashImage = (global::MyerSplash.Model.UnsplashImage)Value;
+        }
+        private object get_11_PhotoDetailControl_ContentGrid(object instance)
+        {
+            var that = (global::MyerSplash.UC.PhotoDetailControl)instance;
+            return that.ContentGrid;
+        }
+        private object get_12_UIElementTapCommand_ItemTapCommand(object instance)
+        {
+            return global::JP.Utils.Framework.UIElementTapCommand.GetItemTapCommand((global::Windows.UI.Xaml.DependencyObject)instance);
+        }
+        private void set_12_UIElementTapCommand_ItemTapCommand(object instance, object Value)
+        {
+            global::JP.Utils.Framework.UIElementTapCommand.SetItemTapCommand((global::Windows.UI.Xaml.DependencyObject)instance, (global::System.Windows.Input.ICommand)Value);
+        }
+        private object get_13_MainPage_IsLoading(object instance)
         {
             var that = (global::MyerSplash.View.MainPage)instance;
             return that.IsLoading;
         }
-        private void set_7_MainPage_IsLoading(object instance, object Value)
+        private void set_13_MainPage_IsLoading(object instance, object Value)
         {
             var that = (global::MyerSplash.View.MainPage)instance;
             that.IsLoading = (global::System.Boolean)Value;
         }
-        private object get_8_MainPage_DrawerOpended(object instance)
+        private object get_14_MainPage_DrawerOpended(object instance)
         {
             var that = (global::MyerSplash.View.MainPage)instance;
             return that.DrawerOpended;
         }
-        private void set_8_MainPage_DrawerOpended(object instance, object Value)
+        private void set_14_MainPage_DrawerOpended(object instance, object Value)
         {
             var that = (global::MyerSplash.View.MainPage)instance;
             that.DrawerOpended = (global::System.Boolean)Value;
         }
-        private object get_9_Color_A(object instance)
+        private object get_15_Color_A(object instance)
         {
             var that = (global::Windows.UI.Color)instance;
             return that.A;
         }
-        private void set_9_Color_A(object instance, object Value)
+        private void set_15_Color_A(object instance, object Value)
         {
             var that = (global::Windows.UI.Color)instance;
             that.A = (global::System.Byte)Value;
         }
-        private object get_10_Color_B(object instance)
+        private object get_16_Color_B(object instance)
         {
             var that = (global::Windows.UI.Color)instance;
             return that.B;
         }
-        private void set_10_Color_B(object instance, object Value)
+        private void set_16_Color_B(object instance, object Value)
         {
             var that = (global::Windows.UI.Color)instance;
             that.B = (global::System.Byte)Value;
         }
-        private object get_11_Color_G(object instance)
+        private object get_17_Color_G(object instance)
         {
             var that = (global::Windows.UI.Color)instance;
             return that.G;
         }
-        private void set_11_Color_G(object instance, object Value)
+        private void set_17_Color_G(object instance, object Value)
         {
             var that = (global::Windows.UI.Color)instance;
             that.G = (global::System.Byte)Value;
         }
-        private object get_12_Color_R(object instance)
+        private object get_18_Color_R(object instance)
         {
             var that = (global::Windows.UI.Color)instance;
             return that.R;
         }
-        private void set_12_Color_R(object instance, object Value)
+        private void set_18_Color_R(object instance, object Value)
         {
             var that = (global::Windows.UI.Color)instance;
             that.R = (global::System.Byte)Value;
@@ -612,85 +751,122 @@ namespace MyerSplash.MyerSplash_XamlTypeInfo
                 xamlMember.Getter = get_0_AppSettings_LocalSettings;
                 xamlMember.Setter = set_0_AppSettings_LocalSettings;
                 break;
+            case "MyerSplash.Common.AppSettings.EnableTile":
+                userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplash.Common.AppSettings");
+                xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "EnableTile", "Boolean");
+                xamlMember.Getter = get_1_AppSettings_EnableTile;
+                xamlMember.Setter = set_1_AppSettings_EnableTile;
+                break;
+            case "MyerSplash.Common.AppSettings.SaveFolderPath":
+                userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplash.Common.AppSettings");
+                xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "SaveFolderPath", "String");
+                xamlMember.Getter = get_2_AppSettings_SaveFolderPath;
+                xamlMember.Setter = set_2_AppSettings_SaveFolderPath;
+                break;
+            case "MyerSplash.Common.AppSettings.LoadQuality":
+                userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplash.Common.AppSettings");
+                xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "LoadQuality", "Int32");
+                xamlMember.Getter = get_3_AppSettings_LoadQuality;
+                xamlMember.Setter = set_3_AppSettings_LoadQuality;
+                break;
+            case "MyerSplash.Common.AppSettings.SaveQuality":
+                userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplash.Common.AppSettings");
+                xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "SaveQuality", "Int32");
+                xamlMember.Getter = get_4_AppSettings_SaveQuality;
+                xamlMember.Setter = set_4_AppSettings_SaveQuality;
+                break;
             case "GalaSoft.MvvmLight.ViewModelBase.IsInDesignMode":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("GalaSoft.MvvmLight.ViewModelBase");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "IsInDesignMode", "Boolean");
-                xamlMember.Getter = get_1_ViewModelBase_IsInDesignMode;
+                xamlMember.Getter = get_5_ViewModelBase_IsInDesignMode;
                 xamlMember.SetIsReadOnly();
                 break;
             case "MyerSplash.UC.HamburgerButton.Command":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplash.UC.HamburgerButton");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "Command", "System.Windows.Input.ICommand");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_2_HamburgerButton_Command;
-                xamlMember.Setter = set_2_HamburgerButton_Command;
-                break;
-            case "JP.Utils.Framework.UIElementTapCommand.ItemTapCommand":
-                userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("JP.Utils.Framework.UIElementTapCommand");
-                xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "ItemTapCommand", "System.Windows.Input.ICommand");
-                xamlMember.SetTargetTypeName("Windows.UI.Xaml.DependencyObject");
-                xamlMember.SetIsAttachable();
-                xamlMember.Getter = get_3_UIElementTapCommand_ItemTapCommand;
-                xamlMember.Setter = set_3_UIElementTapCommand_ItemTapCommand;
+                xamlMember.Getter = get_6_HamburgerButton_Command;
+                xamlMember.Setter = set_6_HamburgerButton_Command;
                 break;
             case "MyerSplashCustomControl.AdaptiveGridView.MinItemHeight":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplashCustomControl.AdaptiveGridView");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "MinItemHeight", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_4_AdaptiveGridView_MinItemHeight;
-                xamlMember.Setter = set_4_AdaptiveGridView_MinItemHeight;
+                xamlMember.Getter = get_7_AdaptiveGridView_MinItemHeight;
+                xamlMember.Setter = set_7_AdaptiveGridView_MinItemHeight;
                 break;
             case "MyerSplashCustomControl.AdaptiveGridView.MinItemWidth":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplashCustomControl.AdaptiveGridView");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "MinItemWidth", "Double");
-                xamlMember.Getter = get_5_AdaptiveGridView_MinItemWidth;
-                xamlMember.Setter = set_5_AdaptiveGridView_MinItemWidth;
+                xamlMember.Getter = get_8_AdaptiveGridView_MinItemWidth;
+                xamlMember.Setter = set_8_AdaptiveGridView_MinItemWidth;
                 break;
             case "JP.Utils.Framework.ScrollViewerStyleChanger.Style":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("JP.Utils.Framework.ScrollViewerStyleChanger");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "Style", "Windows.UI.Xaml.Style");
                 xamlMember.SetTargetTypeName("Windows.UI.Xaml.DependencyObject");
                 xamlMember.SetIsAttachable();
-                xamlMember.Getter = get_6_ScrollViewerStyleChanger_Style;
-                xamlMember.Setter = set_6_ScrollViewerStyleChanger_Style;
+                xamlMember.Getter = get_9_ScrollViewerStyleChanger_Style;
+                xamlMember.Setter = set_9_ScrollViewerStyleChanger_Style;
+                break;
+            case "MyerSplash.UC.PhotoDetailControl.UnsplashImage":
+                userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplash.UC.PhotoDetailControl");
+                xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "UnsplashImage", "MyerSplash.Model.UnsplashImage");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_10_PhotoDetailControl_UnsplashImage;
+                xamlMember.Setter = set_10_PhotoDetailControl_UnsplashImage;
+                break;
+            case "MyerSplash.UC.PhotoDetailControl.ContentGrid":
+                userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplash.UC.PhotoDetailControl");
+                xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "ContentGrid", "Windows.UI.Xaml.Controls.Grid");
+                xamlMember.Getter = get_11_PhotoDetailControl_ContentGrid;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "JP.Utils.Framework.UIElementTapCommand.ItemTapCommand":
+                userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("JP.Utils.Framework.UIElementTapCommand");
+                xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "ItemTapCommand", "System.Windows.Input.ICommand");
+                xamlMember.SetTargetTypeName("Windows.UI.Xaml.DependencyObject");
+                xamlMember.SetIsAttachable();
+                xamlMember.Getter = get_12_UIElementTapCommand_ItemTapCommand;
+                xamlMember.Setter = set_12_UIElementTapCommand_ItemTapCommand;
                 break;
             case "MyerSplash.View.MainPage.IsLoading":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplash.View.MainPage");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "IsLoading", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_7_MainPage_IsLoading;
-                xamlMember.Setter = set_7_MainPage_IsLoading;
+                xamlMember.Getter = get_13_MainPage_IsLoading;
+                xamlMember.Setter = set_13_MainPage_IsLoading;
                 break;
             case "MyerSplash.View.MainPage.DrawerOpended":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("MyerSplash.View.MainPage");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "DrawerOpended", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_8_MainPage_DrawerOpended;
-                xamlMember.Setter = set_8_MainPage_DrawerOpended;
+                xamlMember.Getter = get_14_MainPage_DrawerOpended;
+                xamlMember.Setter = set_14_MainPage_DrawerOpended;
                 break;
             case "Windows.UI.Color.A":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows.UI.Color");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "A", "Byte");
-                xamlMember.Getter = get_9_Color_A;
-                xamlMember.Setter = set_9_Color_A;
+                xamlMember.Getter = get_15_Color_A;
+                xamlMember.Setter = set_15_Color_A;
                 break;
             case "Windows.UI.Color.B":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows.UI.Color");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "B", "Byte");
-                xamlMember.Getter = get_10_Color_B;
-                xamlMember.Setter = set_10_Color_B;
+                xamlMember.Getter = get_16_Color_B;
+                xamlMember.Setter = set_16_Color_B;
                 break;
             case "Windows.UI.Color.G":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows.UI.Color");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "G", "Byte");
-                xamlMember.Getter = get_11_Color_G;
-                xamlMember.Setter = set_11_Color_G;
+                xamlMember.Getter = get_17_Color_G;
+                xamlMember.Setter = set_17_Color_G;
                 break;
             case "Windows.UI.Color.R":
                 userType = (global::MyerSplash.MyerSplash_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows.UI.Color");
                 xamlMember = new global::MyerSplash.MyerSplash_XamlTypeInfo.XamlMember(this, "R", "Byte");
-                xamlMember.Getter = get_12_Color_R;
-                xamlMember.Setter = set_12_Color_R;
+                xamlMember.Getter = get_18_Color_R;
+                xamlMember.Setter = set_18_Color_R;
                 break;
             }
             return xamlMember;
