@@ -17,7 +17,7 @@
             <TextBlock FontSize="20" Text="ABOUT" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="10,0,0,0"/>
         </Grid>
         <Grid Grid.Row="1">
-            <StackPanel MaxWidth="300" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,50">
+            <StackPanel MaxWidth="300" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0">
                 <Image Width="200" Source="ms-appx:///Assets/Icon/Logo_trans.png"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0">
                     <TextBlock Text="Myer" FontSize="25" Foreground="White"/>

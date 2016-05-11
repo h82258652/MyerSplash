@@ -13,6 +13,7 @@ using Windows.UI.Xaml;
 using System;
 using Windows.UI.Xaml.Media;
 using JP.Utils.UI;
+using MyerSplashShared.API;
 
 namespace MyerSplash.ViewModel
 {
@@ -30,6 +31,7 @@ namespace MyerSplash.ViewModel
                 if (_mainDataVM != value)
                 {
                     _mainDataVM = value;
+                    RaisePropertyChanged(() => MainDataVM);
                 }
             }
         }
@@ -222,21 +224,22 @@ namespace MyerSplash.ViewModel
             MainDataVM = new ImageDataViewModel() { MainVM = this };
             ShowFooterLoading = Visibility.Visible;
             ShowNoItemHint = Visibility.Collapsed;
-            SelectedIndex = -1;
+            SelectedIndex = 0;
         }
 
         private async Task RestoreData()
         {
-            var file =await CachedFilesUtils.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.MainListFileName);
+            var file =await CacheUtil.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.MainListFileName);
             if(file!=null)
             {
-                var list=await SerializerHelper.DeserializeFromJsonByFileName<ObservableCollection<UnsplashImage>>(CachedFileNames.MainListFileName, CachedFilesUtils.GetCachedFileFolder());
-                if(list!=null)
+                var vm=await SerializerHelper.DeserializeFromJsonByFileName<ImageDataViewModel>(CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
+                if(vm!=null)
                 {
-                    this.MainList = list;
-                    for(int i=0;i<MainList.Count;i++)
+                    this.MainDataVM = vm;
+                    this.MainList = MainDataVM.DataList;
+                    for(int i=0;i< MainDataVM.DataList.Count;i++)
                     {
-                        var item = MainList[i];
+                        var item = MainDataVM.DataList[i];
                         if (i % 2 == 0) item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF2E2E2E").Value);
                         else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
                         var task = item.RestoreAsync();
@@ -254,7 +257,7 @@ namespace MyerSplash.ViewModel
 
             if(this.MainDataVM.DataList.Count>0)
             {
-                await SerializerHelper.SerializerToJson<ObservableCollection<UnsplashImage>>(this.MainDataVM.DataList, CachedFileNames.MainListFileName, CachedFilesUtils.GetCachedFileFolder());
+                await SerializerHelper.SerializerToJson<ImageDataViewModel>(this.MainDataVM, CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
                 MainList = MainDataVM.DataList;
             }
 
@@ -285,7 +288,7 @@ namespace MyerSplash.ViewModel
             {
                 IsFirstActived = false;
                 await RestoreData();
-                await Refresh();
+                //await Refresh();
             }
         }
     }

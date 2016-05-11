@@ -320,7 +320,7 @@
                     </Button>
                 </Grid>-->
                 <TextBlock Text="OTHER" Foreground="{StaticResource MyerSplashThemeColor}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,20,0,0" FontSize="20" FontWeight="Bold"/>
-                <Button Style="{StaticResource ButtonCommonStyle}" Margin="10,10,10,0" HorizontalAlignment="Stretch">
+                <Button Command="{x:Bind SettingsVM.ClearCacheCommand,Mode=OneWay}" Style="{StaticResource ButtonCommonStyle}" Margin="10,10,10,0" HorizontalAlignment="Stretch">
                     <Border Background="{StaticResource MyerSplashThemeColor}">
                         <TextBlock Margin="10" Text="Clear up cache" HorizontalAlignment="Center"/>
                     </Border>

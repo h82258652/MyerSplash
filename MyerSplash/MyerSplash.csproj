@@ -108,7 +108,6 @@
     <Compile Include="Common\AppSettings.cs" />
     <Compile Include="Common\BindablePage.cs" />
     <Compile Include="Common\CachedFileNames.cs" />
-    <Compile Include="Common\CachedFilesUtils.cs" />
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="LiveTile\LiveTileUpdater.cs" />
     <Compile Include="UC\FeatureControl.xaml.cs">
@@ -136,6 +135,7 @@
     </Compile>
     <Compile Include="ViewModel\DataViewModel\ImageDataViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>

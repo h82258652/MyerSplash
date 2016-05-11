@@ -24,7 +24,7 @@ namespace MyerSplashShared.API
 
         public async Task CleanUpAsync()
         {
-            var tempFolder = ApplicationData.Current.TemporaryFolder;
+            var tempFolder = GetCachedFileFolder();
             var items = await tempFolder.GetItemsAsync();
             foreach(var item in items)
             {
@@ -42,7 +42,7 @@ namespace MyerSplashShared.API
             }
             using (var stream = await APIHelper.GetIRandomAccessStreamFromUrlAsync(url))
             {
-                var newFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync("plant.jpg", CreationCollisionOption.GenerateUniqueName);
+                var newFile = await GetTempFolder().CreateFileAsync("plant.jpg", CreationCollisionOption.GenerateUniqueName);
                 var bytes = new byte[stream.AsStream().Length];
                 await stream.AsStream().ReadAsync(bytes, 0, (int)stream.AsStream().Length);
                 await FileIO.WriteBytesAsync(newFile, bytes);
@@ -55,13 +55,13 @@ namespace MyerSplashShared.API
 
         public async Task SaveAsync()
         {
-            var tempFolder = ApplicationData.Current.LocalCacheFolder;
+            var tempFolder = GetCachedFileFolder();
             await SerializerHelper.SerializerToJson<Dictionary<string, string>>(CachedFiles, "CachedFiles", tempFolder, true);
         }
 
         public async Task LoadAsync()
         {
-            var tempFolder = ApplicationData.Current.LocalCacheFolder;
+            var tempFolder = GetCachedFileFolder();
             this.CachedFiles = await SerializerHelper.DeserializeFromJsonByFileName<Dictionary<string, string>>("CachedFiles", tempFolder);
             if(this.CachedFiles==null)
             {
@@ -76,6 +76,16 @@ namespace MyerSplashShared.API
                 return await StorageFile.GetFileFromPathAsync(CachedFiles[url]);
             }
             return null;
+        }
+
+        public static StorageFolder GetCachedFileFolder()
+        {
+            return ApplicationData.Current.LocalFolder;
+        }
+
+        public static StorageFolder GetTempFolder()
+        {
+            return ApplicationData.Current.TemporaryFolder;
         }
     }
 }

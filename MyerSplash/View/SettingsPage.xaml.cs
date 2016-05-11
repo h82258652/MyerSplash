@@ -1,4 +1,5 @@
 ﻿using MyerSplash.Common;
+using MyerSplash.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,9 +19,12 @@ namespace MyerSplash.View
 {
     public sealed partial class SettingsPage : BindablePage
     {
+        private SettingsViewModel SettingsVM { get; set; }
+
         public SettingsPage()
         {
             this.InitializeComponent();
+            this.DataContext = SettingsVM = new SettingsViewModel();
         }
     }
 }
