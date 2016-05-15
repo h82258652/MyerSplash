@@ -261,7 +261,7 @@ namespace MyerSplash.ViewModel
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;
 
-            if(this.MainDataVM.DataList.Count>0)
+            if(this.MainDataVM.DataList?.Count>0)
             {
                 await SerializerHelper.SerializerToJson<ImageDataViewModel>(this.MainDataVM, CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
                 if(MainList.ToList().FirstOrDefault()?.ID!=MainDataVM.DataList.FirstOrDefault()?.ID)

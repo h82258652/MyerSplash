@@ -23,6 +23,7 @@
                 IsItemClickEnabled="True"
                 ItemClick="ImageGridView_ItemClick"
                 ShowsScrollingPlaceholders="False"
+                IncrementalLoadingTrigger="Edge"
                 ContainerContentChanging="AdaptiveGridView_ContainerContentChanging"
                 ItemContainerTransitions="{x:Null}"
                 attach:ScrollViewerStyleChanger.Style="{StaticResource ScrollViewerCommonStyle}"

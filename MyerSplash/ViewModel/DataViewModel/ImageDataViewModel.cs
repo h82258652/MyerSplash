@@ -64,7 +64,7 @@ namespace MyerSplash.ViewModel
                 {
                     MainVM.ShowFooterLoading = Visibility.Collapsed;
                     MainVM.IsRefreshing = false;
-                    if (MainVM.MainList.Count == 0)
+                    if (MainVM.MainList?.Count == 0)
                         MainVM.ShowNoItemHint = Visibility.Visible;
                     else MainVM.ShowNoItemHint = Visibility.Collapsed;
                     ToastService.SendToast("请求超时");
