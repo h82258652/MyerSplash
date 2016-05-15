@@ -17,9 +17,9 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="1" x:Name="InfoPlaceHolderGrid" SizeChanged="InfoPlaceHolderGrid_SizeChanged">
                 <Grid x:Name="InfoGrid" Grid.Row="1">
-                    <StackPanel Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <StackPanel Margin="20,20,150,20" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <TextBlock x:Name="ByTB" Text="by" Foreground="#CCFFFFFF" FontSize="12"/>
-                        <TextBlock x:Name="NameTB" Text="JuniperPhoton" Foreground="#CCFFFFFF" FontSize="20" FontWeight="Bold"/>
+                        <TextBlock x:Name="NameTB" TextTrimming="CharacterEllipsis" Text="JuniperPhoton" Foreground="#CCFFFFFF" FontSize="20" FontWeight="Bold"/>
                     </StackPanel>
                     <Button x:Name="CopyUlrBtn" Click="CopyUlrBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,22" Grid.RowSpan="2" Background="{x:Null}">
                         <Grid>

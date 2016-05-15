@@ -93,6 +93,8 @@ namespace MyerSplash.UC
             _detailGridVisual.Opacity = 0;
             _okVisual.Offset = new Vector3(100f, 0f, 0f);
             _downloadingHintGridVisual.Offset = new Vector3(100f, 0f, 0f);
+
+            StartLoadingAnimation();
         }
 
         private void MaskBorder_Tapped(object sender, TappedRoutedEventArgs e)
@@ -123,10 +125,13 @@ namespace MyerSplash.UC
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
             _detailGridVisual.StartAnimation("Opacity", fadeAnimation);
 
-            ToggleDownloadBtnAnimation(true);
-            ToggleLikeBtnAnimation(true);
+            if(show)
+            {
+                ToggleDownloadBtnAnimation(true);
+                ToggleLikeBtnAnimation(true);
+                ToggleInfoGridAnimation(true);
+            }
 
-            ToggleInfoGridAnimation(true);
             batch.Completed += (sender, e) =>
             {
                 if (!show)
@@ -184,8 +189,6 @@ namespace MyerSplash.UC
             offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 200 : 0);
 
             _downloadingHintGridVisual.StartAnimation("Offset", offsetAnimation);
-
-            StartLoadingAnimation();
         }
 
         private void ToggleOkBtnAnimation(bool show)
@@ -255,7 +258,7 @@ namespace MyerSplash.UC
 
         private void LikeBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            ToastService.SendToast("Still working on this. :D", 2000);
         }
 
         private void CopyUlrBtn_Click(object sender, RoutedEventArgs e)

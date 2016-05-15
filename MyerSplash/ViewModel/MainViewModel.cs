@@ -209,12 +209,14 @@ namespace MyerSplash.ViewModel
                 {
                     _selectedIndex = value;
                     RaisePropertyChanged(() => SelectedIndex);
+                    DrawerOpened = false;
                     if (value == 0)
                     {
                         MainList = MainDataVM.DataList;
                     }
                     else if (value == 1)
                     {
+                        ToastService.SendToast("Still Woring on this :D",2000);
                         MainList = LikeList;
                     }
                 }
@@ -227,6 +229,7 @@ namespace MyerSplash.ViewModel
             ShowFooterLoading = Visibility.Visible;
             ShowNoItemHint = Visibility.Collapsed;
             SelectedIndex = 0;
+            LikeList = new ObservableCollection<UnsplashImage>();
         }
 
         private async Task RestoreData()

@@ -107,6 +107,12 @@ namespace MyerSplashCustomControl
             var task = ts.ShowAsync();
         }
 
+        public static void SendToast(string text, int timeInMill)
+        {
+            ToastService ts = new ToastService(text, TimeSpan.FromMilliseconds(timeInMill));
+            var task = ts.ShowAsync();
+        }
+
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var task = UpdateSize();

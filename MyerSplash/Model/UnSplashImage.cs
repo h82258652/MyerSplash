@@ -180,7 +180,7 @@ namespace MyerSplash.Model
             var url = GetSaveImageUrlFromSettings();
             if (string.IsNullOrEmpty(url)) return;
             var folder =await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
-            using (var stream = await HttpRequestSender.GetIRandomAccessStreamFromUrlAsync(url,token))
+            using (var stream = await FileDownloadUtil.GetIRandomAccessStreamFromUrlAsync(url,token))
             {
                 token.ThrowIfCancellationRequested();
 
