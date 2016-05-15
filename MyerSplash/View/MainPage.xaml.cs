@@ -65,19 +65,8 @@ namespace MyerSplash.View
             this.SizeChanged += MainPage_SizeChanged;
             this.Loaded += MainPage_Loaded;
 
-            CoreWindow.GetForCurrentThread().KeyDown += MainPage_KeyDown;
-
             InitComposition();
             InitBinding();
-        }
-
-        //EXP
-        private void MainPage_KeyDown(CoreWindow sender, KeyEventArgs args)
-        {
-            if (args.VirtualKey == Windows.System.VirtualKey.K)
-            {
-                //DetailControl.Visibility = DetailControl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
-            }
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
