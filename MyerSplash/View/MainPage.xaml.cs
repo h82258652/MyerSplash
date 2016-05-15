@@ -1,23 +1,15 @@
-﻿using JP.API;
-using JP.Utils.UI;
-using MyerSplash.Common;
+﻿using MyerSplash.Common;
 using MyerSplash.Model;
 using MyerSplash.ViewModel;
-using MyerSplashCustomControl;
 using System;
-using System.IO;
 using System.Numerics;
-using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Storage;
-using Windows.UI;
 using Windows.UI.Composition;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 
 namespace MyerSplash.View
 {
@@ -73,8 +65,19 @@ namespace MyerSplash.View
             this.SizeChanged += MainPage_SizeChanged;
             this.Loaded += MainPage_Loaded;
 
+            CoreWindow.GetForCurrentThread().KeyDown += MainPage_KeyDown;
+
             InitComposition();
             InitBinding();
+        }
+
+        //EXP
+        private void MainPage_KeyDown(CoreWindow sender, KeyEventArgs args)
+        {
+            if (args.VirtualKey == Windows.System.VirtualKey.K)
+            {
+                //DetailControl.Visibility = DetailControl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            }
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -136,6 +139,7 @@ namespace MyerSplash.View
             rotateAnimation.Duration = TimeSpan.FromMilliseconds(10000);
             rotateAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
 
+            _loadingVisual.IsVisible = true;
             _refreshVisual.CenterPoint = new Vector3((float)RefreshSymbol.ActualWidth / 2, (float)RefreshSymbol.ActualHeight / 2, 0f);
             _refreshVisual.RotationAngleInDegrees = 0;
 
@@ -150,7 +154,13 @@ namespace MyerSplash.View
             showAnimation.InsertKeyFrame(1, -60f);
             showAnimation.Duration = TimeSpan.FromMilliseconds(500);
 
+            var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
             _loadingVisual.StartAnimation("Offset.y", showAnimation);
+            batch.Completed += (sender, e) =>
+              {
+                  _loadingVisual.IsVisible = false;
+              };
+            batch.End();
         }
         #endregion
 
@@ -199,7 +209,7 @@ namespace MyerSplash.View
             DetailControl.UnsplashImage = img;
 
             var currentPos = container.TransformToVisual(DetailControl).TransformPoint(new Point(0, 0));
-            var targetPos = DetailControl.ContentGrid.TransformToVisual(DetailControl).TransformPoint(new Point(0, 0));
+            var targetPos = DetailControl.GetContentGridPosition();
             var targetRatio = DetailControl.ContentGrid.ActualWidth / container.ActualWidth;
             var targetOffsetX = targetPos.X - currentPos.X;
             var targetOffsetY = targetPos.Y - currentPos.Y;
@@ -211,7 +221,6 @@ namespace MyerSplash.View
         private void DetailControl_Loaded(object sender, RoutedEventArgs e)
         {
             DetailControl.Visibility = Visibility.Collapsed;
-            DetailControl.Loaded -= DetailControl_Loaded;
         }
     }
 }

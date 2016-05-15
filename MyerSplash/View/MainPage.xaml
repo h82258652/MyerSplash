@@ -24,7 +24,7 @@
             </Grid>
         </Grid>
         <Grid x:Name="TitleGrid" Canvas.ZIndex="8" Background="{StaticResource MyerSplashThemeColor}">
-            <StackPanel Tapped="StackPanel_Tapped" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel CacheMode="BitmapCache" Tapped="StackPanel_Tapped" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="Myer" FontSize="25"/>
                 <Image Height="30" Source="ms-appx:///Assets/Icon/Logo_black.png" Margin="-7,3,-7,0"/>
                 <TextBlock Text="plash" FontSize="25" FontWeight="Bold"/>

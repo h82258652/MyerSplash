@@ -11,6 +11,8 @@ using Windows.Storage;
 using Windows.UI.Xaml.Media;
 using System.Runtime.Serialization;
 using JP.Utils.UI;
+using System.Threading;
+using JP.Utils.Network;
 
 namespace MyerSplash.Model
 {
@@ -173,13 +175,15 @@ namespace MyerSplash.Model
             }
         }
 
-        public async Task DownloadFullImage()
+        public async Task DownloadFullImage(CancellationToken token)
         {
             var url = GetSaveImageUrlFromSettings();
             if (string.IsNullOrEmpty(url)) return;
             var folder =await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
-            using (var stream = await APIHelper.GetIRandomAccessStreamFromUrlAsync(url))
+            using (var stream = await HttpRequestSender.GetIRandomAccessStreamFromUrlAsync(url,token))
             {
+                token.ThrowIfCancellationRequested();
+
                 var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
                 var bytes = new byte[stream.AsStream().Length];
                 await stream.AsStream().ReadAsync(bytes, 0, (int)stream.AsStream().Length);

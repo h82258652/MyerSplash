@@ -14,6 +14,8 @@ using System;
 using Windows.UI.Xaml.Media;
 using JP.Utils.UI;
 using MyerSplashShared.API;
+using System.Linq;
+using MyerSplashCustomControl;
 
 namespace MyerSplash.ViewModel
 {
@@ -245,6 +247,7 @@ namespace MyerSplash.ViewModel
                         var task = item.RestoreAsync();
                     }
                     this.ShowNoItemHint = Visibility.Collapsed;
+                    await UpdateLiveTileAsync();
                 }
             }
         }
@@ -258,11 +261,20 @@ namespace MyerSplash.ViewModel
             if(this.MainDataVM.DataList.Count>0)
             {
                 await SerializerHelper.SerializerToJson<ImageDataViewModel>(this.MainDataVM, CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
-                MainList = MainDataVM.DataList;
+                if(MainList.ToList().FirstOrDefault()?.ID!=MainDataVM.DataList.FirstOrDefault()?.ID)
+                    MainList = MainDataVM.DataList;
+                else
+                {
+                    ToastService.SendToast("Got the neweast data :P");
+                }
             }
+            await UpdateLiveTileAsync();
+        }
 
+        private async Task UpdateLiveTileAsync()
+        {
             var list = new List<string>();
-            foreach (var item in MainDataVM.DataList)
+            foreach (var item in MainList)
             {
                 list.Add(item.ListImageCachedFilePath);
             }
@@ -288,7 +300,7 @@ namespace MyerSplash.ViewModel
             {
                 IsFirstActived = false;
                 await RestoreData();
-                //await Refresh();
+                await Refresh();
             }
         }
     }

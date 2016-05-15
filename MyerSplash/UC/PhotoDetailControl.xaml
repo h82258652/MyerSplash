@@ -8,9 +8,8 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
-    <Grid x:Name="DetailGrid" ManipulationMode="TranslateY" ManipulationDelta="DetailGrid_ManipulationDelta" Margin="0 5 0 0" Grid.RowSpan="5" SizeChanged="DetailGrid_SizeChanged">
-        <Border x:Name="MaskBorder" Tapped="MaskBorder_Tapped" Background="Black" Opacity="0.8"/>
+    <Grid x:Name="DetailGrid" Margin="0 5 0 0" Grid.RowSpan="5" SizeChanged="DetailGrid_SizeChanged">
+        <Border x:Name="MaskBorder" Tapped="MaskBorder_Tapped" ManipulationMode="TranslateY" ManipulationDelta="DetailGrid_ManipulationDelta" Background="Black" Opacity="0.8"/>
         <Grid x:Name="DetailContentGrid" MaxWidth="600" Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -42,12 +41,6 @@
                     </Grid>
                 </Button>
                 <Grid Grid.RowSpan="2" Margin="0,0,10,0">
-                    <Button x:Name="LoadingHintBtn" IsEnabled="True" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
-                        <Grid>
-                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                            <ProgressRing IsActive="True" Foreground="White"/>
-                        </Grid>
-                    </Button>
                     <Button x:Name="OKBtn" IsEnabled="False" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
                         <Grid>
                             <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
@@ -60,9 +53,30 @@
                             <SymbolIcon Symbol="Download" Foreground="White"/>
                         </Grid>
                     </Button>
+                    <Grid x:Name="LoadingHintGrid">
+                        <Button x:Name="CancelBtn" Click="CancelBtn_Click" IsEnabled="True" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
+                            <Grid>
+                                <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
+                                <SymbolIcon Symbol="Cancel" Foreground="White"/>
+                            </Grid>
+                        </Button>
+                        <Canvas Width="50" Height="50">
+                            <Path x:Name="LoadingPath" Stroke="#CCFFFFFF" Width="50" Height="50" StrokeThickness="3">
+                                <Path.Data>
+                                    <PathGeometry>
+                                        <PathGeometry.Figures>
+                                            <PathFigure StartPoint="25,1" IsClosed="False">
+                                                <ArcSegment Point="49,25" Size="24 24" IsLargeArc="False" SweepDirection="Clockwise"/>
+                                            </PathFigure>
+                                        </PathGeometry.Figures>
+                                    </PathGeometry>
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                    </Grid>
+
                 </Grid>
             </StackPanel>
         </Grid>
     </Grid>
-
 </UserControl>
