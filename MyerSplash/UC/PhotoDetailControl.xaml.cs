@@ -125,7 +125,7 @@ namespace MyerSplash.UC
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
             _detailGridVisual.StartAnimation("Opacity", fadeAnimation);
 
-            if(show)
+            if (show)
             {
                 ToggleDownloadBtnAnimation(true);
                 ToggleLikeBtnAnimation(true);

@@ -1,6 +1,7 @@
 ﻿using JP.API;
 using JP.Utils.Data;
 using JP.Utils.Data.Json;
+using JP.Utils.Network;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -25,13 +26,13 @@ namespace MyerSplashShared.API
             return param;
         }
 
-        public static async Task<CommonRespMsg> GetImages(int page,int pageCount,CancellationToken token)
+        public static async Task<CommonRespMsg> GetImages(int page, int pageCount, CancellationToken token)
         {
             var param = GetDefaultParam();
             param.Add(new KeyValuePair<string, string>("page", page.ToString()));
             param.Add(new KeyValuePair<string, string>("per_page", pageCount.ToString()));
 
-            var result = await APIHelper.SendGetRequestAsync(UrlHelper.MakeFullUrlForGetReq(UrlHelper.GetImages, param), token);
+            var result = await HttpRequestSender.SendGetRequestAsync(UrlHelper.MakeFullUrlForGetReq(UrlHelper.GetImages, param), token);
             return result;
         }
 
@@ -42,7 +43,7 @@ namespace MyerSplashShared.API
             param.Add(new KeyValuePair<string, string>("per_page", pageCount.ToString()));
             param.Add(new KeyValuePair<string, string>("query", query));
 
-            var result = await APIHelper.SendGetRequestAsync(UrlHelper.MakeFullUrlForGetReq(UrlHelper.SearchImages, param), token);
+            var result = await HttpRequestSender.SendGetRequestAsync(UrlHelper.MakeFullUrlForGetReq(UrlHelper.SearchImages, param), token);
             return result;
         }
     }
