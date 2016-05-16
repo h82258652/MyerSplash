@@ -221,6 +221,13 @@ namespace MyerSplash.UC
                 ToggleOkBtnAnimation(false);
                 ToastService.SendToast("Cancelled", TimeSpan.FromMilliseconds(1000));
             }
+            catch(Exception)
+            {
+                ToggleDownloadBtnAnimation(true);
+                ToggleDownloadingBtnAnimation(false);
+                ToggleOkBtnAnimation(false);
+                ToastService.SendToast("Exception throws.", TimeSpan.FromMilliseconds(1000));
+            }
         }
 
         private void StartLoadingAnimation()
@@ -232,6 +239,8 @@ namespace MyerSplash.UC
 
             _loadingPath.CenterPoint = new Vector3((float)LoadingPath.ActualWidth / 2, (float)LoadingPath.ActualHeight / 2, 0f);
 
+            _loadingPath.RotationAngleInDegrees = 0f;
+            _loadingPath.StopAnimation("RotationAngleInDegrees");
             _loadingPath.StartAnimation("RotationAngleInDegrees", rotateAnimation);
         }
 

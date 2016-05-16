@@ -20,9 +20,9 @@ namespace MyerSplash.ViewModel
         [IgnoreDataMember]
         public MainViewModel MainVM { get; set; }
 
-        public ImageDataViewModel()
+        public ImageDataViewModel(MainViewModel mainVM)
         {
-
+            this.MainVM = mainVM;
         }
 
         protected override void ClickItem(UnsplashImage item)
@@ -49,11 +49,16 @@ namespace MyerSplash.ViewModel
             {
                 await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
+                    if (MainVM == null) return;
+                    if (MainVM.MainList == null) return;
+
                     MainVM.ShowFooterLoading = Visibility.Collapsed;
                     MainVM.IsRefreshing = false;
+
                     if (MainVM.MainList.Count == 0)
                         MainVM.ShowNoItemHint = Visibility.Visible;
                     else MainVM.ShowNoItemHint = Visibility.Collapsed;
+
                     ToastService.SendToast("请求失败");
                 });
                 return new List<UnsplashImage>();
@@ -62,11 +67,16 @@ namespace MyerSplash.ViewModel
             {
                 await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
+                    if (MainVM == null) return;
+                    if (MainVM.MainList == null) return;
+
                     MainVM.ShowFooterLoading = Visibility.Collapsed;
                     MainVM.IsRefreshing = false;
-                    if (MainVM.MainList?.Count == 0)
+
+                    if (MainVM.MainList.Count == 0)
                         MainVM.ShowNoItemHint = Visibility.Visible;
                     else MainVM.ShowNoItemHint = Visibility.Collapsed;
+
                     ToastService.SendToast("请求超时");
                 });
                 return new List<UnsplashImage>();

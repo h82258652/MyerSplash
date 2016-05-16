@@ -225,7 +225,8 @@ namespace MyerSplash.ViewModel
 
         public MainViewModel()
         {
-            MainDataVM = new ImageDataViewModel() { MainVM = this };
+            MainDataVM = new ImageDataViewModel(this);
+
             ShowFooterLoading = Visibility.Visible;
             ShowNoItemHint = Visibility.Collapsed;
             SelectedIndex = 0;
@@ -264,7 +265,7 @@ namespace MyerSplash.ViewModel
             if(this.MainDataVM.DataList?.Count>0)
             {
                 await SerializerHelper.SerializerToJson<ImageDataViewModel>(this.MainDataVM, CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
-                if(MainList.ToList().FirstOrDefault()?.ID!=MainDataVM.DataList.FirstOrDefault()?.ID)
+                if(MainList?.ToList().FirstOrDefault()?.ID!=MainDataVM?.DataList?.FirstOrDefault()?.ID)
                     MainList = MainDataVM.DataList;
                 else
                 {
@@ -277,6 +278,9 @@ namespace MyerSplash.ViewModel
         private async Task UpdateLiveTileAsync()
         {
             var list = new List<string>();
+
+            if (MainList == null) return;
+
             foreach (var item in MainList)
             {
                 list.Add(item.ListImageCachedFilePath);

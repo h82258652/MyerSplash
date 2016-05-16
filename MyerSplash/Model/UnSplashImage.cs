@@ -13,6 +13,10 @@ using System.Runtime.Serialization;
 using JP.Utils.UI;
 using System.Threading;
 using JP.Utils.Network;
+using MyerSplashCustomControl;
+using System.Net.Http;
+using Windows.Storage.Streams;
+using System.Diagnostics;
 
 namespace MyerSplash.Model
 {
@@ -180,14 +184,53 @@ namespace MyerSplash.Model
             var url = GetSaveImageUrlFromSettings();
             if (string.IsNullOrEmpty(url)) return;
             var folder =await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
-            using (var stream = await FileDownloadUtil.GetIRandomAccessStreamFromUrlAsync(url,token))
+
+            var streamTask = GetIRandomAccessStreamFromUrlAsync(url, token);
+            token.ThrowIfCancellationRequested();
+            var stream = await streamTask;
+            using (stream)
             {
                 token.ThrowIfCancellationRequested();
 
                 var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
                 var bytes = new byte[stream.AsStream().Length];
+
+                token.ThrowIfCancellationRequested();
+
                 await stream.AsStream().ReadAsync(bytes, 0, (int)stream.AsStream().Length);
+
+                token.ThrowIfCancellationRequested();
+
                 await FileIO.WriteBytesAsync(newFile, bytes);
+            }
+        }
+
+        public static async Task<IRandomAccessStream> GetIRandomAccessStreamFromUrlAsync(string url, CancellationToken token)
+        {
+            if (string.IsNullOrEmpty(url)) throw new UriFormatException("The url is null or empty.");
+
+            using (HttpClient client = new HttpClient())
+            {
+                var downloadTask = client.GetAsync(new Uri(url), token);
+
+                Debug.WriteLine("DOWNLOADING 1");
+
+                token.ThrowIfCancellationRequested();
+
+                var response = await downloadTask;
+                response.EnsureSuccessStatusCode();
+
+                Debug.WriteLine("DOWNLOADING 2");
+
+                var streamTask = response.Content.ReadAsStreamAsync();
+
+                token.ThrowIfCancellationRequested();
+
+                Debug.WriteLine("DOWNLOADING 3");
+
+                var stream = await streamTask;
+
+                return stream.AsRandomAccessStream();
             }
         }
 
