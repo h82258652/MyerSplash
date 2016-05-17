@@ -47,20 +47,18 @@ namespace MyerSplash.ViewModel
                 }
                 else
                 {
-                    throw new ArgumentException();
+                    throw new APIException();
                 }
             }
-            catch (ArgumentException)
+            catch (APIException)
             {
                 await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    if (MainVM == null) return;
-                    if (MainVM.MainList == null) return;
-
                     MainVM.ShowFooterLoading = Visibility.Collapsed;
+                    MainVM.ShowFooterReloadGrid = Visibility.Visible;
                     MainVM.IsRefreshing = false;
 
-                    if (MainVM.MainList.Count == 0)
+                    if (MainVM.MainList?.Count == 0)
                         MainVM.ShowNoItemHint = Visibility.Visible;
                     else MainVM.ShowNoItemHint = Visibility.Collapsed;
 

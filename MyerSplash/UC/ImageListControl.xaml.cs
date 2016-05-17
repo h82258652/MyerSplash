@@ -13,6 +13,7 @@ namespace MyerSplash.UC
     public sealed partial class ImageListControl : UserControl
     {
         public event Action<UnsplashImage, FrameworkElement> OnClickItemStarted;
+        public event Action<ScrollViewer> OnScrollViewerViewChanged;
 
         private MainViewModel MainVM
         {
@@ -132,5 +133,17 @@ namespace MyerSplash.UC
             itemContainer.Loaded -= ItemContainer_Loaded;
         }
         #endregion
+
+        private void ImageGridView_Loaded(object sender, RoutedEventArgs e)
+        {
+            var scrollViewer = ImageGridView.GetScrollViewer();
+            scrollViewer.ViewChanging -= ScrollViewer_ViewChanging;
+            scrollViewer.ViewChanging += ScrollViewer_ViewChanging;
+        }
+
+        private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
+        {
+            OnScrollViewerViewChanged?.Invoke(sender as ScrollViewer);
+        }
     }
 }

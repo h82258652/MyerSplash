@@ -170,6 +170,23 @@ namespace MyerSplash.ViewModel
             }
         }
 
+        private Visibility _showFooterReloadGrid;
+        public Visibility ShowFooterReloadGrid
+        {
+            get
+            {
+                return _showFooterReloadGrid;
+            }
+            set
+            {
+                if (_showFooterReloadGrid != value)
+                {
+                    _showFooterReloadGrid = value;
+                    RaisePropertyChanged(() => ShowFooterReloadGrid);
+                }
+            }
+        }
+
         private RelayCommand _goToSettingsCommand;
         public RelayCommand GoToSettingsCommand
         {
@@ -178,6 +195,7 @@ namespace MyerSplash.ViewModel
                 if (_goToSettingsCommand != null) return _goToSettingsCommand;
                 return _goToSettingsCommand = new RelayCommand(() =>
                   {
+                      DrawerOpened = false;
                       NavigationService.NaivgateToPage(typeof(SettingsPage));
                   });
             }
@@ -191,6 +209,7 @@ namespace MyerSplash.ViewModel
                 if (_goToAboutCommand != null) return _goToAboutCommand;
                 return _goToAboutCommand = new RelayCommand(() =>
                   {
+                      DrawerOpened = false;
                       NavigationService.NaivgateToPage(typeof(AboutPage));
                   });
             }
@@ -225,10 +244,10 @@ namespace MyerSplash.ViewModel
 
         public MainViewModel()
         {
-            MainDataVM = new ImageDataViewModel(this);
             MainList = new ObservableCollection<UnsplashImage>();
             ShowFooterLoading = Visibility.Visible;
             ShowNoItemHint = Visibility.Collapsed;
+            ShowFooterReloadGrid = Visibility.Collapsed;
             SelectedIndex = 0;
             LikeList = new ObservableCollection<UnsplashImage>();
         }
@@ -258,6 +277,8 @@ namespace MyerSplash.ViewModel
 
         private async Task Refresh()
         {
+            MainDataVM.MainVM = this;
+
             IsRefreshing = true;
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;

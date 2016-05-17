@@ -1,5 +1,6 @@
 ﻿using JP.API;
 using JP.Utils.Data;
+using JP.Utils.Network;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,15 +35,15 @@ namespace MyerSplashShared.API
             await SaveAsync();
         }
 
-        public async Task<StorageFile> DownloadImageAsync(string url)
+        public async Task<StorageFile> DownloadImageAsync(string url,string desireName="img.jpg")
         {
             if (CachedFiles.ContainsKey(url))
             {
                 return await StorageFile.GetFileFromPathAsync(CachedFiles[url]);
             }
-            using (var stream = await APIHelper.GetIRandomAccessStreamFromUrlAsync(url))
+            using (var stream = await FileDownloadUtil.GetIRandomAccessStreamFromUrlAsync(url,CTSFactory.MakeCTS().Token))
             {
-                var newFile = await GetTempFolder().CreateFileAsync("plant.jpg", CreationCollisionOption.GenerateUniqueName);
+                var newFile = await GetTempFolder().CreateFileAsync(desireName, CreationCollisionOption.GenerateUniqueName);
                 var bytes = new byte[stream.AsStream().Length];
                 await stream.AsStream().ReadAsync(bytes, 0, (int)stream.AsStream().Length);
                 await FileIO.WriteBytesAsync(newFile, bytes);

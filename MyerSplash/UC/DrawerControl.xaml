@@ -26,7 +26,7 @@
                         SelectedIndex="{x:Bind MainVM.SelectedIndex,Mode=TwoWay}"  
                         ItemContainerStyle="{StaticResource MenuListBoxItemStyle}" 
                         Background="{x:Null}"
-                        HorizontalAlignment="Center" Margin="0,0,0,60">
+                        HorizontalAlignment="Center" Margin="0,0,0,60" VerticalAlignment="Top">
                 <ListBox.Items>
                     <Grid Height="60">
                         <Grid.ColumnDefinitions>

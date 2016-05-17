@@ -19,6 +19,7 @@
                 x:Name="ImageGridView"
                 ItemsSource="{x:Bind MainVM.MainList,Mode=OneWay}"
                 SelectionMode="None"
+                Loaded="ImageGridView_Loaded"
                 Margin="0"
                 IsItemClickEnabled="True"
                 ItemClick="ImageGridView_ItemClick"
@@ -51,12 +52,29 @@
                             Value="0" />
             </Style>
         </control:AdaptiveGridView.ItemContainerStyle>
+        <control:AdaptiveGridView.Header>
+            <Grid Height="70">
+                
+            </Grid>
+        </control:AdaptiveGridView.Header>
         <control:AdaptiveGridView.Footer>
-            <Grid Height="50" Visibility="{x:Bind MainVM.ShowFooterLoading,Mode=OneWay}">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <ProgressRing IsActive="True" Foreground="{StaticResource MyerSplashThemeDarkColor}"/>
-                    <TextBlock Text="LOADING..." Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                </StackPanel>
+            <Grid Height="100">
+                <Grid Height="50" Visibility="{x:Bind MainVM.ShowFooterLoading,Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <ProgressRing IsActive="True" Foreground="{StaticResource MyerSplashThemeDarkColor}"/>
+                        <TextBlock Text="LOADING..." Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Visibility="{x:Bind MainVM.ShowFooterReloadGrid,Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource MyerSplashDarkColor}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="10" Text="Oops,try to retry." Foreground="White" VerticalAlignment="Center"/>
+                        <Button Margin="5" Width="100" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Border Background="{StaticResource MyerSplashThemeColor}">
+                                <TextBlock Margin="5" Text="RETRY" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Button>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </control:AdaptiveGridView.Footer>
     </control:AdaptiveGridView>

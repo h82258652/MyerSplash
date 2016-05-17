@@ -20,7 +20,7 @@
         <Grid Canvas.ZIndex="7" Grid.RowSpan="2">
             <Grid x:Name="LoadingGrid" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,70,0,0" >
                 <Ellipse Width="50" Height="50" Fill="#FFE5E5E5"/>
-                <SymbolIcon x:Name="RefreshSymbol" RenderTransformOrigin="0.5 0.5" Symbol="Refresh" Foreground="{StaticResource MyerSplashThemeDarkColor}"/>
+                <SymbolIcon x:Name="LoadingSymbol" RenderTransformOrigin="0.5 0.5" Symbol="Refresh" Foreground="{StaticResource MyerSplashThemeDarkColor}"/>
             </Grid>
         </Grid>
         <Grid x:Name="TitleGrid" Canvas.ZIndex="8" Background="{StaticResource MyerSplashThemeColor}">
@@ -31,23 +31,33 @@
             </StackPanel>
             <uc:HamburgerButton Command="{x:Bind MainVM.OpenDrawerCommand,Mode=OneWay}" HorizontalAlignment="Left" Width="70" Background="White"/>
         </Grid>
-        <Grid Canvas.ZIndex="5" Grid.RowSpan="1" Margin="0" x:Name="ContentGrid" Grid.Row="1">
+        <Grid Canvas.ZIndex="5" Grid.RowSpan="2" Margin="0" x:Name="ContentGrid" Grid.Row="0">
             <Grid x:Name="NoItemHint" Visibility="{x:Bind MainVM.ShowNoItemHint,Mode=OneWay}">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.3">
                     <TextBlock FontSize="50" Text=":-(" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <TextBlock FontSize="20" Text="Can't connect to server" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Grid>
-            <uc:ImageListControl x:Name="ListControl" OnClickItemStarted="ListControl_OnClickItemStarted" DataContext="{x:Bind MainVM,Mode=OneWay}"/>
+            <uc:ImageListControl x:Name="ListControl" OnScrollViewerViewChanged="ListControl_OnScrollViewerViewChanged" OnClickItemStarted="ListControl_OnClickItemStarted" DataContext="{x:Bind MainVM,Mode=OneWay}"/>
             <Button x:Name="RefreshBtn" HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{x:Bind MainVM.RefreshCommand,Mode=OneWay}" Margin="20" Style="{StaticResource ButtonCommonStyle}" Foreground="White" Background="{x:Null}" Grid.RowSpan="2">
                 <Grid Width="50" Height="50">
                     <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
                     <SymbolIcon Symbol="Refresh" Foreground="White"/>
                 </Grid>
             </Button>
+            <Border x:Name="TouchGrid" Width="20" ManipulationMode="TranslateX" 
+                    ManipulationDelta="TouchGrid_ManipulationDelta"
+                    ManipulationCompleted="TouchGrid_ManipulationCompleted" HorizontalAlignment="Left" Background="#02000000"/>
         </Grid>
         <uc:PhotoDetailControl Canvas.ZIndex="10" x:Name="DetailControl" Loaded="DetailControl_Loaded" OnHideControl="DetailControl_OnHideControl" Grid.RowSpan="2"/>
         <Border Canvas.ZIndex="11" x:Name="DrawerMaskBorder" d:IsHidden="True" attach:UIElementTapCommand.ItemTapCommand="{x:Bind MainVM.OpenDrawerCommand,Mode=OneWay}" Background="#CC000000" Grid.RowSpan="2"/>
-        <uc:DrawerControl Canvas.ZIndex="12" x:Name="DrawerControl" d:IsHidden="True" DataContext="{x:Bind MainVM,Mode=OneWay}" Grid.RowSpan="2" Width="300" HorizontalAlignment="Left"/>
+        <uc:DrawerControl Canvas.ZIndex="12"  
+                          x:Name="DrawerControl" 
+                          d:IsHidden="True" 
+                          DataContext="{x:Bind MainVM,Mode=OneWay}" 
+                          ManipulationMode="TranslateX"
+                          ManipulationDelta="DrawerControl_ManipulationDelta"
+                          ManipulationCompleted="DrawerControl_ManipulationCompleted"
+                          Grid.RowSpan="2" Width="300" HorizontalAlignment="Left"/>
     </Grid>
 </common:BindablePage>

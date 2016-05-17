@@ -145,8 +145,10 @@ namespace MyerSplash.Model
         public async Task DownloadImgForListAsync()
         {
             var url = GetListImageUrlFromSettings();
+
             if (string.IsNullOrEmpty(url)) return;
-            var file = await App.CacheUtilInstance.DownloadImageAsync(url);
+
+            var file = await App.CacheUtilInstance.DownloadImageAsync(url,this.ID);
             ListImageCachedFilePath = file.Path;
             using (var stream = await file.OpenAsync(FileAccessMode.Read))
             {
