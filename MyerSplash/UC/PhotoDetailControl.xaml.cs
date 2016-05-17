@@ -1,4 +1,5 @@
 ﻿using JP.Utils.UI;
+using MyerSplash.Common;
 using MyerSplash.Model;
 using MyerSplashCustomControl;
 using System;

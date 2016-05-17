@@ -109,6 +109,7 @@
     <Compile Include="Common\BindablePage.cs" />
     <Compile Include="Common\CachedFileNames.cs" />
     <Compile Include="Common\NavigationService.cs" />
+    <Compile Include="Common\ToastHelper.cs" />
     <Compile Include="LiveTile\LiveTileUpdater.cs" />
     <Compile Include="UC\FeatureControl.xaml.cs">
       <DependentUpon>FeatureControl.xaml</DependentUpon>

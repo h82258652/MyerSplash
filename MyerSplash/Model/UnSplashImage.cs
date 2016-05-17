@@ -1,8 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
-using JP.API;
 using JP.Utils.Data.Json;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media.Imaging;
@@ -12,11 +10,8 @@ using Windows.UI.Xaml.Media;
 using System.Runtime.Serialization;
 using JP.Utils.UI;
 using System.Threading;
-using JP.Utils.Network;
-using MyerSplashCustomControl;
-using System.Net.Http;
-using Windows.Storage.Streams;
-using System.Diagnostics;
+using Windows.Networking.BackgroundTransfer;
+using MyerSplash.Common;
 
 namespace MyerSplash.Model
 {
@@ -131,6 +126,8 @@ namespace MyerSplash.Model
             }
         }
 
+        BackgroundDownloader backgroundDownloader = new BackgroundDownloader();
+
         public UnsplashImage()
         {
 
@@ -148,7 +145,7 @@ namespace MyerSplash.Model
 
             if (string.IsNullOrEmpty(url)) return;
 
-            var file = await App.CacheUtilInstance.DownloadImageAsync(url,this.ID);
+            var file = await App.CacheUtilInstance.DownloadImageAsync(url, this.ID);
             ListImageCachedFilePath = file.Path;
             using (var stream = await file.OpenAsync(FileAccessMode.Read))
             {
@@ -187,23 +184,23 @@ namespace MyerSplash.Model
             if (string.IsNullOrEmpty(url)) return;
             var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
 
-            var streamTask = FileDownloadUtil.GetIRandomAccessStreamFromUrlAsync(url, token);
-            token.ThrowIfCancellationRequested();
-            var stream = await streamTask;
-            using (stream)
+            var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
+
+            backgroundDownloader.FailureToastNotification = ToastHelper.CreateToastNotification("Failed to download :-(", "Please check your network.");
+            backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Savad:D", "You can find it in MySplash folder.");
+
+            var downloadOperation = backgroundDownloader.CreateDownload(new Uri(url), newFile);
+
+            Progress<DownloadOperation> progress = new Progress<DownloadOperation>();
+            try
             {
-                token.ThrowIfCancellationRequested();
-
-                var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
-                var bytes = new byte[stream.AsStream().Length];
-
-                token.ThrowIfCancellationRequested();
-
-                await stream.AsStream().ReadAsync(bytes, 0, (int)stream.AsStream().Length);
-
-                token.ThrowIfCancellationRequested();
-
-                await FileIO.WriteBytesAsync(newFile, bytes);
+                await downloadOperation.StartAsync().AsTask(token, progress);
+            }
+            catch (TaskCanceledException)
+            {
+                await downloadOperation.ResultFile.DeleteAsync();
+                downloadOperation = null;
+                throw;
             }
         }
 
