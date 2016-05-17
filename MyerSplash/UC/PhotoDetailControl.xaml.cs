@@ -221,7 +221,7 @@ namespace MyerSplash.UC
                 ToggleOkBtnAnimation(false);
                 ToastService.SendToast("Cancelled", TimeSpan.FromMilliseconds(1000));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 ToggleDownloadBtnAnimation(true);
                 ToggleDownloadingBtnAnimation(false);

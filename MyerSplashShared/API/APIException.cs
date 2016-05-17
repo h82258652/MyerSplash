@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyerSplashShared.API
 {
-    public class APIException:Exception
+    public class APIException : Exception
     {
         public string ErrorMessage { get; set; } = "";
 

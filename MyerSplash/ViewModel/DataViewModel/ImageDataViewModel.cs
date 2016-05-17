@@ -25,6 +25,11 @@ namespace MyerSplash.ViewModel
             this.MainVM = mainVM;
         }
 
+        public ImageDataViewModel()
+        {
+
+        }
+
         protected override void ClickItem(UnsplashImage item)
         {
 

@@ -133,7 +133,7 @@ namespace MyerSplash.Model
 
         public UnsplashImage()
         {
-            
+
         }
 
         public async Task RestoreAsync()
@@ -158,12 +158,12 @@ namespace MyerSplash.Model
         public string GetListImageUrlFromSettings()
         {
             var quality = App.AppSettings.LoadQuality;
-            switch(quality)
+            switch (quality)
             {
                 case 0: return RegularImageUrl;
-                case 1:return SmallImageUrl;
-                case 2:return ThumbImageUrl;
-                default:return "";
+                case 1: return SmallImageUrl;
+                case 2: return ThumbImageUrl;
+                default: return "";
             }
         }
 
@@ -183,9 +183,9 @@ namespace MyerSplash.Model
         {
             var url = GetSaveImageUrlFromSettings();
             if (string.IsNullOrEmpty(url)) return;
-            var folder =await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
+            var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
 
-            var streamTask = GetIRandomAccessStreamFromUrlAsync(url, token);
+            var streamTask = FileDownloadUtil.GetIRandomAccessStreamFromUrlAsync(url, token);
             token.ThrowIfCancellationRequested();
             var stream = await streamTask;
             using (stream)
@@ -202,35 +202,6 @@ namespace MyerSplash.Model
                 token.ThrowIfCancellationRequested();
 
                 await FileIO.WriteBytesAsync(newFile, bytes);
-            }
-        }
-
-        public static async Task<IRandomAccessStream> GetIRandomAccessStreamFromUrlAsync(string url, CancellationToken token)
-        {
-            if (string.IsNullOrEmpty(url)) throw new UriFormatException("The url is null or empty.");
-
-            using (HttpClient client = new HttpClient())
-            {
-                var downloadTask = client.GetAsync(new Uri(url), token);
-
-                Debug.WriteLine("DOWNLOADING 1");
-
-                token.ThrowIfCancellationRequested();
-
-                var response = await downloadTask;
-                response.EnsureSuccessStatusCode();
-
-                Debug.WriteLine("DOWNLOADING 2");
-
-                var streamTask = response.Content.ReadAsStreamAsync();
-
-                token.ThrowIfCancellationRequested();
-
-                Debug.WriteLine("DOWNLOADING 3");
-
-                var stream = await streamTask;
-
-                return stream.AsRandomAccessStream();
             }
         }
 

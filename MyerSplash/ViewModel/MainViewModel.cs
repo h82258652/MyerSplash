@@ -216,7 +216,7 @@ namespace MyerSplash.ViewModel
                     }
                     else if (value == 1)
                     {
-                        ToastService.SendToast("Still Woring on this :D",2000);
+                        ToastService.SendToast("Still Woring on this :D", 2000);
                         MainList = LikeList;
                     }
                 }
@@ -226,7 +226,7 @@ namespace MyerSplash.ViewModel
         public MainViewModel()
         {
             MainDataVM = new ImageDataViewModel(this);
-
+            MainList = new ObservableCollection<UnsplashImage>();
             ShowFooterLoading = Visibility.Visible;
             ShowNoItemHint = Visibility.Collapsed;
             SelectedIndex = 0;
@@ -235,15 +235,15 @@ namespace MyerSplash.ViewModel
 
         private async Task RestoreData()
         {
-            var file =await CacheUtil.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.MainListFileName);
-            if(file!=null)
+            var file = await CacheUtil.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.MainListFileName);
+            if (file != null)
             {
-                var vm=await SerializerHelper.DeserializeFromJsonByFileName<ImageDataViewModel>(CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
-                if(vm!=null)
+                var vm = await SerializerHelper.DeserializeFromJsonByFileName<ImageDataViewModel>(CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
+                if (vm != null)
                 {
                     this.MainDataVM = vm;
                     this.MainList = MainDataVM.DataList;
-                    for(int i=0;i< MainDataVM.DataList.Count;i++)
+                    for (int i = 0; i < MainDataVM.DataList.Count; i++)
                     {
                         var item = MainDataVM.DataList[i];
                         if (i % 2 == 0) item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF2E2E2E").Value);
@@ -262,10 +262,10 @@ namespace MyerSplash.ViewModel
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;
 
-            if(this.MainDataVM.DataList?.Count>0)
+            if (this.MainDataVM.DataList?.Count > 0)
             {
                 await SerializerHelper.SerializerToJson<ImageDataViewModel>(this.MainDataVM, CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
-                if(MainList?.ToList().FirstOrDefault()?.ID!=MainDataVM?.DataList?.FirstOrDefault()?.ID)
+                if (MainList?.ToList().FirstOrDefault()?.ID != MainDataVM?.DataList?.FirstOrDefault()?.ID)
                     MainList = MainDataVM.DataList;
                 else
                 {

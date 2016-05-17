@@ -26,7 +26,7 @@ namespace MyerSplashShared.API
         {
             var tempFolder = GetCachedFileFolder();
             var items = await tempFolder.GetItemsAsync();
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 await item.DeleteAsync(StorageDeleteOption.PermanentDelete);
             }
@@ -36,7 +36,7 @@ namespace MyerSplashShared.API
 
         public async Task<StorageFile> DownloadImageAsync(string url)
         {
-            if(CachedFiles.ContainsKey(url))
+            if (CachedFiles.ContainsKey(url))
             {
                 return await StorageFile.GetFileFromPathAsync(CachedFiles[url]);
             }
@@ -63,7 +63,7 @@ namespace MyerSplashShared.API
         {
             var tempFolder = GetCachedFileFolder();
             this.CachedFiles = await SerializerHelper.DeserializeFromJsonByFileName<Dictionary<string, string>>("CachedFiles", tempFolder);
-            if(this.CachedFiles==null)
+            if (this.CachedFiles == null)
             {
                 CachedFiles = new Dictionary<string, string>();
             }

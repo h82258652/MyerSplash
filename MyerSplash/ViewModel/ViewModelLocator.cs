@@ -8,7 +8,7 @@ namespace MyerSplash.ViewModel
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-          
+
         }
 
         public static void Cleanup()

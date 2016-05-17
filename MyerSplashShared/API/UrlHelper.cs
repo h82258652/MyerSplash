@@ -25,7 +25,7 @@ namespace MyerSplashShared.API
             return sb.ToString();
         }
 
-        public static string MakeFullUrlForPostReq(string baseUrl,bool withAuth)
+        public static string MakeFullUrlForPostReq(string baseUrl, bool withAuth)
         {
             StringBuilder sb = new StringBuilder(baseUrl);
             if (withAuth)
