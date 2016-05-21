@@ -181,17 +181,19 @@ namespace MyerSplash.Model
         public async Task DownloadFullImage(CancellationToken token)
         {
             var url = GetSaveImageUrlFromSettings();
+
             if (string.IsNullOrEmpty(url)) return;
+
             var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
 
             var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
 
-            backgroundDownloader.FailureToastNotification = ToastHelper.CreateToastNotification("Failed to download :-(", "Please check your network.");
+            //backgroundDownloader.FailureToastNotification = ToastHelper.CreateToastNotification("Failed to download :-(", "You may cancel it. Otherwise please check your network.");
             backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Savad:D", "You can find it in MySplash folder.");
 
             var downloadOperation = backgroundDownloader.CreateDownload(new Uri(url), newFile);
 
-            Progress<DownloadOperation> progress = new Progress<DownloadOperation>();
+            var progress = new Progress<DownloadOperation>();
             try
             {
                 await downloadOperation.StartAsync().AsTask(token, progress);

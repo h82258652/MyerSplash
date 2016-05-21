@@ -121,7 +121,7 @@ namespace MyerSplash.View
             _refreshBtnVisual = ElementCompositionPreview.GetElementVisual(RefreshBtn);
         }
 
-        #region Loading Animation
+        #region Loading animation
         private void ShowLoading()
         {
             var showAnimation = _compositor.CreateVector3KeyFrameAnimation();
@@ -160,7 +160,7 @@ namespace MyerSplash.View
         }
         #endregion
 
-        #region Drawer
+        #region Drawer animation
         private void ToggleDrawerAnimation(bool show)
         {
             var offsetAnim = _compositor.CreateScalarKeyFrameAnimation();
@@ -204,14 +204,20 @@ namespace MyerSplash.View
 
             DetailControl.UnsplashImage = img;
 
-            var currentPos = container.TransformToVisual(DetailControl).TransformPoint(new Point(0, 0));
+            var currentPos = container.TransformToVisual(ListControl).TransformPoint(new Point(0, 0));
             var targetPos = DetailControl.GetContentGridPosition();
-            var targetRatio = DetailControl.ContentGrid.ActualWidth / container.ActualWidth;
+            var targetRatio = DetailControl.GetContentGridSize().Width / container.ActualWidth;
             var targetOffsetX = targetPos.X - currentPos.X;
             var targetOffsetY = targetPos.Y - currentPos.Y;
 
             ListControl.MoveItemAnimation(new Vector3((float)targetOffsetX, (float)targetOffsetY, 0f), (float)targetRatio);
             DetailControl.ToggleDetailGridAnimation(true);
+
+            NavigationService.HistoryOperationsBeyondFrame.Push(() =>
+            {
+                DetailControl.HideDetailControl();
+                return true;
+            });
         }
 
         private void DetailControl_Loaded(object sender, RoutedEventArgs e)
@@ -295,7 +301,6 @@ namespace MyerSplash.View
             var targetOffsetX = _drawerVisual.Offset.X + e.Delta.Translation.X;
             _drawerVisual.Offset = new Vector3((float)(targetOffsetX > 1 ? 1 : targetOffsetX), 0f, 0f);
         }
-        #endregion
 
         private void DrawerControl_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
@@ -320,5 +325,6 @@ namespace MyerSplash.View
 
             }
         }
+        #endregion
     }
 }

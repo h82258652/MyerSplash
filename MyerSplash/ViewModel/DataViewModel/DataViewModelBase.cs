@@ -105,6 +105,11 @@ namespace MyerSplash.ViewModel
             }
         }
 
+        public async Task RetryAsync()
+        {
+            await DataList.LoadMoreItemsAsync(DEFAULT_PER_PAGE);
+        }
+
         private async Task<Tuple<List<T>, bool>> GetIncrementalListData(int pageIndex)
         {
             IEnumerable<T> newList = new List<T>();

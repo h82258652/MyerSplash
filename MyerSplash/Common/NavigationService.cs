@@ -18,9 +18,33 @@ namespace MyerSplash.Common
             }
         }
 
-        public static void NaivgateToPage(Type pagetype,object param=null)
+        public static Stack<Func<bool>> HistoryOperationsBeyondFrame = new Stack<Func<bool>>();
+
+        public static void NaivgateToPage(Type pagetype, object param = null)
         {
             RootFrame.Navigate(pagetype, param);
+        }
+
+        public static bool GoBack()
+        {
+            try
+            {
+                var op = HistoryOperationsBeyondFrame.Pop();
+                if (!op.Invoke())
+                {
+                    throw new InvalidOperationException();
+                }
+                else return true;
+            }
+            catch (InvalidOperationException)
+            {
+                if (RootFrame.CanGoBack)
+                {
+                    RootFrame.GoBack();
+                    return true;
+                }
+                else return false;
+            }
         }
     }
 }

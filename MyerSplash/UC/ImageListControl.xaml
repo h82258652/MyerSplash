@@ -68,7 +68,7 @@
                 <Grid Visibility="{x:Bind MainVM.ShowFooterReloadGrid,Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource MyerSplashDarkColor}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="10" Text="Oops,try to retry." Foreground="White" VerticalAlignment="Center"/>
-                        <Button Margin="5" Width="100" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Button Command="{x:Bind MainVM.RetryCommand,Mode=OneWay}"  Margin="5" Width="100" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Border Background="{StaticResource MyerSplashThemeColor}">
                                 <TextBlock Margin="5" Text="RETRY" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>

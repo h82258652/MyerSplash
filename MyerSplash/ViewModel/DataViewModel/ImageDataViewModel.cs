@@ -39,7 +39,7 @@ namespace MyerSplash.ViewModel
         {
             try
             {
-                var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(20000).Token);
+                var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(8000).Token);
                 if (result.IsSuccessful)
                 {
                     var list = UnsplashImage.ParseListFromJson(result.JsonSrc);
@@ -62,7 +62,7 @@ namespace MyerSplash.ViewModel
                         MainVM.ShowNoItemHint = Visibility.Visible;
                     else MainVM.ShowNoItemHint = Visibility.Collapsed;
 
-                    ToastService.SendToast("请求失败");
+                    ToastService.SendToast("Request failed.");
                 });
                 return new List<UnsplashImage>();
             }
@@ -70,17 +70,15 @@ namespace MyerSplash.ViewModel
             {
                 await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    if (MainVM == null) return;
-                    if (MainVM.MainList == null) return;
-
                     MainVM.ShowFooterLoading = Visibility.Collapsed;
+                    MainVM.ShowFooterReloadGrid = Visibility.Visible;
                     MainVM.IsRefreshing = false;
 
                     if (MainVM.MainList.Count == 0)
                         MainVM.ShowNoItemHint = Visibility.Visible;
                     else MainVM.ShowNoItemHint = Visibility.Collapsed;
 
-                    ToastService.SendToast("请求超时");
+                    ToastService.SendToast("Request timeout.");
                 });
                 return new List<UnsplashImage>();
             }

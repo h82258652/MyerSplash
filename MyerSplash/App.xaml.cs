@@ -1,22 +1,15 @@
 ﻿using JP.Utils.Debug;
+using JP.Utils.Helper;
 using MyerSplash.Common;
 using MyerSplash.View;
 using MyerSplashShared.API;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Phone.UI.Input;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace MyerSplash
@@ -104,6 +97,21 @@ namespace MyerSplash
             Window.Current.Activate();
 
             TitleBarHelper.SetUpThemeTitleBar();
+            SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
+            if (APIInfoHelper.HasHardwareButton)
+            {
+                HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+            }
+        }
+
+        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        {
+            e.Handled = NavigationService.GoBack();
+        }
+
+        private void App_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = NavigationService.GoBack();
         }
 
         /// <summary>

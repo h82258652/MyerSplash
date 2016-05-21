@@ -100,6 +100,11 @@ namespace MyerSplash.UC
 
         private void MaskBorder_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            HideDetailControl();
+        }
+
+        public void HideDetailControl()
+        {
             ToggleDownloadBtnAnimation(false);
             ToggleLikeBtnAnimation(false);
             ToggleDownloadingBtnAnimation(false);
@@ -107,10 +112,10 @@ namespace MyerSplash.UC
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
             ToggleInfoGridAnimation(false);
             batch.Completed += (s, ex) =>
-              {
-                  OnHideControl?.Invoke();
-                  ToggleDetailGridAnimation(false);
-              };
+            {
+                OnHideControl?.Invoke();
+                ToggleDetailGridAnimation(false);
+            };
             batch.End();
         }
 
@@ -251,21 +256,7 @@ namespace MyerSplash.UC
         }
         #endregion
 
-        public Grid ContentGrid
-        {
-            get
-            {
-                return this.DetailContentGrid;
-            }
-        }
-
-        public Point GetContentGridPosition()
-        {
-            var targetPosX = this.ActualWidth > 600 ? ((this.ActualWidth - 600) / 2) : (0);
-            var targetPosY = (this.ActualHeight - this.ContentGrid.ActualHeight) / 2;
-            return new Point(targetPosX, targetPosY);
-        }
-
+        //TODO:
         private void LikeBtn_Click(object sender, RoutedEventArgs e)
         {
             ToastService.SendToast("Still working on this. :D", 2000);
@@ -291,6 +282,29 @@ namespace MyerSplash.UC
         {
             var grid = sender as Grid;
             grid.Clip = new RectangleGeometry() { Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height) };
+        }
+
+        public Grid ContentGrid
+        {
+            get
+            {
+                return this.DetailContentGrid;
+            }
+        }
+
+        public Point GetContentGridPosition()
+        {
+            var size = GetContentGridSize();
+            var targetPosX = this.ActualWidth > 600 ? ((this.ActualWidth - 600) / 2) : (0);
+            var targetPosY = (this.ActualHeight - size.Height) / 2;
+            return new Point(targetPosX, targetPosY);
+        }
+
+        public Size GetContentGridSize()
+        {
+            var width = this.ActualWidth > 600 ? 600 : this.ActualWidth;
+            var height = width / 1.5 + 100;
+            return new Size(width, height);
         }
     }
 }

@@ -73,62 +73,6 @@ namespace MyerSplash.Common
             else SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
 
-        protected virtual void RegisterHandleBackLogic()
-        {
-            try
-            {
-                SystemNavigationManager.GetForCurrentView().BackRequested += BindablePage_BackRequested;
-                if (APIInfoHelper.HasHardwareButton)
-                {
-                    HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
-
-        protected virtual void UnRegisterHandleBackLogic()
-        {
-            try
-            {
-                SystemNavigationManager.GetForCurrentView().BackRequested -= BindablePage_BackRequested;
-                if (APIInfoHelper.HasHardwareButton)
-                {
-                    HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
-
-        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
-        {
-            if (Frame != null)
-            {
-                if (Frame.CanGoBack)
-                {
-                    e.Handled = true;
-                    Frame.GoBack();
-                }
-            }
-        }
-
-        private void BindablePage_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            if (Frame != null)
-            {
-                if (Frame.CanGoBack)
-                {
-                    e.Handled = true;
-                    Frame.GoBack();
-                }
-            }
-        }
-
         /// <summary>
         /// 全局下按下按键
         /// </summary>
@@ -153,8 +97,6 @@ namespace MyerSplash.Common
 
             SetNavigationBackBtn();
 
-            RegisterHandleBackLogic();
-
             Window.Current.SetTitleBar(null);
 
             //resolve global keydown
@@ -176,7 +118,6 @@ namespace MyerSplash.Common
                     NavigationViewModel.Deactivate(null);
                 }
             }
-            UnRegisterHandleBackLogic();
 
             //resolve global keydown
             if (GlobalPageKeyDown != null)

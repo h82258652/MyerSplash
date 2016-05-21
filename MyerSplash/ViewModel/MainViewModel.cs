@@ -84,10 +84,26 @@ namespace MyerSplash.ViewModel
                 if (_refreshCommand != null) return _refreshCommand;
                 return _refreshCommand = new RelayCommand(async () =>
                   {
-                      await Refresh();
+                      await RefreshAsync();
                   });
             }
         }
+
+        private RelayCommand _retryCommand;
+        public RelayCommand RetryCommand
+        {
+            get
+            {
+                if (_retryCommand != null) return _retryCommand;
+                return _retryCommand = new RelayCommand(async() =>
+                  {
+                      ShowFooterLoading = Visibility.Visible;
+                      ShowFooterReloadGrid = Visibility.Collapsed;
+                      await MainDataVM.RetryAsync();
+                  });
+            }
+        }
+
 
         private RelayCommand _openDrawerCommand;
         public RelayCommand OpenDrawerCommand
@@ -98,6 +114,18 @@ namespace MyerSplash.ViewModel
                 return _openDrawerCommand = new RelayCommand(() =>
                   {
                       DrawerOpened = !DrawerOpened;
+                      if(DrawerOpened)
+                      {
+                          NavigationService.HistoryOperationsBeyondFrame.Push(() =>
+                          {
+                              if (DrawerOpened)
+                              {
+                                  DrawerOpened = false;
+                                  return true;
+                              }
+                              else return false;
+                          });
+                      }
                   });
             }
         }
@@ -272,10 +300,12 @@ namespace MyerSplash.ViewModel
                     this.ShowNoItemHint = Visibility.Collapsed;
                     await UpdateLiveTileAsync();
                 }
+                else MainDataVM = new ImageDataViewModel(this);
             }
+            else MainDataVM = new ImageDataViewModel(this);
         }
 
-        private async Task Refresh()
+        private async Task RefreshAsync()
         {
             MainDataVM.MainVM = this;
 
@@ -283,6 +313,12 @@ namespace MyerSplash.ViewModel
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;
 
+            await SaveListDataAsync();
+            await UpdateLiveTileAsync();
+        }
+
+        private async Task SaveListDataAsync()
+        {
             if (this.MainDataVM.DataList?.Count > 0)
             {
                 await SerializerHelper.SerializerToJson<ImageDataViewModel>(this.MainDataVM, CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
@@ -293,7 +329,6 @@ namespace MyerSplash.ViewModel
                     ToastService.SendToast("Got the neweast data :P");
                 }
             }
-            await UpdateLiveTileAsync();
         }
 
         private async Task UpdateLiveTileAsync()
@@ -328,7 +363,7 @@ namespace MyerSplash.ViewModel
             {
                 IsFirstActived = false;
                 await RestoreData();
-                await Refresh();
+                await RefreshAsync();
             }
         }
     }
