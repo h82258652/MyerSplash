@@ -88,12 +88,15 @@ namespace MyerSplash.ViewModel
                 }
 
                 PageIndex = DEFAULT_PAGE_INDEX;
-                DataList = new IncrementalLoadingCollection<T>(count =>
-                {
-                    return Task.Run(() => GetIncrementalListData(PageIndex++));
-                });
 
-                await Task.Delay(200);
+                if(DataList==null)
+                {
+                    DataList = new IncrementalLoadingCollection<T>(count =>
+                    {
+                        return GetIncrementalListData(PageIndex++);
+                    });
+                }
+
                 await DataList.LoadMoreItemsAsync(DEFAULT_PER_PAGE);
 
                 return true;

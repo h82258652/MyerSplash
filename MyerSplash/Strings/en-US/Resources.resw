@@ -117,4 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AllTB.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="LikeTB.Text" xml:space="preserve">
+    <value>Liked</value>
+  </data>
+  <data name="SettingsTB.Text" xml:space="preserve">
+    <value>SETTINGS</value>
+  </data>
+  <data name="AboutTB.Text" xml:space="preserve">
+    <value>ABOUT</value>
+  </data>
+  <data name="CopyUrlTB.Text" xml:space="preserve">
+    <value>COPY URL</value>
+  </data>
+  <data name="SubtitleTB.Text" xml:space="preserve">
+    <value>Free hres photos</value>
+  </data>
 </root>

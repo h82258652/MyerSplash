@@ -18,12 +18,12 @@
             <Image Source="ms-appx:///Assets/Image/The Watchtower.png" Stretch="UniformToFill"/>
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,10">
                 <TextBlock Text="Unsplash" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                <TextBlock Text="Free hres photos" FontSize="20" Foreground="White"/>
+                <TextBlock x:Uid="SubtitleTB" Text="Free hres photos" FontSize="20" Foreground="White"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
             <ListBox
-                        SelectedIndex="{x:Bind MainVM.SelectedIndex,Mode=TwoWay}"  
+                        SelectedIndex="{x:Bind MainVM.SelectedIndex,Mode=TwoWay,FallbackValue=0}"  
                         ItemContainerStyle="{StaticResource MenuListBoxItemStyle}" 
                         Background="{x:Null}"
                         HorizontalAlignment="Center" Margin="0,0,0,60" VerticalAlignment="Top">
@@ -34,7 +34,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <SymbolIcon Symbol="Home" Foreground="White"/>
-                        <TextBlock FontSize="17" Text="ALL" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock x:Uid="AllTB" FontSize="17" Text="ALL" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Height="60">
                         <Grid.ColumnDefinitions>
@@ -42,7 +42,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="&#xE00B;" FontFamily="Segoe MDL2 Assets" AutomationProperties.Name="Favorite" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBlock FontSize="17" Text="LOVED" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock x:Uid="LikeTB" FontSize="17" Text="LOVED" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
                     </Grid>
                 </ListBox.Items>
             </ListBox>
@@ -58,7 +58,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <SymbolIcon Symbol="Setting" Foreground="White"/>
-                        <TextBlock FontSize="17" Text="SETTINGS" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock x:Uid="SettingsTB" FontSize="17" Text="SETTINGS" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
                 <Button Command="{x:Bind MainVM.GoToAboutCommand,Mode=OneWay}" Style="{StaticResource ButtonCommonStyle}" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}">
@@ -68,7 +68,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="&#xE76E;" FontSize="20" FontFamily="Segoe MDL2 Assets" AutomationProperties.Name="Favorite" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBlock FontSize="17" Text="ABOUT" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock x:Uid="AboutTB" FontSize="17" Text="ABOUT" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
             </Grid>

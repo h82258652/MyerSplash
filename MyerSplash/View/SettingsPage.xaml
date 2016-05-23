@@ -302,7 +302,7 @@
                 <ComboBox BorderThickness="1" SelectedIndex="{Binding Source={StaticResource AppSettings},Path=SaveQuality,Mode=TwoWay}" Margin="10,10,18,0" HorizontalAlignment="Stretch" RequestedTheme="Dark">
                     <ComboBoxItem Content="Highest(Up to 8MB)" Style="{StaticResource ComboBoxItemStyle1}"/>
                     <ComboBoxItem Content="High(Up to 3MB)" Style="{StaticResource ComboBoxItemStyle1}"/>
-                    <ComboBoxItem Content="High(500 KB)" Style="{StaticResource ComboBoxItemStyle1}"/>
+                    <ComboBoxItem Content="Medium(500 KB)" Style="{StaticResource ComboBoxItemStyle1}"/>
                 </ComboBox>
                 <!--<TextBlock Text="Save position" Foreground="White" VerticalAlignment="Center" Margin="10,10,0,0"/>
                 <Grid Height="50" Margin="0,10,0,0">
@@ -319,7 +319,7 @@
                         </Border>
                     </Button>
                 </Grid>-->
-                <TextBlock Text="OTHER" Foreground="{StaticResource MyerSplashThemeColor}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,20,0,0" FontSize="20" FontWeight="Bold"/>
+                <TextBlock Text="OTHERS" Foreground="{StaticResource MyerSplashThemeColor}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,20,0,0" FontSize="20" FontWeight="Bold"/>
                 <Button Command="{x:Bind SettingsVM.ClearCacheCommand,Mode=OneWay}" Style="{StaticResource ButtonCommonStyle}" Margin="10,10,10,0" HorizontalAlignment="Stretch">
                     <Border Background="{StaticResource MyerSplashThemeColor}">
                         <TextBlock Margin="10" Text="Clear up cache" HorizontalAlignment="Center"/>

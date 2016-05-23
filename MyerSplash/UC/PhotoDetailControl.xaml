@@ -8,6 +8,14 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <Storyboard x:Name="LikeColorStoryboard">
+            <ColorAnimation From="{StaticResource MyerSplashUnLikedHeartColor}" To="{StaticResource MyerSplashLikedHeartColor}" Duration="0:0:0.2" Storyboard.TargetName="LikeBtnEll" Storyboard.TargetProperty="(LikeBtnEll.Fill).(SolidColorBrush.Color)"/>
+        </Storyboard>
+        <Storyboard x:Name="UnlikeColorStoryboard">
+            <ColorAnimation To="{StaticResource MyerSplashUnLikedHeartColor}" From="{StaticResource MyerSplashLikedHeartColor}" Duration="0:0:0.2" Storyboard.TargetName="LikeBtnEll" Storyboard.TargetProperty="(LikeBtnEll.Fill).(SolidColorBrush.Color)"/>
+        </Storyboard>
+    </UserControl.Resources>
     <Grid x:Name="DetailGrid" Margin="0 5 0 0" Grid.RowSpan="5" SizeChanged="DetailGrid_SizeChanged">
         <Border x:Name="MaskBorder" Tapped="MaskBorder_Tapped" ManipulationMode="TranslateY" ManipulationDelta="DetailGrid_ManipulationDelta" Background="Black" Opacity="0.8"/>
         <Grid x:Name="DetailContentGrid" MaxWidth="600" Background="Transparent">
@@ -24,7 +32,7 @@
                     <Button x:Name="CopyUlrBtn" Click="CopyUlrBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,22" Grid.RowSpan="2" Background="{x:Null}">
                         <Grid>
                             <Border x:Name="CopyUrlBorder" Background="White" CornerRadius="2" Opacity="0.6"/>
-                            <TextBlock x:Name="CopyUrlTB" Margin="15,5" Text="COPY URL" Foreground="Black" FontWeight="Bold"/>
+                            <TextBlock x:Uid="CopyUrlTB" x:Name="CopyUrlTB" Margin="15,5" Text="COPY URL" Foreground="Black" FontWeight="Bold"/>
                         </Grid>
                     </Button>
                 </Grid>
@@ -36,8 +44,21 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-25">
                 <Button x:Name="LikeBtn" Click="LikeBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0" Grid.RowSpan="2" Background="{x:Null}">
                     <Grid>
-                        <Ellipse Width="40" Height="40" Fill="{StaticResource MyerSplashLikeHeartColor}"/>
-                        <TextBlock Text="&#xE006;" FontFamily="Segoe MDL2 Assets" AutomationProperties.Name="Favorite" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Ellipse x:Name="LikeBtnEll" Width="40" Height="40">
+                            <Ellipse.Fill>
+                                <SolidColorBrush Color="{StaticResource MyerSplashUnLikedHeartColor}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <FontIcon x:Name="LikedFontIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE00B;" FontSize="17.333">
+                            <FontIcon.Foreground>
+                                <SolidColorBrush Color="White"/>
+                            </FontIcon.Foreground>
+                        </FontIcon>
+                        <FontIcon x:Name="UnlikedFontIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE006;" FontSize="17.333">
+                            <FontIcon.Foreground>
+                                <SolidColorBrush Color="{StaticResource MyerSplashLikedHeartColor}"/>
+                            </FontIcon.Foreground>
+                        </FontIcon>
                     </Grid>
                 </Button>
                 <Grid Grid.RowSpan="2" Margin="0,0,10,0">

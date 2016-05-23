@@ -12,6 +12,8 @@ using JP.Utils.UI;
 using System.Threading;
 using Windows.Networking.BackgroundTransfer;
 using MyerSplash.Common;
+using GalaSoft.MvvmLight.Command;
+using MyerSplashCustomControl;
 
 namespace MyerSplash.Model
 {
@@ -126,11 +128,52 @@ namespace MyerSplash.Model
             }
         }
 
-        BackgroundDownloader backgroundDownloader = new BackgroundDownloader();
+        private bool _liked;
+        public bool Liked
+        {
+            get
+            {
+                return _liked;
+            }
+            set
+            {
+                if (_liked != value)
+                {
+                    _liked = value;
+                    RaisePropertyChanged(() => Liked);
+                }
+            }
+        }
+
+        private RelayCommand _likeCommand;
+        public RelayCommand LikeCommand
+        {
+            get
+            {
+                if (_likeCommand != null) return _likeCommand;
+                return _likeCommand = new RelayCommand(async() =>
+                  {
+                      Liked =! Liked;
+                      if(Liked)
+                      {
+                          await App.MainVM.AddToLlikedListAndSaveAsync(this);
+                          ToastService.SendToast("Liked this photo.");
+                      }
+                      else
+                      {
+                          await App.MainVM.RemoveFromLlikedListAndSaveAsync(this);
+                          ToastService.SendToast("Unliked this photo.");
+                      }
+                  });
+            }
+        }
+
+
+        private BackgroundDownloader _backgroundDownloader = new BackgroundDownloader();
 
         public UnsplashImage()
         {
-
+            
         }
 
         public async Task RestoreAsync()
@@ -189,9 +232,9 @@ namespace MyerSplash.Model
             var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
 
             //backgroundDownloader.FailureToastNotification = ToastHelper.CreateToastNotification("Failed to download :-(", "You may cancel it. Otherwise please check your network.");
-            backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Savad:D", "You can find it in MySplash folder.");
+            _backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Savad:D", "You can find it in MySplash folder.");
 
-            var downloadOperation = backgroundDownloader.CreateDownload(new Uri(url), newFile);
+            var downloadOperation = _backgroundDownloader.CreateDownload(new Uri(url), newFile);
 
             var progress = new Progress<DownloadOperation>();
             try

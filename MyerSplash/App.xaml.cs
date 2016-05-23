@@ -21,6 +21,8 @@ namespace MyerSplash
     {
         public static CacheUtil CacheUtilInstance { get; set; }
 
+        public static ViewModel.MainViewModel MainVM { get; set; }
+
         public static AppSettings AppSettings
         {
             get
@@ -65,6 +67,8 @@ namespace MyerSplash
 #endif
             CacheUtilInstance = new CacheUtil();
             await CacheUtilInstance.LoadAsync();
+
+            GlobalLocaleHelper.SetupLang(null);
 
             Frame rootFrame = Window.Current.Content as Frame;
 

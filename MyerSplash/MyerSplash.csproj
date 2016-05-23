@@ -108,6 +108,7 @@
     <Compile Include="Common\AppSettings.cs" />
     <Compile Include="Common\BindablePage.cs" />
     <Compile Include="Common\CachedFileNames.cs" />
+    <Compile Include="Common\GlobalLocaleHelper.cs" />
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="Common\ToastHelper.cs" />
     <Compile Include="LiveTile\LiveTileUpdater.cs" />

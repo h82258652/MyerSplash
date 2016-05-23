@@ -35,7 +35,7 @@ namespace MyerSplash.View
         }
 
         public static readonly DependencyProperty IsLoadingProperty =
-            DependencyProperty.Register("IsLoading", typeof(bool), typeof(MainPage), new PropertyMetadata(false, OnLoadingPropertyChanged));
+            DependencyProperty.Register("IsLoading", typeof(bool), typeof(MainViewModel), new PropertyMetadata(false, OnLoadingPropertyChanged));
 
         public static void OnLoadingPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

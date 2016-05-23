@@ -39,7 +39,7 @@ namespace MyerSplash.ViewModel
         {
             try
             {
-                var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(8000).Token);
+                var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(2000).Token);
                 if (result.IsSuccessful)
                 {
                     var list = UnsplashImage.ParseListFromJson(result.JsonSrc);

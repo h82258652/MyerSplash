@@ -1,5 +1,4 @@
 ﻿using JP.Utils.UI;
-using MyerSplash.Common;
 using MyerSplash.Model;
 using MyerSplashCustomControl;
 using System;
@@ -63,6 +62,7 @@ namespace MyerSplash.UC
                 control.CopyUrlBorder.Background = new SolidColorBrush(Colors.White);
                 control.CopyUrlTB.Foreground = new SolidColorBrush(Colors.Black);
             }
+            control.UpdateLikeState();
         }
 
         public PhotoDetailControl()
@@ -259,7 +259,24 @@ namespace MyerSplash.UC
         //TODO:
         private void LikeBtn_Click(object sender, RoutedEventArgs e)
         {
-            ToastService.SendToast("Still working on this. :D", 2000);
+            UnsplashImage.LikeCommand.Execute(null);
+            UpdateLikeState();
+        }
+
+        private void UpdateLikeState()
+        {
+            if(UnsplashImage.Liked)
+            {
+                LikedFontIcon.Visibility = Visibility.Visible;
+                UnlikedFontIcon.Visibility = Visibility.Collapsed;
+                LikeColorStoryboard.Begin();
+            }
+            else
+            {
+                LikedFontIcon.Visibility = Visibility.Collapsed;
+                UnlikedFontIcon.Visibility = Visibility.Visible;
+                UnlikeColorStoryboard.Begin();
+            }
         }
 
         private void CopyUlrBtn_Click(object sender, RoutedEventArgs e)
