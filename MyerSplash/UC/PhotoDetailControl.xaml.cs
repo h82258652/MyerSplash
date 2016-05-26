@@ -279,7 +279,7 @@ namespace MyerSplash.UC
             }
         }
 
-        private void CopyUlrBtn_Click(object sender, RoutedEventArgs e)
+        private void CopyURLBtn_Click(object sender, RoutedEventArgs e)
         {
             DataPackage dataPackage = new DataPackage();
             dataPackage.SetText(UnsplashImage.GetSaveImageUrlFromSettings());

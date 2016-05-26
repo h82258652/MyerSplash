@@ -351,6 +351,8 @@ namespace MyerSplash.ViewModel
         {
             MainDataVM.MainVM = this;
 
+            MainList = MainDataVM.DataList;
+
             IsRefreshing = true;
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;
@@ -364,8 +366,10 @@ namespace MyerSplash.ViewModel
             if (this.MainDataVM.DataList?.Count > 0)
             {
                 await SerializerHelper.SerializerToJson<IncrementalLoadingCollection<UnsplashImage>>(this.MainDataVM.DataList, CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
-                if (MainList?.ToList().FirstOrDefault()?.ID != MainDataVM?.DataList?.FirstOrDefault()?.ID && SelectedIndex==0)
-                    MainList = MainDataVM.DataList;
+                //if (MainList?.ToList().FirstOrDefault()?.ID != MainDataVM?.DataList?.FirstOrDefault()?.ID && SelectedIndex == 0)
+                //{
+                //    MainList = MainDataVM.DataList;
+                //}
             }
         }
 

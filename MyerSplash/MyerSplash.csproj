@@ -98,8 +98,6 @@
     </Content>
     <None Include="MyerSplash_StoreKey.pfx" />
     <None Include="project.json" />
-    <PRIResource Include="Strings\zh-CN\Resources.resw" />
-    <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -204,6 +202,15 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\tran_logo.scale-100.png" />
+    <Content Include="Assets\tran_logo.scale-125.png" />
+    <Content Include="Assets\tran_logo.scale-200.png" />
+    <Content Include="Assets\tran_logo.targetsize-176.png" />
+    <Content Include="Assets\tran_logo.targetsize-176_altform-unplated.png" />
+    <Content Include="Assets\tran_logo.targetsize-44.png" />
+    <Content Include="Assets\tran_logo.targetsize-44_altform-unplated.png" />
+    <Content Include="Assets\tran_logo.targetsize-88.png" />
+    <Content Include="Assets\tran_logo.targetsize-88_altform-unplated.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -286,7 +293,9 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Strings\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

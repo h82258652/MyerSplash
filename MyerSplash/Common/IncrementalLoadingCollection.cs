@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,19 +12,26 @@ using Windows.UI.Xaml.Data;
 
 namespace MyerSplash.Common
 {
+    public class ResultData<T>
+    {
+        public IEnumerable<T> Data { get; set; }
+
+        public bool HasMoreItems { get; set; }
+    }
+
     public class IncrementalLoadingCollection<T> : ObservableCollection<T>, ISupportIncrementalLoading
     {
         // 这里为了简单使用了Tuple<IList<T>, bool>作为返回值，第一项是新项目集合，第二项是否还有更多，也可以自定义实体类
-        Func<uint, Task<Tuple<List<T>, bool>>> _dataFetchDelegate = null;
+        Func<uint, Task<ResultData<T>>> _dataFetchDelegate = null;
 
         public IncrementalLoadingCollection()
         {
 
         }
 
-        public IncrementalLoadingCollection(Func<uint, Task<Tuple<List<T>, bool>>> dataFetchDelegate)
+        public IncrementalLoadingCollection(Func<uint, Task<ResultData<T>>> dataFetchDelegate)
         {
-            if (dataFetchDelegate == null) throw new ArgumentNullException("dataFetchDelegate");
+            if (dataFetchDelegate == null) throw new ArgumentNullException("dataFetchDelegate should not be null");
 
             this._dataFetchDelegate = dataFetchDelegate;
         }
@@ -55,7 +63,7 @@ namespace MyerSplash.Common
                 // 我们忽略了CancellationToken，因为我们暂时不需要取消，需要的可以加上
                 var result = await this._dataFetchDelegate(count);
 
-                var items = result.Item1;
+                var items = result.Data;
 
                 if (items != null)
                 {
@@ -70,15 +78,15 @@ namespace MyerSplash.Common
                 }
 
                 // 是否还有更多
-                this.HasMoreItems = result.Item2;
+                this.HasMoreItems = result.HasMoreItems;
 
                 await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     // 加载完成事件
-                    this.OnLoadMoreCompleted?.Invoke(items == null ? 0 : items.Count);
+                    this.OnLoadMoreCompleted?.Invoke(items == null ? 0 : items.Count());
                 });
 
-                return new LoadMoreItemsResult { Count = items == null ? 0 : (uint)items.Count };
+                return new LoadMoreItemsResult { Count = items == null ? 0 : (uint)items.Count() };
             }
             finally
             {

@@ -15,7 +15,7 @@ namespace MyerSplash.ViewModel
     public abstract class DataViewModelBase<T> : ViewModelBase
     {
         public static int DEFAULT_PAGE_INDEX => 1;
-        public static uint DEFAULT_PER_PAGE { get; set; }= 20u;
+        public static uint DEFAULT_PER_PAGE { get; set; } = 20u;
 
         private int PageIndex { get; set; } = DEFAULT_PAGE_INDEX;
 
@@ -89,13 +89,10 @@ namespace MyerSplash.ViewModel
 
                 PageIndex = DEFAULT_PAGE_INDEX;
 
-                if(DataList==null)
+                DataList = new IncrementalLoadingCollection<T>(count =>
                 {
-                    DataList = new IncrementalLoadingCollection<T>(count =>
-                    {
-                        return GetIncrementalListData(PageIndex++);
-                    });
-                }
+                    return GetIncrementalListData(PageIndex++);
+                });
 
                 await DataList.LoadMoreItemsAsync(DEFAULT_PER_PAGE);
 
@@ -113,14 +110,16 @@ namespace MyerSplash.ViewModel
             await DataList.LoadMoreItemsAsync(DEFAULT_PER_PAGE);
         }
 
-        private async Task<Tuple<List<T>, bool>> GetIncrementalListData(int pageIndex)
+        private async Task<ResultData<T>> GetIncrementalListData(int pageIndex)
         {
             IEnumerable<T> newList = new List<T>();
             bool HasMoreItems = false;
             try
             {
                 var respList = await GetList(pageIndex);
+
                 newList = respList;
+
                 if (newList == null || newList.Count() == 0)
                 {
                     HasMoreItems = false;
@@ -140,7 +139,7 @@ namespace MyerSplash.ViewModel
             {
                 var task = ExceptionHelper.WriteRecordAsync(e, nameof(DataViewModelBase<T>), nameof(GetIncrementalListData));
             }
-            return Tuple.Create(newList.ToList(), HasMoreItems);
+            return new ResultData<T>() { Data = newList, HasMoreItems = HasMoreItems };
         }
 
         protected abstract Task<IEnumerable<T>> GetList(int pageIndex);
