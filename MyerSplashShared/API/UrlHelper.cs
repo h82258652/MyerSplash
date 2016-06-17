@@ -12,9 +12,9 @@ namespace MyerSplashShared.API
         public static string HOST => "api.unsplash.com";
         public static string AppKey => "403d9934ce4bb8dbef44765692144e8c6fac6d2698950cb40b07397d6c6635fe";
 
-        public static string GetImages => $"http://{HOST}/photos/?";
+        public static string GetImages => $"https://{HOST}/photos/?";
 
-        public static string SearchImages => $"http://{HOST}/photos/search?";
+        public static string SearchImages => $"https://{HOST}/photos/search?";
 
         public static string MakeFullUrlForGetReq(string baseUrl, List<KeyValuePair<string, string>> paramList)
         {

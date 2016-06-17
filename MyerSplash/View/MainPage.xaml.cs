@@ -304,6 +304,8 @@ namespace MyerSplash.View
 
         private void DrawerControl_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
+            if (e.Delta.Translation.X > 0) return;
+
             if (_drawerMaskVisual.Opacity > 0)
             {
                 _drawerMaskVisual.Opacity -= 0.01f;

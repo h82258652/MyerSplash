@@ -305,7 +305,7 @@ namespace MyerSplash.ViewModel
             var file = await CacheUtil.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.MainListFileName);
             if (file != null)
             {
-                var list = await SerializerHelper.DeserializeFromJsonByFileName<IncrementalLoadingCollection<UnsplashImage>>(CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
+                var list = await SerializerHelper.DeserializeFromJsonByFile<IncrementalLoadingCollection<UnsplashImage>>(CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
                 if (list != null)
                 {
                     this.MainDataVM = new ImageDataViewModel(this);
@@ -332,7 +332,7 @@ namespace MyerSplash.ViewModel
             var file = await CacheUtil.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.LikedListFileName);
             if (file != null)
             {
-                var list = await SerializerHelper.DeserializeFromJsonByFileName<ObservableCollection<UnsplashImage>>(CachedFileNames.LikedListFileName, CacheUtil.GetCachedFileFolder());
+                var list = await SerializerHelper.DeserializeFromJsonByFile<ObservableCollection<UnsplashImage>>(CachedFileNames.LikedListFileName, CacheUtil.GetCachedFileFolder());
                 if (list != null)
                 {
                     this.LikedList = list;

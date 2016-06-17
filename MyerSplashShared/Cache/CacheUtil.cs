@@ -63,7 +63,7 @@ namespace MyerSplashShared.API
         public async Task LoadAsync()
         {
             var tempFolder = GetCachedFileFolder();
-            this.CachedFiles = await SerializerHelper.DeserializeFromJsonByFileName<Dictionary<string, string>>("CachedFiles", tempFolder);
+            this.CachedFiles = await SerializerHelper.DeserializeFromJsonByFile<Dictionary<string, string>>("CachedFiles", tempFolder);
             if (this.CachedFiles == null)
             {
                 CachedFiles = new Dictionary<string, string>();
