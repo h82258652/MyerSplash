@@ -202,7 +202,7 @@ namespace MyerSplash.View
         {
             DetailControl.Visibility = Visibility.Visible;
 
-            DetailControl.UnsplashImage = img;
+            DetailControl.CurrentImage = img;
 
             var currentPos = container.TransformToVisual(ListControl).TransformPoint(new Point(0, 0));
             var targetPos = DetailControl.GetContentGridPosition();
@@ -215,8 +215,13 @@ namespace MyerSplash.View
 
             NavigationService.HistoryOperationsBeyondFrame.Push(() =>
             {
-                DetailControl.HideDetailControl();
-                return true;
+                var content = Frame.Content;
+                if (content.GetType() == typeof(MainPage))
+                {
+                    DetailControl.HideDetailControl();
+                    return true;
+                }
+                else return false;
             });
         }
 
@@ -328,5 +333,14 @@ namespace MyerSplash.View
             }
         }
         #endregion
+
+        private void DrawerControl_OnDrawerSelectedIndexChanged(int index)
+        {
+            if (index == 0)
+            {
+                ToggleRefreshBtnAnimation(true);
+            }
+            else ToggleRefreshBtnAnimation(false);
+        }
     }
 }

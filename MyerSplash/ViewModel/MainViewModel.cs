@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Media;
 using JP.Utils.UI;
 using MyerSplashShared.API;
 using System.Linq;
+using MyerSplashCustomControl;
 
 namespace MyerSplash.ViewModel
 {
@@ -311,7 +312,6 @@ namespace MyerSplash.ViewModel
                     this.MainDataVM = new ImageDataViewModel(this);
                     list.ToList().ForEach(s => MainDataVM.DataList.Add(s));
 
-                    this.MainList = MainDataVM.DataList;
                     for (int i = 0; i < MainDataVM.DataList.Count; i++)
                     {
                         var item = MainDataVM.DataList[i];
@@ -351,11 +351,11 @@ namespace MyerSplash.ViewModel
         {
             MainDataVM.MainVM = this;
 
-            MainList = MainDataVM.DataList;
-
             IsRefreshing = true;
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;
+
+            MainList = MainDataVM.DataList;
 
             await SaveMainListDataAsync();
             await UpdateLiveTileAsync();

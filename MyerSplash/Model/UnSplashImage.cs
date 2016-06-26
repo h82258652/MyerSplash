@@ -232,7 +232,7 @@ namespace MyerSplash.Model
             var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
 
             //backgroundDownloader.FailureToastNotification = ToastHelper.CreateToastNotification("Failed to download :-(", "You may cancel it. Otherwise please check your network.");
-            _backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Savad:D", "You can find it in MySplash folder.");
+            _backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Saved:D", "You can find it in MySplash folder.");
 
             var downloadOperation = _backgroundDownloader.CreateDownload(new Uri(url), newFile);
 

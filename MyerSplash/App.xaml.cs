@@ -101,6 +101,11 @@ namespace MyerSplash
             Window.Current.Activate();
 
             TitleBarHelper.SetUpThemeTitleBar();
+            if(DeviceHelper.IsMobile)
+            {
+                StatusBarHelper.SetUpStatusBar();
+            }
+
             SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
             if (APIInfoHelper.HasHardwareButton)
             {

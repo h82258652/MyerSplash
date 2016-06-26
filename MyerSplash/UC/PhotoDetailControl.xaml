@@ -1,93 +1,197 @@
-﻿<UserControl
-    x:Class="MyerSplash.UC.PhotoDetailControl"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MyerSplash.UC"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+﻿<UserControl x:Class="MyerSplash.UC.PhotoDetailControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:MyerSplash.UC"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="600"
+             d:DesignWidth="900"
+             mc:Ignorable="d">
     <UserControl.Resources>
         <Storyboard x:Name="LikeColorStoryboard">
-            <ColorAnimation From="{StaticResource MyerSplashUnLikedHeartColor}" To="{StaticResource MyerSplashLikedHeartColor}" Duration="0:0:0.2" Storyboard.TargetName="LikeBtnEll" Storyboard.TargetProperty="(LikeBtnEll.Fill).(SolidColorBrush.Color)"/>
+            <ColorAnimation Duration="0:0:0.2"
+                            From="{StaticResource MyerSplashUnLikedHeartColor}"
+                            Storyboard.TargetName="LikeBtnEll"
+                            Storyboard.TargetProperty="(LikeBtnEll.Fill).(SolidColorBrush.Color)"
+                            To="{StaticResource MyerSplashLikedHeartColor}" />
         </Storyboard>
         <Storyboard x:Name="UnlikeColorStoryboard">
-            <ColorAnimation To="{StaticResource MyerSplashUnLikedHeartColor}" From="{StaticResource MyerSplashLikedHeartColor}" Duration="0:0:0.2" Storyboard.TargetName="LikeBtnEll" Storyboard.TargetProperty="(LikeBtnEll.Fill).(SolidColorBrush.Color)"/>
+            <ColorAnimation Duration="0:0:0.2"
+                            From="{StaticResource MyerSplashLikedHeartColor}"
+                            Storyboard.TargetName="LikeBtnEll"
+                            Storyboard.TargetProperty="(LikeBtnEll.Fill).(SolidColorBrush.Color)"
+                            To="{StaticResource MyerSplashUnLikedHeartColor}" />
         </Storyboard>
     </UserControl.Resources>
-    <Grid x:Name="DetailGrid" Margin="0 5 0 0" Grid.RowSpan="5" SizeChanged="DetailGrid_SizeChanged">
-        <Border x:Name="MaskBorder" Tapped="MaskBorder_Tapped" ManipulationMode="TranslateY" ManipulationDelta="DetailGrid_ManipulationDelta" Background="Black" Opacity="0.8"/>
-        <Grid x:Name="DetailContentGrid" MaxWidth="600" Background="Transparent">
+    <Grid x:Name="DetailGrid"
+          Grid.RowSpan="5"
+          Margin="0 5 0 0"
+          SizeChanged="DetailGrid_SizeChanged">
+        <Border x:Name="MaskBorder"
+                Margin="0,-20,0,0"
+                Background="Black"
+                ManipulationDelta="DetailGrid_ManipulationDelta"
+                ManipulationMode="TranslateY"
+                Opacity="0.8"
+                Tapped="MaskBorder_Tapped" />
+        <Grid x:Name="DetailContentGrid"
+              MaxWidth="600"
+              Background="Transparent">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="100"/>
+                <RowDefinition />
+                <RowDefinition Height="100" />
             </Grid.RowDefinitions>
-            <Grid Grid.Row="1" x:Name="InfoPlaceHolderGrid" SizeChanged="InfoPlaceHolderGrid_SizeChanged">
+            <Grid x:Name="InfoPlaceHolderGrid"
+                  Grid.Row="1"
+                  SizeChanged="InfoPlaceHolderGrid_SizeChanged">
                 <Grid x:Name="InfoGrid" Grid.Row="1">
-                    <StackPanel Margin="20,20,150,20" VerticalAlignment="Center" HorizontalAlignment="Left">
-                        <TextBlock x:Name="ByTB" Text="by" Foreground="#CCFFFFFF" FontSize="12"/>
-                        <TextBlock x:Name="NameTB" TextTrimming="CharacterEllipsis" Text="JuniperPhoton" Foreground="#CCFFFFFF" FontSize="20" FontWeight="Bold"/>
+                    <StackPanel Margin="20,20,150,20"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                        <TextBlock x:Name="ByTB"
+                                   FontSize="12"
+                                   Foreground="#CCFFFFFF"
+                                   Text="by" />
+                        <TextBlock x:Name="NameTB"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="#CCFFFFFF"
+                                   Text="JuniperPhoton"
+                                   TextTrimming="CharacterEllipsis" />
                     </StackPanel>
-                    <Button x:Name="CopyUlrBtn" Click="CopyURLBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,22" Grid.RowSpan="2" Background="{x:Null}">
+                    <Button x:Name="CopyUlrBtn"
+                            Grid.RowSpan="2"
+                            Margin="0,0,10,22"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Background="{x:Null}"
+                            Click="CopyURLBtn_Click"
+                            Style="{StaticResource ButtonCommonStyle}">
                         <Grid>
-                            <Border x:Name="CopyUrlBorder" Background="White" CornerRadius="2" Opacity="0.6"/>
-                            <TextBlock x:Uid="CopyUrlTB" x:Name="CopyUrlTB" Margin="15,5" Text="COPY URL" Foreground="Black" FontWeight="Bold"/>
+                            <Border x:Name="CopyUrlBorder"
+                                    Background="White"
+                                    CornerRadius="2"
+                                    Opacity="0.6" />
+                            <TextBlock x:Uid="CopyUrlTB"
+                                       x:Name="CopyUrlTB"
+                                       Margin="15,5"
+                                       FontWeight="Bold"
+                                       Foreground="Black"
+                                       Text="COPY URL" />
                         </Grid>
                     </Button>
                 </Grid>
             </Grid>
             <Grid>
-                <Border Background="Black"/>
-                <Image x:Name="LargeImage" Stretch="UniformToFill"/>
+                <Border Background="#FF1B1B1B" Margin="0" />
+                <ScrollViewer 
+                              HorizontalScrollMode="Disabled"
+                              Style="{StaticResource ScrollViewerCommonStyle}"
+                              VerticalScrollBarVisibility="Auto"
+                              VerticalScrollMode="Auto" Background="{x:Null}" BorderBrush="{x:Null}">
+                    <Image x:Name="LargeImage" Stretch="UniformToFill" />
+                </ScrollViewer>
             </Grid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-25">
-                <Button x:Name="LikeBtn" Click="LikeBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0" Grid.RowSpan="2" Background="{x:Null}">
+            <StackPanel Margin="0,0,0,-25"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Orientation="Horizontal">
+                <Button x:Name="LikeBtn"
+                        Grid.RowSpan="2"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{x:Null}"
+                        Click="LikeBtn_Click"
+                        Style="{StaticResource ButtonCommonStyle}">
                     <Grid>
-                        <Ellipse x:Name="LikeBtnEll" Width="40" Height="40">
+                        <Ellipse x:Name="LikeBtnEll"
+                                 Width="40"
+                                 Height="40">
                             <Ellipse.Fill>
-                                <SolidColorBrush Color="{StaticResource MyerSplashUnLikedHeartColor}"/>
+                                <SolidColorBrush Color="{StaticResource MyerSplashUnLikedHeartColor}" />
                             </Ellipse.Fill>
                         </Ellipse>
-                        <FontIcon x:Name="LikedFontIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE00B;" FontSize="17.333">
+                        <FontIcon x:Name="LikedFontIcon"
+                                  FontFamily="Segoe MDL2 Assets"
+                                  FontSize="17.333"
+                                  Glyph="&#xE00B;">
                             <FontIcon.Foreground>
-                                <SolidColorBrush Color="White"/>
+                                <SolidColorBrush Color="White" />
                             </FontIcon.Foreground>
                         </FontIcon>
-                        <FontIcon x:Name="UnlikedFontIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE006;" FontSize="17.333">
+                        <FontIcon x:Name="UnlikedFontIcon"
+                                  FontFamily="Segoe MDL2 Assets"
+                                  FontSize="17.333"
+                                  Glyph="&#xE006;">
                             <FontIcon.Foreground>
-                                <SolidColorBrush Color="{StaticResource MyerSplashLikedHeartColor}"/>
+                                <SolidColorBrush Color="{StaticResource MyerSplashLikedHeartColor}" />
                             </FontIcon.Foreground>
                         </FontIcon>
                     </Grid>
                 </Button>
                 <Grid Grid.RowSpan="2" Margin="0,0,10,0">
-                    <Button x:Name="OKBtn" IsEnabled="False" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
+                    <Button x:Name="OKBtn"
+                            Grid.RowSpan="2"
+                            Margin="0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{x:Null}"
+                            IsEnabled="False"
+                            Style="{StaticResource ButtonCommonStyle}">
                         <Grid>
-                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                            <SymbolIcon Symbol="Accept" Foreground="White"/>
+                            <Ellipse Width="50"
+                                     Height="50"
+                                     Fill="{StaticResource MyerSplashThemeColor}" />
+                            <SymbolIcon Foreground="White" Symbol="Accept" />
                         </Grid>
                     </Button>
-                    <Button x:Name="DownloadBtn" Click="DownloadBtn_Click" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
+                    <Button x:Name="DownloadBtn"
+                            Grid.RowSpan="2"
+                            Margin="0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{x:Null}"
+                            Click="DownloadBtn_Click"
+                            Style="{StaticResource ButtonCommonStyle}">
                         <Grid>
-                            <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                            <SymbolIcon Symbol="Download" Foreground="White"/>
+                            <Ellipse Width="50"
+                                     Height="50"
+                                     Fill="{StaticResource MyerSplashThemeColor}" />
+                            <SymbolIcon Foreground="White" Symbol="Download" />
                         </Grid>
                     </Button>
                     <Grid x:Name="LoadingHintGrid">
-                        <Button x:Name="CancelBtn" Click="CancelBtn_Click" IsEnabled="True" Style="{StaticResource ButtonCommonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.RowSpan="2" Background="{x:Null}">
+                        <Button x:Name="CancelBtn"
+                                Grid.RowSpan="2"
+                                Margin="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{x:Null}"
+                                Click="CancelBtn_Click"
+                                IsEnabled="True"
+                                Style="{StaticResource ButtonCommonStyle}">
                             <Grid>
-                                <Ellipse Width="50" Height="50" Fill="{StaticResource MyerSplashThemeColor}"/>
-                                <SymbolIcon Symbol="Cancel" Foreground="White"/>
+                                <Ellipse Width="50"
+                                         Height="50"
+                                         Fill="{StaticResource MyerSplashThemeColor}" />
+                                <SymbolIcon Foreground="White" Symbol="Cancel" />
                             </Grid>
                         </Button>
                         <Canvas Width="50" Height="50">
-                            <Path x:Name="LoadingPath" Stroke="#CCFFFFFF" Width="50" Height="50" StrokeThickness="3">
+                            <Path x:Name="LoadingPath"
+                                  Width="50"
+                                  Height="50"
+                                  Stroke="#CCFFFFFF"
+                                  StrokeThickness="3">
                                 <Path.Data>
                                     <PathGeometry>
                                         <PathGeometry.Figures>
-                                            <PathFigure StartPoint="25,1" IsClosed="False">
-                                                <ArcSegment Point="49,25" Size="24 24" IsLargeArc="False" SweepDirection="Clockwise"/>
+                                            <PathFigure IsClosed="False" StartPoint="25,1">
+                                                <ArcSegment IsLargeArc="False"
+                                                            Point="49,25"
+                                                            Size="24 24"
+                                                            SweepDirection="Clockwise" />
                                             </PathFigure>
                                         </PathGeometry.Figures>
                                     </PathGeometry>

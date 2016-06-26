@@ -18,7 +18,7 @@ namespace MyerSplash.Common
             }
         }
 
-        public static Stack<Func<bool>> HistoryOperationsBeyondFrame = new Stack<Func<bool>>();
+        public static Stack<Func<bool>> HistoryOperationsBeyondFrame { get; set; } = new Stack<Func<bool>>();
 
         public static void NaivgateToPage(Type pagetype, object param = null)
         {

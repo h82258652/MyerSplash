@@ -32,14 +32,16 @@ namespace MyerSplash.UC
 
         private CancellationTokenSource _cts;
 
-        public UnsplashImage UnsplashImage
+        public UnsplashImage CurrentImage
         {
             get { return (UnsplashImage)GetValue(UnsplashImageProperty); }
             set { SetValue(UnsplashImageProperty, value); }
         }
 
         public static readonly DependencyProperty UnsplashImageProperty =
-            DependencyProperty.Register("UnsplashImage", typeof(UnsplashImage), typeof(PhotoDetailControl), new PropertyMetadata(null, OnImageChanged));
+            DependencyProperty.Register("CurrentImage", typeof(UnsplashImage), typeof(PhotoDetailControl), new PropertyMetadata(null, OnImageChanged));
+
+        public bool IsShown { get; set; }
 
         private static void OnImageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -121,6 +123,8 @@ namespace MyerSplash.UC
 
         public void ToggleDetailGridAnimation(bool show)
         {
+            IsShown = show;
+
             DetailGrid.Visibility = Visibility.Visible;
 
             var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
@@ -215,10 +219,15 @@ namespace MyerSplash.UC
             try
             {
                 _cts = new CancellationTokenSource();
-                await this.UnsplashImage.DownloadFullImage(_cts.Token);
+                await this.CurrentImage.DownloadFullImage(_cts.Token);
                 ToggleDownloadingBtnAnimation(false);
-                ToggleOkBtnAnimation(true);
-                ToastService.SendToast("Saved :D", TimeSpan.FromMilliseconds(1000));
+
+                //Still in this page
+                if(IsShown)
+                {
+                    ToggleOkBtnAnimation(true);
+                    ToastService.SendToast("Saved :D", TimeSpan.FromMilliseconds(1000));
+                }
             }
             catch (OperationCanceledException)
             {
@@ -259,13 +268,13 @@ namespace MyerSplash.UC
         //TODO:
         private void LikeBtn_Click(object sender, RoutedEventArgs e)
         {
-            UnsplashImage.LikeCommand.Execute(null);
+            CurrentImage.LikeCommand.Execute(null);
             UpdateLikeState();
         }
 
         private void UpdateLikeState()
         {
-            if(UnsplashImage.Liked)
+            if(CurrentImage.Liked)
             {
                 LikedFontIcon.Visibility = Visibility.Visible;
                 UnlikedFontIcon.Visibility = Visibility.Collapsed;
@@ -282,7 +291,7 @@ namespace MyerSplash.UC
         private void CopyURLBtn_Click(object sender, RoutedEventArgs e)
         {
             DataPackage dataPackage = new DataPackage();
-            dataPackage.SetText(UnsplashImage.GetSaveImageUrlFromSettings());
+            dataPackage.SetText(CurrentImage.GetSaveImageUrlFromSettings());
             Clipboard.SetContent(dataPackage);
             ToastService.SendToast("Copied :D");
         }

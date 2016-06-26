@@ -14,12 +14,12 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
-
 namespace MyerSplash.UC
 {
     public sealed partial class DrawerControl : UserControl
     {
+        public event Action<int> OnDrawerSelectedIndexChanged;
+
         private MainViewModel MainVM
         {
             get
@@ -31,6 +31,11 @@ namespace MyerSplash.UC
         public DrawerControl()
         {
             this.InitializeComponent();
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OnDrawerSelectedIndexChanged?.Invoke(DrawerListBox.SelectedIndex);
         }
     }
 }
