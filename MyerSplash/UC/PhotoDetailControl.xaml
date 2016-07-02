@@ -28,7 +28,7 @@
           Margin="0 5 0 0"
           SizeChanged="DetailGrid_SizeChanged">
         <Border x:Name="MaskBorder"
-                Margin="0,-20,0,0"
+                Margin="0,-30,0,0"
                 Background="Black"
                 ManipulationDelta="DetailGrid_ManipulationDelta"
                 ManipulationMode="TranslateY"
@@ -36,7 +36,7 @@
                 Tapped="MaskBorder_Tapped" />
         <Grid x:Name="DetailContentGrid"
               MaxWidth="600"
-              Background="Transparent">
+              Background="Transparent" Margin="0,-5,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="100" />
@@ -51,7 +51,7 @@
                         <TextBlock x:Name="ByTB"
                                    FontSize="12"
                                    Foreground="#CCFFFFFF"
-                                   Text="by" />
+                                   Text="photo by" />
                         <TextBlock x:Name="NameTB"
                                    FontSize="20"
                                    FontWeight="Bold"

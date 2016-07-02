@@ -321,7 +321,7 @@ namespace MyerSplash.View
 
         private void DrawerControl_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         {
-            DrawerMaskBorder.Visibility = Visibility.Collapsed;
+            //DrawerMaskBorder.Visibility = Visibility.Collapsed;
 
             if (e.Cumulative.Translation.X <= -30)
             {
@@ -340,7 +340,12 @@ namespace MyerSplash.View
             {
                 ToggleRefreshBtnAnimation(true);
             }
-            else ToggleRefreshBtnAnimation(false);
+            else
+            {
+                ToggleRefreshBtnAnimation(false);
+                ToggleTitleBarAnimation(true);
+            }
+
         }
     }
 }

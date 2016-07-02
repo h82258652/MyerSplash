@@ -47,7 +47,6 @@ namespace MyerSplash
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            var task = ExceptionHelper.WriteRecordAsync(e.Exception, nameof(App), nameof(App_UnhandledException));
             e.Handled = true;
         }
 

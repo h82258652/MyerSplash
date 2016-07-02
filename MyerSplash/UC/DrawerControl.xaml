@@ -5,7 +5,7 @@
              xmlns:local="using:MyerSplash.UC"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="700"
-             d:DesignWidth="400"
+             d:DesignWidth="300"
              mc:Ignorable="d">
 
     <Grid Background="{StaticResource MyerSplashDarkColor}">
@@ -21,11 +21,11 @@
                 <TextBlock FontSize="20"
                            FontWeight="Bold"
                            Foreground="White"
-                           Text="Unsplash" />
+                           Text="MyerSplash" />
                 <TextBlock x:Uid="SubtitleTB"
                            FontSize="20"
                            Foreground="White"
-                           Text="Free hres photos" />
+                           Text="Photos are from Unsplash." />
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
