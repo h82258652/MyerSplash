@@ -39,6 +39,11 @@ namespace MyerSplash.ViewModel
         {
             try
             {
+                if (pageIndex >= 2)
+                {
+                    MainVM.ShowFooterLoading = Visibility.Visible;
+                }
+
                 var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(10000).Token);
                 if (result.IsSuccessful)
                 {

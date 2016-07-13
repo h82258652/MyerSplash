@@ -14,6 +14,8 @@ using Windows.Networking.BackgroundTransfer;
 using MyerSplash.Common;
 using GalaSoft.MvvmLight.Command;
 using MyerSplashCustomControl;
+using JP.Utils.Data;
+using MyerSplash.ViewModel;
 
 namespace MyerSplash.Model
 {
@@ -151,18 +153,18 @@ namespace MyerSplash.Model
             get
             {
                 if (_likeCommand != null) return _likeCommand;
-                return _likeCommand = new RelayCommand(async() =>
+                return _likeCommand = new RelayCommand(async () =>
                   {
-                      Liked =! Liked;
-                      if(Liked)
+                      Liked = !Liked;
+                      if (Liked)
                       {
                           await App.MainVM.AddToLlikedListAndSaveAsync(this);
-                          ToastService.SendToast("Liked this photo.");
+                          ToastService.SendToast("Stored this photo.");
                       }
                       else
                       {
                           await App.MainVM.RemoveFromLlikedListAndSaveAsync(this);
-                          ToastService.SendToast("Unliked this photo.");
+                          ToastService.SendToast("Unstored this photo.");
                       }
                   });
             }
@@ -173,7 +175,7 @@ namespace MyerSplash.Model
 
         public UnsplashImage()
         {
-            
+
         }
 
         public async Task RestoreAsync()
@@ -227,12 +229,30 @@ namespace MyerSplash.Model
 
             if (string.IsNullOrEmpty(url)) return;
 
-            var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
+            ToastService.SendToast("Downloading in background...",2000);
 
+            StorageFolder folder = null;
+            if (LocalSettingHelper.HasValue(SettingsViewModel.SAVING_POSITION))
+            {
+                var path = LocalSettingHelper.GetValue(SettingsViewModel.SAVING_POSITION);
+                if (path == SettingsViewModel.DEFAULT_SAVING_POSITION)
+                {
+                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
+                }
+                else
+                {
+                    folder = await StorageFolder.GetFolderFromPathAsync(path);
+                }
+            }
+            if (folder == null)
+            {
+                folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
+            }
             var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
 
             //backgroundDownloader.FailureToastNotification = ToastHelper.CreateToastNotification("Failed to download :-(", "You may cancel it. Otherwise please check your network.");
-            _backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Saved:D", "You can find it in MyerSplash folder.");
+            _backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Saved:D", 
+                $"You can find it in {folder.Path}.");
 
             var downloadOperation = _backgroundDownloader.CreateDownload(new Uri(url), newFile);
 

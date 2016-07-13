@@ -29,6 +29,91 @@
                                 <ColumnDefinition Width="62" />
                                 <ColumnDefinition Width="40" />
                             </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="HeaderContentPresenter"
+                                       VerticalAlignment="Center"
+                                       x:DeferLoadStrategy="Lazy"
+                                       AutomationProperties.AccessibilityView="Raw"
+                                       Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                       IsHitTestVisible="False"
+                                       Text="{TemplateBinding Header}"
+                                       TextTrimming="CharacterEllipsis"
+                                       Visibility="Collapsed" />
+                            <ContentPresenter x:Name="OffContentPresenter"
+                                              Grid.Column="2"
+                                              Width="26"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"
+                                              AutomationProperties.AccessibilityView="Raw"
+                                              Content="{TemplateBinding OffContent}"
+                                              ContentTemplate="{TemplateBinding OffContentTemplate}"
+                                              Foreground="{TemplateBinding Foreground}"
+                                              IsHitTestVisible="False"
+                                              Opacity="0" />
+                            <ContentPresenter x:Name="OnContentPresenter"
+                                              Grid.Column="2"
+                                              Width="23"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"
+                                              AutomationProperties.AccessibilityView="Raw"
+                                              Content="{TemplateBinding OnContent}"
+                                              ContentTemplate="{TemplateBinding OnContentTemplate}"
+                                              Foreground="{TemplateBinding Foreground}"
+                                              IsHitTestVisible="False"
+                                              Opacity="0" />
+                            <Grid Grid.Column="1"
+                                  Margin="0,5"
+                                  Control.IsTemplateFocusTarget="True" />
+                            <Rectangle x:Name="OuterBorder"
+                                       Grid.Column="1"
+                                       Width="45"
+                                       Height="20"
+                                       Margin="0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Fill="{StaticResource MyerSplashDarkColor}"
+                                       RadiusX="10"
+                                       RadiusY="10"
+                                       Stroke="{StaticResource MyerSplashThemeColor}"
+                                       StrokeThickness="2" />
+                            <Rectangle x:Name="SwitchKnobBounds"
+                                       Grid.Column="1"
+                                       Width="45"
+                                       Height="20"
+                                       Margin="0"
+                                       HorizontalAlignment="Center"
+                                       Fill="{StaticResource MyerSplashThemeColor}"
+                                       Opacity="0"
+                                       RadiusX="10"
+                                       RadiusY="10"
+                                       Stroke="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+                                       StrokeThickness="{ThemeResource ToggleSwitchOnStrokeThickness}" />
+                            <Grid x:Name="SwitchKnob"
+                                  Grid.Column="1"
+                                  Width="20"
+                                  Margin="9,0,0,0"
+                                  HorizontalAlignment="Left">
+                                <Grid.RenderTransform>
+                                    <TranslateTransform x:Name="KnobTranslateTransform" />
+                                </Grid.RenderTransform>
+                                <Ellipse x:Name="SwitchKnobOn"
+                                         Width="10"
+                                         Height="10"
+                                         Fill="White"
+                                         Opacity="0" />
+                                <Ellipse x:Name="SwitchKnobOff"
+                                         Width="10"
+                                         Height="10"
+                                         Fill="White" />
+                            </Grid>
+                            <Thumb x:Name="SwitchThumb"
+                                   Grid.ColumnSpan="3"
+                                   AutomationProperties.AccessibilityView="Raw">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Rectangle Fill="Transparent" />
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal" />
@@ -181,91 +266,6 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <TextBlock x:Name="HeaderContentPresenter"
-                                       VerticalAlignment="Center"
-                                       x:DeferLoadStrategy="Lazy"
-                                       AutomationProperties.AccessibilityView="Raw"
-                                       Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                       IsHitTestVisible="False"
-                                       Text="{TemplateBinding Header}"
-                                       TextTrimming="CharacterEllipsis"
-                                       Visibility="Collapsed" />
-                            <ContentPresenter x:Name="OffContentPresenter"
-                                              Grid.Column="2"
-                                              Width="26"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="Center"
-                                              AutomationProperties.AccessibilityView="Raw"
-                                              Content="{TemplateBinding OffContent}"
-                                              ContentTemplate="{TemplateBinding OffContentTemplate}"
-                                              Foreground="{TemplateBinding Foreground}"
-                                              IsHitTestVisible="False"
-                                              Opacity="0" />
-                            <ContentPresenter x:Name="OnContentPresenter"
-                                              Grid.Column="2"
-                                              Width="23"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="Center"
-                                              AutomationProperties.AccessibilityView="Raw"
-                                              Content="{TemplateBinding OnContent}"
-                                              ContentTemplate="{TemplateBinding OnContentTemplate}"
-                                              Foreground="{TemplateBinding Foreground}"
-                                              IsHitTestVisible="False"
-                                              Opacity="0" />
-                            <Grid Grid.Column="1"
-                                  Margin="0,5"
-                                  Control.IsTemplateFocusTarget="True" />
-                            <Rectangle x:Name="OuterBorder"
-                                       Grid.Column="1"
-                                       Width="45"
-                                       Height="20"
-                                       Margin="0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Fill="{StaticResource MyerSplashDarkColor}"
-                                       RadiusX="10"
-                                       RadiusY="10"
-                                       Stroke="{StaticResource MyerSplashThemeColor}"
-                                       StrokeThickness="2" />
-                            <Rectangle x:Name="SwitchKnobBounds"
-                                       Grid.Column="1"
-                                       Width="45"
-                                       Height="20"
-                                       Margin="0"
-                                       HorizontalAlignment="Center"
-                                       Fill="{StaticResource MyerSplashThemeColor}"
-                                       Opacity="0"
-                                       RadiusX="10"
-                                       RadiusY="10"
-                                       Stroke="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-                                       StrokeThickness="{ThemeResource ToggleSwitchOnStrokeThickness}" />
-                            <Grid x:Name="SwitchKnob"
-                                  Grid.Column="1"
-                                  Width="20"
-                                  Margin="9,0,0,0"
-                                  HorizontalAlignment="Left">
-                                <Grid.RenderTransform>
-                                    <TranslateTransform x:Name="KnobTranslateTransform" />
-                                </Grid.RenderTransform>
-                                <Ellipse x:Name="SwitchKnobOn"
-                                         Width="10"
-                                         Height="10"
-                                         Fill="White"
-                                         Opacity="0" />
-                                <Ellipse x:Name="SwitchKnobOff"
-                                         Width="10"
-                                         Height="10"
-                                         Fill="White" />
-                            </Grid>
-                            <Thumb x:Name="SwitchThumb"
-                                   Grid.ColumnSpan="3"
-                                   AutomationProperties.AccessibilityView="Raw">
-                                <Thumb.Template>
-                                    <ControlTemplate TargetType="Thumb">
-                                        <Rectangle Fill="Transparent" />
-                                    </ControlTemplate>
-                                </Thumb.Template>
-                            </Thumb>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -287,6 +287,14 @@
                               BorderBrush="{TemplateBinding BorderBrush}"
                               BorderThickness="{TemplateBinding BorderThickness}"
                               Control.IsTemplateFocusTarget="True">
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTransitions="{TemplateBinding ContentTransitions}"
+                                              Foreground="White" />
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal">
@@ -354,14 +362,6 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <ContentPresenter x:Name="ContentPresenter"
-                                              Margin="{TemplateBinding Padding}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTransitions="{TemplateBinding ContentTransitions}"
-                                              Foreground="White" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -412,17 +412,26 @@
                                   RequestedTheme="Dark"
                                   Style="{StaticResource ToggleSwitchStyle1}" />
                 </Grid>
-                <TextBlock Margin="10,20,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="{StaticResource MyerSplashThemeColor}"
-                           Text="SAVING SETTINGS" />
+                <StackPanel >
+                    <TextBlock Margin="10,10,0,0"
+                               VerticalAlignment="Top"
+                               Foreground="White"
+                               Text="Saving position" />
+                    <Button Margin="10"
+                            Command="{x:Bind SettingsVM.ChooseSavingPositionCommand,Mode=OneWay}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{x:Null}"
+                            Style="{StaticResource ButtonCommonStyle}">
+                        <Border BorderThickness="1" Background="#66000000" BorderBrush="{StaticResource MyerSplashThemeColor}">
+                            <TextBlock Text="{x:Bind SettingsVM.SavingPositionPath,Mode=OneWay}" Margin="5" Foreground="White"/>
+                        </Border>
+                    </Button>
+                </StackPanel>
                 <TextBlock Margin="10,10,0,0"
                            VerticalAlignment="Center"
                            Foreground="White"
-                           Text="Load quality" />
+                           Text="Loading quality" />
                 <ComboBox Margin="10,10,18,0"
                           HorizontalAlignment="Stretch"
                           BorderThickness="1"
@@ -437,7 +446,7 @@
                 <TextBlock Margin="10,10,0,0"
                            VerticalAlignment="Center"
                            Foreground="White"
-                           Text="Save quality" />
+                           Text="Saving quality" />
                 <ComboBox Margin="10,10,18,0"
                           HorizontalAlignment="Stretch"
                           BorderThickness="1"
@@ -449,21 +458,6 @@
                     <ComboBoxItem Content="High(Up to 3MB)" Style="{StaticResource ComboBoxItemStyle1}" />
                     <ComboBoxItem Content="Medium(500 KB)" Style="{StaticResource ComboBoxItemStyle1}" />
                 </ComboBox>
-                <!--<TextBlock Text="Save position" Foreground="White" VerticalAlignment="Center" Margin="10,10,0,0"/>
-                <Grid Height="50" Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Margin="10,5,5,5" Background="{StaticResource MyerSplashPlaceHolderColor}">
-                        <TextBlock Margin="5" Text="Picture library/MyerSplash/" TextTrimming="CharacterEllipsis" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
-                    <Button Style="{StaticResource ButtonCommonStyle}" Margin="5" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Border Background="{StaticResource MyerSplashThemeColor}">
-                            <TextBlock Margin="0" Text="Change" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </Button>
-                </Grid>-->
                 <TextBlock Margin="10,20,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
@@ -478,7 +472,7 @@
                     <Border Background="{StaticResource MyerSplashThemeColor}">
                         <TextBlock Margin="10"
                                    HorizontalAlignment="Center"
-                                   Text="Clear up cache" />
+                                   Text="Clean up cache" />
                     </Border>
                 </Button>
             </StackPanel>

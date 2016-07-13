@@ -95,7 +95,7 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_retryCommand != null) return _retryCommand;
-                return _retryCommand = new RelayCommand(async() =>
+                return _retryCommand = new RelayCommand(async () =>
                   {
                       ShowFooterLoading = Visibility.Visible;
                       ShowFooterReloadGrid = Visibility.Collapsed;
@@ -113,7 +113,7 @@ namespace MyerSplash.ViewModel
                 return _openDrawerCommand = new RelayCommand(() =>
                   {
                       DrawerOpened = !DrawerOpened;
-                      if(DrawerOpened)
+                      if (DrawerOpened)
                       {
                           NavigationService.HistoryOperationsBeyondFrame.Push(() =>
                           {
@@ -277,7 +277,7 @@ namespace MyerSplash.ViewModel
             MainList = new ObservableCollection<UnsplashImage>();
             LikedList = new ObservableCollection<UnsplashImage>();
 
-            ShowFooterLoading = Visibility.Visible;
+            ShowFooterLoading = Visibility.Collapsed;
             ShowNoItemHint = Visibility.Collapsed;
             ShowFooterReloadGrid = Visibility.Collapsed;
             SelectedIndex = 0;

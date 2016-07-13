@@ -67,7 +67,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="17"
                                    Foreground="White"
-                                   Text="LOVED" />
+                                   Text="STORED" />
                     </Grid>
                 </ListBox.Items>
             </ListBox>
