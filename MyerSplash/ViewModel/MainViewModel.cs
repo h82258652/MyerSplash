@@ -16,6 +16,7 @@ using JP.Utils.UI;
 using MyerSplashShared.API;
 using System.Linq;
 using MyerSplashCustomControl;
+using System.Diagnostics;
 
 namespace MyerSplash.ViewModel
 {
@@ -396,7 +397,7 @@ namespace MyerSplash.ViewModel
         private async Task UpdateLiveTileAsync()
         {
             var list = new List<string>();
-
+        
             if (MainList == null) return;
 
             foreach (var item in MainList)
@@ -405,6 +406,7 @@ namespace MyerSplash.ViewModel
             }
             if (App.AppSettings.EnableTile && list.Count > 0)
             {
+                Debug.WriteLine("About to update tile.");
                 await LiveTileUpdater.UpdateImagesTileAsync(list);
             }
         }

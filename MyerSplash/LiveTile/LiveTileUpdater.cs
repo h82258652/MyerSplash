@@ -2,6 +2,7 @@
 using NotificationsExtensions.Tiles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +17,6 @@ namespace MyerSplash.LiveTile
         {
             try
             {
-                await ClearAllTileFile();
-
                 var tile = new TileBinding();
                 var photosContent = new TileBindingContentPhotos();
 
@@ -26,13 +25,11 @@ namespace MyerSplash.LiveTile
                 {
                     var path = imagesFilePath.ElementAt(i);
                     if (string.IsNullOrEmpty(path)) continue;
-
-                    var file = await StorageFile.GetFileFromPathAsync(path);
-                    var folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("temptile", CreationCollisionOption.OpenIfExists);
-                    var newFile = await file.CopyAsync(folder, "tiles", NameCollisionOption.GenerateUniqueName);
-                    photosContent.Images.Add(new TileImageSource(newFile.Path));
+                    photosContent.Images.Add(new TileImageSource(path));
                 }
                 tile.Content = photosContent;
+
+                Debug.WriteLine("Photos size is " + photosContent.Images.Count);
 
                 var tileContent = new TileContent();
                 tileContent.Visual = new TileVisual();
@@ -41,8 +38,11 @@ namespace MyerSplash.LiveTile
                 tileContent.Visual.TileWide = tile;
                 tileContent.Visual.TileLarge = tile;
 
+                await ClearAllTileFile();
+
                 TileUpdateManager.CreateTileUpdaterForApplication().Clear();
-                TileUpdateManager.CreateTileUpdaterForApplication().Update(new TileNotification(tileContent.GetXml()));
+                TileUpdateManager.CreateTileUpdaterForApplication().Update(
+                    new TileNotification(tileContent.GetXml()));
             }
             catch (Exception e)
             {
