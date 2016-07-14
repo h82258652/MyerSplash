@@ -1,6 +1,6 @@
-MainPackage=D:\Dev\apps\MyerSplash\MyerSplash\bin\ARM\Release\Upload\MyerSplash_0.9.5.0_ARM.appx
-SymbolPackage=D:\Dev\apps\MyerSplash\MyerSplash\AppPackages\MyerSplash_0.9.5.0\MyerSplash_0.9.5.0_ARM.appxsym
-ResourcePack=D:\Dev\apps\MyerSplash\MyerSplash\_scale-100.appx
-ResourcePack=D:\Dev\apps\MyerSplash\MyerSplash\_scale-125.appx
-ResourcePack=D:\Dev\apps\MyerSplash\MyerSplash\_scale-150.appx
-ResourcePack=D:\Dev\apps\MyerSplash\MyerSplash\_scale-400.appx
+MainPackage=D:\Dev\MyerSplash\MyerSplash\bin\ARM\Release\Upload\MyerSplash_1.0.0.0_ARM.appx
+SymbolPackage=D:\Dev\MyerSplash\MyerSplash\AppPackages\MyerSplash_1.0.0.0\MyerSplash_1.0.0.0_ARM.appxsym
+ResourcePack=D:\Dev\MyerSplash\MyerSplash\_scale-100.appx
+ResourcePack=D:\Dev\MyerSplash\MyerSplash\_scale-125.appx
+ResourcePack=D:\Dev\MyerSplash\MyerSplash\_scale-150.appx
+ResourcePack=D:\Dev\MyerSplash\MyerSplash\_scale-400.appx
