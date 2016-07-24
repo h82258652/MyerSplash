@@ -14,7 +14,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Background="{StaticResource MyerSplashThemeColor}">
-            <TextBlock Margin="10,0,0,0"
+            <TextBlock Margin="0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        FontSize="20"
@@ -78,12 +78,12 @@
                            Foreground="{StaticResource MyerSplashThemeColor}"
                            Text="FEEDBACK" />
                     <Button Margin="0,5,0,0"
-                        HorizontalAlignment="Stretch"
+                        HorizontalAlignment="Center"
                         Background="{x:Null}"
                         Command="{x:Bind AboutVM.FeedbackCommand, Mode=OneWay}"
-                        Style="{StaticResource ButtonCommonStyle}">
+                        Style="{StaticResource ListButtonStyle}">
                         <Border>
-                            <TextBlock Margin="5"
+                            <TextBlock Margin="8"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Foreground="White"
@@ -98,12 +98,12 @@
                            Foreground="{StaticResource MyerSplashThemeColor}"
                            Text="I LIKE IT" />
                     <Button Margin="0,5,0,0"
-                        HorizontalAlignment="Stretch"
+                        HorizontalAlignment="Center"
                         Background="{x:Null}"
                         Command="{x:Bind AboutVM.RateCommand, Mode=OneWay}"
-                        Style="{StaticResource ButtonCommonStyle}">
+                        Style="{StaticResource ListButtonStyle}">
                         <Border>
-                            <TextBlock Margin="5"
+                            <TextBlock Margin="8"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Foreground="White"
@@ -111,7 +111,6 @@
                         </Border>
                     </Button>
                 </StackPanel>
-
             </ScrollViewer>
         </Grid>
     </Grid>

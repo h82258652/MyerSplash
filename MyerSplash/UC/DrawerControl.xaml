@@ -29,14 +29,18 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <Grid Height="60" VerticalAlignment="Top" Background="#78464646">
+            <Grid Height="60"
+                  VerticalAlignment="Top"
+                  Background="#78464646">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="50" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Border Background="{StaticResource MyerSplashThemeColor}"/>
-                <SymbolIcon Foreground="White" Symbol="Home" Grid.Column="1" />
+                <Border Background="{StaticResource MyerSplashThemeColor}" />
+                <SymbolIcon Grid.Column="1"
+                            Foreground="White"
+                            Symbol="Home" />
                 <TextBlock x:Uid="AllTB"
                            Grid.Column="2"
                            VerticalAlignment="Center"
@@ -45,19 +49,13 @@
                            Text="ALL" />
             </Grid>
 
-            <Grid Height="60"
-                  VerticalAlignment="Bottom"
-                  >
-                
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Button HorizontalAlignment="Stretch"
+            <StackPanel VerticalAlignment="Bottom">
+                <Button Height="50"
+                        HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Background="{x:Null}"
                         Command="{x:Bind MainVM.GoToSettingsCommand, Mode=OneWay}"
-                        Style="{StaticResource ButtonCommonStyle}">
+                        Style="{StaticResource ListButtonStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50" />
@@ -73,11 +71,12 @@
                     </Grid>
                 </Button>
                 <Button Grid.Column="1"
+                        Height="50"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Background="{x:Null}"
                         Command="{x:Bind MainVM.GoToAboutCommand, Mode=OneWay}"
-                        Style="{StaticResource ButtonCommonStyle}">
+                        Style="{StaticResource ListButtonStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50" />
@@ -98,7 +97,7 @@
                                    Text="ABOUT" />
                     </Grid>
                 </Button>
-            </Grid>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

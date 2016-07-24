@@ -10,7 +10,7 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="Transparent"
-            Style="{StaticResource ButtonCommonStyle}">
+            Style="{StaticResource ListButtonStyle}">
         <Grid Width="40"
               Height="30"
               HorizontalAlignment="Center"

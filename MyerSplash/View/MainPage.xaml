@@ -102,7 +102,6 @@
         <uc:PhotoDetailControl x:Name="DetailControl"
                                Grid.RowSpan="2"
                                Canvas.ZIndex="10"
-                               d:IsHidden="True"
                                Loaded="DetailControl_Loaded"
                                OnHideControl="DetailControl_OnHideControl" />
         <Border x:Name="DrawerMaskBorder"

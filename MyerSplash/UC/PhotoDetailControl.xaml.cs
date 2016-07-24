@@ -73,19 +73,8 @@ namespace MyerSplash.UC
             InitializeComponent();
             InitComposition();
 
-            this.Loaded += PhotoDetailControl_Loaded;
-            this.Unloaded += PhotoDetailControl_Unloaded;
-        }
-
-        private void PhotoDetailControl_Loaded(object sender, RoutedEventArgs e)
-        {
             _dataTransferManager = DataTransferManager.GetForCurrentView();
             _dataTransferManager.DataRequested += _dataTransferManager_DataRequested;
-        }
-
-        private void PhotoDetailControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            _dataTransferManager.DataRequested -= _dataTransferManager_DataRequested;
         }
 
         private async void _dataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)

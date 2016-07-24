@@ -28,6 +28,10 @@ namespace MyerSplash.View
         private double _lastVerticalOffset = 0;
         private bool _isHideTitleGrid = false;
 
+        private UnsplashImage _clickedImg;
+        private FrameworkElement _clickedContainer;
+        private bool _waitForToggleDetailAnimation;
+
         public bool IsLoading
         {
             get { return (bool)GetValue(IsLoadingProperty); }
@@ -200,13 +204,38 @@ namespace MyerSplash.View
 
         private void ListControl_OnClickItemStarted(UnsplashImage img, FrameworkElement container)
         {
+            _clickedContainer = container;
+            _clickedImg = img;
+
             DetailControl.Visibility = Visibility.Visible;
+            if (DetailControl.ActualHeight == 0)
+            {
+                _waitForToggleDetailAnimation = true;
+            }
+            else
+            {
+                _waitForToggleDetailAnimation = false;
+                ToggleDetailControlAnimation();
+            }
+        }
 
-            DetailControl.CurrentImage = img;
+        private void DetailControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (_waitForToggleDetailAnimation)
+            {
+                _waitForToggleDetailAnimation = false;
 
-            var currentPos = container.TransformToVisual(ListControl).TransformPoint(new Point(0, 0));
+                ToggleDetailControlAnimation();
+            }
+        }
+
+        private void ToggleDetailControlAnimation()
+        {
+            DetailControl.CurrentImage = _clickedImg;
+
+            var currentPos = _clickedContainer.TransformToVisual(ListControl).TransformPoint(new Point(0, 0));
             var targetPos = DetailControl.GetContentGridPosition();
-            var targetRatio = DetailControl.GetContentGridSize().Width / container.ActualWidth;
+            var targetRatio = DetailControl.GetContentGridSize().Width / _clickedContainer.ActualWidth;
             var targetOffsetX = targetPos.X - currentPos.X;
             var targetOffsetY = targetPos.Y - currentPos.Y;
 
@@ -228,6 +257,8 @@ namespace MyerSplash.View
         private void DetailControl_Loaded(object sender, RoutedEventArgs e)
         {
             DetailControl.Visibility = Visibility.Collapsed;
+            DetailControl.SizeChanged -= DetailControl_SizeChanged;
+            DetailControl.SizeChanged += DetailControl_SizeChanged;
         }
 
         #region Scrolling
@@ -272,7 +303,7 @@ namespace MyerSplash.View
         {
             if (e.Cumulative.Translation.X >= 70)
             {
-                if(!DrawerOpended)
+                if (!DrawerOpended)
                 {
                     DrawerOpended = true;
                 }
