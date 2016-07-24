@@ -1,4 +1,5 @@
-﻿using JP.Utils.Debug;
+﻿using JP.Utils.Data;
+using JP.Utils.Debug;
 using JP.Utils.Helper;
 using MyerSplash.Common;
 using MyerSplash.View;
@@ -7,6 +8,7 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Phone.UI.Input;
+using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -94,6 +96,22 @@ namespace MyerSplash
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
+
+                if(!LocalSettingHelper.HasValue("UPDATED_TO_1.1"))
+                {
+                    var files1 = await CacheUtil.GetCachedFileFolder().GetItemsAsync();
+                    foreach (var file in files1)
+                    {
+                        await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                    }
+                    var files2 = await CacheUtil.GetTempFolder().GetItemsAsync();
+                    foreach (var file in files2)
+                    {
+                        await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                    }
+                    LocalSettingHelper.AddValue("UPDATED_TO_1.1", true);
+                }
+
                 rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
             // Ensure the current window is active

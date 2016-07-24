@@ -29,51 +29,26 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <ListBox x:Name="DrawerListBox"
-                     Margin="0,0,0,60"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Top"
-                     Background="{x:Null}"
-                     ItemContainerStyle="{StaticResource MenuListBoxItemStyle}"
-                     SelectedIndex="{x:Bind MainVM.SelectedIndex, Mode=TwoWay, FallbackValue=0}"
-                     SelectionChanged="ListBox_SelectionChanged">
-                <ListBox.Items>
-                    <Grid Height="60">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <SymbolIcon Foreground="White" Symbol="Home" />
-                        <TextBlock x:Uid="AllTB"
-                                   Grid.Column="1"
-                                   VerticalAlignment="Center"
-                                   FontSize="17"
-                                   Foreground="White"
-                                   Text="ALL" />
-                    </Grid>
-                    <Grid Height="60">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   AutomationProperties.Name="Favorite"
-                                   FontFamily="Segoe MDL2 Assets"
-                                   Foreground="White"
-                                   Text="&#xE00B;" />
-                        <TextBlock x:Uid="LikeTB"
-                                   Grid.Column="1"
-                                   VerticalAlignment="Center"
-                                   FontSize="17"
-                                   Foreground="White"
-                                   Text="STORED" />
-                    </Grid>
-                </ListBox.Items>
-            </ListBox>
+            <Grid Height="60" VerticalAlignment="Top" Background="#78464646">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Border Background="{StaticResource MyerSplashThemeColor}"/>
+                <SymbolIcon Foreground="White" Symbol="Home" Grid.Column="1" />
+                <TextBlock x:Uid="AllTB"
+                           Grid.Column="2"
+                           VerticalAlignment="Center"
+                           FontSize="17"
+                           Foreground="White"
+                           Text="ALL" />
+            </Grid>
+
             <Grid Height="60"
                   VerticalAlignment="Bottom"
-                  Background="{StaticResource MyerSplashDarkColor}">
+                  >
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />

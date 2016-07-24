@@ -23,6 +23,13 @@
           <uap:Rotation Preference="portrait" />
         </uap:InitialRotationPreference>
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="myersplash-share">
+            <uap:Logo>NewStoreLogo.png</uap:Logo>
+          </uap:Protocol>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

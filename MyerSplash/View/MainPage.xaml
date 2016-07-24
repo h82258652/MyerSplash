@@ -40,12 +40,9 @@
                         Orientation="Horizontal"
                         Tapped="StackPanel_Tapped">
                 <TextBlock FontSize="25" Text="Myer" />
-                <Image Height="30"
-                       Margin="-7,3,-7,0"
-                       Source="ms-appx:///Assets/Icon/Logo_black.png" />
                 <TextBlock FontSize="25"
                            FontWeight="Bold"
-                           Text="plash" />
+                           Text="Splash" />
             </StackPanel>
             <uc:HamburgerButton Width="70"
                                 HorizontalAlignment="Left"
@@ -74,6 +71,7 @@
                 </StackPanel>
             </Grid>
             <uc:ImageListControl x:Name="ListControl"
+                                 d:IsHidden="True"
                                  DataContext="{x:Bind MainVM, Mode=OneWay}"
                                  OnClickItemStarted="ListControl_OnClickItemStarted"
                                  OnScrollViewerViewChanged="ListControl_OnScrollViewerViewChanged" />
@@ -104,6 +102,7 @@
         <uc:PhotoDetailControl x:Name="DetailControl"
                                Grid.RowSpan="2"
                                Canvas.ZIndex="10"
+                               d:IsHidden="True"
                                Loaded="DetailControl_Loaded"
                                OnHideControl="DetailControl_OnHideControl" />
         <Border x:Name="DrawerMaskBorder"

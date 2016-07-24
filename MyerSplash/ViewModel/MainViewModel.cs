@@ -39,23 +39,6 @@ namespace MyerSplash.ViewModel
             }
         }
 
-        private ObservableCollection<UnsplashImage> _likedList;
-        public ObservableCollection<UnsplashImage> LikedList
-        {
-            get
-            {
-                return _likedList;
-            }
-            set
-            {
-                if (_likedList != value)
-                {
-                    _likedList = value;
-                    RaisePropertyChanged(() => LikedList);
-                }
-            }
-        }
-
         private ObservableCollection<UnsplashImage> _mainList;
         public ObservableCollection<UnsplashImage> MainList
         {
@@ -243,45 +226,15 @@ namespace MyerSplash.ViewModel
             }
         }
 
-        private int _selectedIndex;
-        public int SelectedIndex
-        {
-            get
-            {
-                return _selectedIndex;
-            }
-            set
-            {
-                if (_selectedIndex != value)
-                {
-                    _selectedIndex = value;
-                    RaisePropertyChanged(() => SelectedIndex);
-                    DrawerOpened = false;
-                    if (value == 0)
-                    {
-                        RestoreHintState();
-                        MainList = MainDataVM.DataList;
-                    }
-                    else if (value == 1)
-                    {
-                        SaveHintState();
-                        MainList = LikedList;
-                    }
-                }
-            }
-        }
-
         private bool[] _hintStates = new bool[3];
 
         public MainViewModel()
         {
             MainList = new ObservableCollection<UnsplashImage>();
-            LikedList = new ObservableCollection<UnsplashImage>();
 
             ShowFooterLoading = Visibility.Collapsed;
             ShowNoItemHint = Visibility.Collapsed;
             ShowFooterReloadGrid = Visibility.Collapsed;
-            SelectedIndex = 0;
 
             App.MainVM = this;
         }
@@ -328,26 +281,6 @@ namespace MyerSplash.ViewModel
             else MainDataVM = new ImageDataViewModel(this);
         }
 
-        private async Task RestoreLikedListDataAsync()
-        {
-            var file = await CacheUtil.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.LikedListFileName);
-            if (file != null)
-            {
-                var list = await SerializerHelper.DeserializeFromJsonByFile<ObservableCollection<UnsplashImage>>(CachedFileNames.LikedListFileName, CacheUtil.GetCachedFileFolder());
-                if (list != null)
-                {
-                    this.LikedList = list;
-                    for (int i = 0; i < LikedList.Count; i++)
-                    {
-                        var item = LikedList[i];
-                        if (i % 2 == 0) item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF2E2E2E").Value);
-                        else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
-                        var task = item.RestoreAsync();
-                    }
-                }
-            }
-        }
-
         private async Task RefreshAsync()
         {
             MainDataVM.MainVM = this;
@@ -373,27 +306,6 @@ namespace MyerSplash.ViewModel
                 //}
             }
         }
-
-        private async Task SaveLikedListDataAsync()
-        {
-            if (this.LikedList?.Count > 0)
-            {
-                await SerializerHelper.SerializerToJson<ObservableCollection<UnsplashImage>>(this.LikedList, CachedFileNames.LikedListFileName, CacheUtil.GetCachedFileFolder());
-            }
-        }
-
-        public async Task AddToLlikedListAndSaveAsync(UnsplashImage img)
-        {
-            LikedList.Add(img);
-            await SaveLikedListDataAsync();
-        }
-
-        public async Task RemoveFromLlikedListAndSaveAsync(UnsplashImage img)
-        {
-            LikedList.Remove(img);
-            await SaveLikedListDataAsync();
-        }
-
         private async Task UpdateLiveTileAsync()
         {
             var list = new List<string>();
@@ -427,7 +339,6 @@ namespace MyerSplash.ViewModel
             {
                 IsFirstActived = false;
                 await RestoreMainListDataAsync();
-                await RestoreLikedListDataAsync();
                 await RefreshAsync();
             }
         }

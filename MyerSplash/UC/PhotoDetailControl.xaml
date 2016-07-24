@@ -96,34 +96,26 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Orientation="Horizontal">
-                <Button x:Name="LikeBtn"
+                <Button x:Name="ShareBtn"
                         Grid.RowSpan="2"
                         Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Background="{x:Null}"
-                        Click="LikeBtn_Click"
+                        Click="ShareBtn_Click"
                         Style="{StaticResource ButtonCommonStyle}">
                     <Grid>
-                        <Ellipse x:Name="LikeBtnEll"
+                        <Ellipse x:Name="ShareBtnEll"
                                  Width="40"
                                  Height="40">
                             <Ellipse.Fill>
                                 <SolidColorBrush Color="{StaticResource MyerSplashUnLikedHeartColor}" />
                             </Ellipse.Fill>
                         </Ellipse>
-                        <FontIcon x:Name="LikedFontIcon"
+                        <FontIcon x:Name="ShareontIcon"
                                   FontFamily="Segoe MDL2 Assets"
                                   FontSize="17.333"
-                                  Glyph="&#xE00B;">
-                            <FontIcon.Foreground>
-                                <SolidColorBrush Color="White" />
-                            </FontIcon.Foreground>
-                        </FontIcon>
-                        <FontIcon x:Name="UnlikedFontIcon"
-                                  FontFamily="Segoe MDL2 Assets"
-                                  FontSize="17.333"
-                                  Glyph="&#xE006;">
+                                  Glyph="&#xE72D;">
                             <FontIcon.Foreground>
                                 <SolidColorBrush Color="{StaticResource MyerSplashLikedHeartColor}" />
                             </FontIcon.Foreground>
