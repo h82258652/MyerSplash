@@ -124,6 +124,7 @@ namespace MyerSplash.UC
         {
             ToggleDownloadBtnAnimation(false);
             ToggleShareBtnAnimation(false);
+            ToggleOkBtnAnimation(false);
             ToggleDownloadingBtnAnimation(false);
 
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
@@ -280,7 +281,6 @@ namespace MyerSplash.UC
         }
         #endregion
 
-        //TODO:
         private void ShareBtn_Click(object sender, RoutedEventArgs e)
         {
             DataTransferManager.ShowShareUI();
