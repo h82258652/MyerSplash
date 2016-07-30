@@ -10,12 +10,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
-using System;
 using Windows.UI.Xaml.Media;
 using JP.Utils.UI;
 using MyerSplashShared.API;
 using System.Linq;
-using MyerSplashCustomControl;
 using System.Diagnostics;
 
 namespace MyerSplash.ViewModel
@@ -52,6 +50,23 @@ namespace MyerSplash.ViewModel
                 {
                     _mainList = value;
                     RaisePropertyChanged(() => MainList);
+                }
+            }
+        }
+
+        private ObservableCollection<UnsplashCategory> _categories;
+        public ObservableCollection<UnsplashCategory> Categories
+        {
+            get
+            {
+                return _categories;
+            }
+            set
+            {
+                if (_categories != value)
+                {
+                    _categories = value;
+                    RaisePropertyChanged(() => Categories);
                 }
             }
         }
@@ -226,6 +241,49 @@ namespace MyerSplash.ViewModel
             }
         }
 
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get
+            {
+                return _selectedIndex;
+            }
+            set
+            {
+                if (_selectedIndex != value)
+                {
+                    _selectedIndex = value;
+                    RaisePropertyChanged(() => SelectedIndex);
+                    RaisePropertyChanged(() => SelectedTitle);
+                    DrawerOpened = false;
+                    if (value == 0)
+                    {
+                        MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
+                    }
+                    else if (Categories?.Count > 0)
+                    {
+                        MainDataVM = new ImageDataViewModel(this, Categories[value].RequestUrl);
+                    }
+                    if (MainDataVM != null)
+                    {
+                        var task = MainDataVM.RefreshAsync();
+                    }
+                }
+            }
+        }
+
+        public string SelectedTitle
+        {
+            get
+            {
+                if (Categories?.Count > 0)
+                {
+                    return Categories[SelectedIndex].Title.ToUpper();
+                }
+                else return "FEATURED";
+            }
+        }
+
         private bool[] _hintStates = new bool[3];
 
         public MainViewModel()
@@ -237,6 +295,8 @@ namespace MyerSplash.ViewModel
             ShowFooterReloadGrid = Visibility.Collapsed;
 
             App.MainVM = this;
+
+            SelectedIndex = -1;
         }
 
         private void SaveHintState()
@@ -263,7 +323,7 @@ namespace MyerSplash.ViewModel
                 var list = await SerializerHelper.DeserializeFromJsonByFile<IncrementalLoadingCollection<UnsplashImage>>(CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
                 if (list != null)
                 {
-                    this.MainDataVM = new ImageDataViewModel(this);
+                    this.MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
                     list.ToList().ForEach(s => MainDataVM.DataList.Add(s));
 
                     for (int i = 0; i < MainDataVM.DataList.Count; i++)
@@ -276,14 +336,16 @@ namespace MyerSplash.ViewModel
                     this.ShowNoItemHint = Visibility.Collapsed;
                     await UpdateLiveTileAsync();
                 }
-                else MainDataVM = new ImageDataViewModel(this);
+                else MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
             }
-            else MainDataVM = new ImageDataViewModel(this);
+            else MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
         }
 
         private async Task RefreshAsync()
         {
             MainDataVM.MainVM = this;
+
+            var task1 = GetCategoriesAsync();
 
             IsRefreshing = true;
             await MainDataVM.RefreshAsync();
@@ -293,6 +355,24 @@ namespace MyerSplash.ViewModel
 
             await SaveMainListDataAsync();
             await UpdateLiveTileAsync();
+        }
+
+        private async Task GetCategoriesAsync()
+        {
+            if (Categories?.Count > 0) return;
+
+            var result = await CloudService.GetCategories(CTSFactory.MakeCTS(20000).Token);
+            if (result.IsRequestSuccessful)
+            {
+                var list = UnsplashCategory.GenerateListFromJson(result.JsonSrc);
+                this.Categories = list;
+                this.Categories.Insert(0, new UnsplashCategory()
+                {
+                    Title = "Featured",
+                });
+
+                SelectedIndex = 0;
+            }
         }
 
         private async Task SaveMainListDataAsync()
@@ -309,7 +389,7 @@ namespace MyerSplash.ViewModel
         private async Task UpdateLiveTileAsync()
         {
             var list = new List<string>();
-        
+
             if (MainList == null) return;
 
             foreach (var item in MainList)

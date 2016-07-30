@@ -110,6 +110,7 @@
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="Common\ToastHelper.cs" />
     <Compile Include="LiveTile\LiveTileUpdater.cs" />
+    <Compile Include="Model\UnsplashCategory.cs" />
     <Compile Include="UC\FeatureControl.xaml.cs">
       <DependentUpon>FeatureControl.xaml</DependentUpon>
     </Compile>

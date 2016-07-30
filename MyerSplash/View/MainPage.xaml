@@ -39,10 +39,7 @@
                         CacheMode="BitmapCache"
                         Orientation="Horizontal"
                         Tapped="StackPanel_Tapped">
-                <TextBlock FontSize="25" Text="Myer" />
-                <TextBlock FontSize="25"
-                           FontWeight="Bold"
-                           Text="Splash" />
+                <TextBlock FontSize="25" Text="{x:Bind MainVM.SelectedTitle,Mode=OneWay}" FontWeight="Bold" />
             </StackPanel>
             <uc:HamburgerButton Width="70"
                                 HorizontalAlignment="Left"
