@@ -16,6 +16,8 @@ namespace MyerSplashShared.API
 
         public static string SearchImages => $"https://{HOST}/photos/search?";
 
+        public static string GetCategories=> $"https://{HOST}/categories?";
+
         public static string MakeFullUrlForGetReq(string baseUrl, List<KeyValuePair<string, string>> paramList)
         {
             StringBuilder sb = new StringBuilder(baseUrl);

@@ -36,6 +36,14 @@ namespace MyerSplashShared.API
             return result;
         }
 
+        public static async Task<CommonRespMsg> GetCategories(CancellationToken token)
+        {
+            var param = GetDefaultParam();
+            
+            var result = await HttpRequestSender.SendGetRequestAsync(UrlHelper.MakeFullUrlForGetReq(UrlHelper.GetCategories, param), token);
+            return result;
+        }
+
         public static async Task<CommonRespMsg> SearchImages(int page, int pageCount, string query, CancellationToken token)
         {
             var param = GetDefaultParam();
