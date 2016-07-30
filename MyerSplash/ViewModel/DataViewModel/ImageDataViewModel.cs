@@ -45,7 +45,7 @@ namespace MyerSplash.ViewModel
                 }
 
                 var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(10000).Token);
-                if (result.IsSuccessful)
+                if (result.IsRequestSuccessful)
                 {
                     var list = UnsplashImage.ParseListFromJson(result.JsonSrc);
                     return list;

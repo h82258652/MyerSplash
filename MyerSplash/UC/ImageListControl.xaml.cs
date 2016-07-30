@@ -3,10 +3,12 @@ using MyerSplash.Model;
 using MyerSplash.ViewModel;
 using System;
 using System.Numerics;
+using Windows.Foundation;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Media;
 
 namespace MyerSplash.UC
 {
@@ -144,6 +146,81 @@ namespace MyerSplash.UC
         private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
         {
             OnScrollViewerViewChanged?.Invoke(sender as ScrollViewer);
+        }
+
+        private void RootGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            var rootGrid = sender as Grid;
+            rootGrid.Clip = new RectangleGeometry()
+            {
+                Rect = new Rect(0, 0, rootGrid.ActualWidth, rootGrid.ActualHeight)
+            };
+            rootGrid.PointerEntered += RootGrid_PointerEntered;
+            rootGrid.PointerExited += RootGrid_PointerExited;
+        }
+
+        private void RootGrid_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            var rootGrid = sender as Grid;
+            var maskBorder = rootGrid.Children[2];
+            var img = rootGrid.Children[1];
+
+            var maskVisual = ElementCompositionPreview.GetElementVisual(maskBorder);
+            var imgVisual = ElementCompositionPreview.GetElementVisual(img);
+
+            maskVisual.Opacity = 1f;
+
+            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeAnimation.InsertKeyFrame(1f, 0f);
+            fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
+
+            var scaleAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            scaleAnimation.InsertKeyFrame(1f, 1f);
+            scaleAnimation.Duration = TimeSpan.FromMilliseconds(500);
+
+            var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+            maskVisual.StartAnimation("Opacity", fadeAnimation);
+            imgVisual.StartAnimation("Scale.x", scaleAnimation);
+            imgVisual.StartAnimation("Scale.y", scaleAnimation);
+            batch.Completed += (s, ex) =>
+              {
+                  maskBorder.Visibility = Visibility.Collapsed;
+              };
+            batch.End();
+        }
+
+        private void RootGrid_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            var rootGrid = sender as Grid;
+            var maskBorder = rootGrid.Children[2];
+            var img = rootGrid.Children[1] as Image;
+
+            var maskVisual = ElementCompositionPreview.GetElementVisual(maskBorder);
+            var imgVisual = ElementCompositionPreview.GetElementVisual(img);
+            maskVisual.Opacity = 0f;
+
+            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeAnimation.InsertKeyFrame(1f, 1f);
+            fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
+
+            var scaleAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            scaleAnimation.InsertKeyFrame(1f, 1.1f);
+            scaleAnimation.Duration = TimeSpan.FromMilliseconds(1000);
+
+            imgVisual.CenterPoint = new Vector3((float)img.ActualWidth / 2, (float)img.ActualHeight / 2, 0f);
+
+            maskBorder.Visibility = Visibility.Visible;
+            maskVisual.StartAnimation("Opacity", fadeAnimation);
+            imgVisual.StartAnimation("Scale.x", scaleAnimation);
+            imgVisual.StartAnimation("Scale.y", scaleAnimation);
+
+        }
+
+        private void RootGrid_Unloaded(object sender, RoutedEventArgs e)
+        {
+            var rootGrid = sender as Grid;
+            rootGrid.PointerEntered -= RootGrid_PointerEntered;
+            rootGrid.PointerExited -= RootGrid_PointerExited;
         }
     }
 }

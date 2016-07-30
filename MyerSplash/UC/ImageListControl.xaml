@@ -30,9 +30,16 @@
                               ShowsScrollingPlaceholders="False">
         <control:AdaptiveGridView.ItemTemplate>
             <DataTemplate x:DataType="model:UnsplashImage">
-                <Grid>
+                <Grid x:Name="RootGrid" Loaded="RootGrid_Loaded" Unloaded="RootGrid_Unloaded">
                     <Border Background="{x:Bind BackColor, Mode=OneWay}" />
-                    <Image Source="{x:Bind ListImageBitmap, Mode=OneWay}" Stretch="UniformToFill" />
+                    <Image x:Name="Img" Source="{x:Bind ListImageBitmap, Mode=OneWay}" Stretch="UniformToFill" />
+                    <Border x:Name="MaskBorder" Visibility="Collapsed" Background="#7F000000">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="16,0,0,16">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE00B;" Foreground="#FFFF4A43" />
+                            <TextBlock Text="Likes" Foreground="White" FontWeight="Bold" Margin="8,0,0,0"/>
+                            <TextBlock Text="{x:Bind LikesString,Mode=OneWay}" Margin="8,0,0,0" Foreground="White" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </DataTemplate>
         </control:AdaptiveGridView.ItemTemplate>

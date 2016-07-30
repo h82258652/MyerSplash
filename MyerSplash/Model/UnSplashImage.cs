@@ -150,6 +150,32 @@ namespace MyerSplash.Model
             }
         }
 
+        private int _likes;
+        public int Likes
+        {
+            get
+            {
+                return _likes;
+            }
+            set
+            {
+                if (_likes != value)
+                {
+                    _likes = value;
+                    RaisePropertyChanged(() => Likes);
+                    RaisePropertyChanged(() => LikesString);
+                }
+            }
+        }
+
+        public string LikesString
+        {
+            get
+            {
+                return Likes.ToString();
+            }
+        }
+
         private BackgroundDownloader _backgroundDownloader = new BackgroundDownloader();
 
         public UnsplashImage()
@@ -307,6 +333,7 @@ namespace MyerSplash.Model
             var userObj = JsonParser.GetJsonObjFromJsonObj(obj, "user");
             var userName = JsonParser.GetStringFromJsonObj(userObj, "name");
             var id = JsonParser.GetStringFromJsonObj(obj, "id");
+            var likes = JsonParser.GetNumberFromJsonObj(obj, "likes");
 
             var img = new UnsplashImage();
             img.SmallImageUrl = smallImageUrl;
@@ -319,6 +346,7 @@ namespace MyerSplash.Model
             img.Height = height;
             img.Owner = new UnsplashUser() { Name = userName };
             img.ID = id;
+            img.Likes = (int)likes;
 
             return img;
         }
