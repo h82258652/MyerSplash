@@ -67,8 +67,6 @@ p {
     list-style: none;
 }
 
-
-
 .btnp {
     margin: 0;
     display: block;float:left;margin-top:15px;margin-left:30px;
@@ -82,16 +80,6 @@ p {
     
 }
 
-#btn2 {
-    width: 250px;
-    background: #542777;
-}
-#btn2:hover{
-    background: #78489d;
-}
-
-
-
 .btndiv {
     display: block;
     position: relative;
@@ -100,8 +88,6 @@ p {
 .btnDiv {
     margin-top: 20px;
 }
-
-
 
 body{
     text-align: center;
@@ -121,7 +107,11 @@ body{
 }
 
 .div1 {
-    
+  margin-top: 20px; 
+}
+
+.div2 {
+  margin-top: 10px; 
 }
 
 .content1 {
@@ -158,10 +148,6 @@ body{
     text-align: center;
     float: left;
     position: relative;
-}
-
-.title1 {
-    color: 
 }
 
 .title {
@@ -204,14 +190,13 @@ body{
         font-size: 16px;
     }
     div.secondDiv{
-     top:-400;   
+     top:-300;   
     }
 } 
 
 @media screen and (max-height:500px){
     div.secondDiv{
-        top:-350;
-        
+        top:-300;
     }
     div.rootDiv{
       height: 600px;
@@ -259,7 +244,7 @@ body{
 
 
 .rootDiv {
-    background-image:url('../assets/LOGIN_BACK.jpg');
+    background-image:url('../assets/back.jpg');
     background-repeat:no-repeat;
     background-size:cover;
     height: 100%;
@@ -301,7 +286,7 @@ body{
     position:absolute;
     height:130px;
     margin:auto;
-    top:-470;
+    top:-300;
     left:0;
     right:0;
     bottom:0;

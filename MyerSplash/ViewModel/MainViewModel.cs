@@ -83,7 +83,7 @@ namespace MyerSplash.ViewModel
                 if (_refreshCommand != null) return _refreshCommand;
                 return _refreshCommand = new RelayCommand(async () =>
                   {
-                      await RefreshAsync();
+                      await RefreshAllAsync();
                   });
             }
         }
@@ -266,7 +266,7 @@ namespace MyerSplash.ViewModel
                     }
                     if (MainDataVM != null)
                     {
-                        var task = MainDataVM.RefreshAsync();
+                        var task = RefreshListAsync();
                     }
                 }
             }
@@ -341,20 +341,21 @@ namespace MyerSplash.ViewModel
             else MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
         }
 
-        private async Task RefreshAsync()
+        private async Task RefreshAllAsync()
+        {
+            var task1 = GetCategoriesAsync();
+            await RefreshListAsync();
+            await SaveMainListDataAsync();
+            await UpdateLiveTileAsync();
+        }
+
+        private async Task RefreshListAsync()
         {
             MainDataVM.MainVM = this;
-
-            var task1 = GetCategoriesAsync();
-
             IsRefreshing = true;
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;
-
             MainList = MainDataVM.DataList;
-
-            await SaveMainListDataAsync();
-            await UpdateLiveTileAsync();
         }
 
         private async Task GetCategoriesAsync()
@@ -419,7 +420,7 @@ namespace MyerSplash.ViewModel
             {
                 IsFirstActived = false;
                 await RestoreMainListDataAsync();
-                await RefreshAsync();
+                await RefreshAllAsync();
             }
         }
     }
