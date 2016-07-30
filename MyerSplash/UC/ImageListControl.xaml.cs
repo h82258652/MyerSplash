@@ -8,6 +8,7 @@ using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
 namespace MyerSplash.UC
@@ -43,12 +44,19 @@ namespace MyerSplash.UC
         {
             var item = e.ClickedItem;
             var container = ImageGridView.ContainerFromItem(item) as FrameworkElement;
+            var rootGrid = (container as GridViewItem).ContentTemplateRoot as Grid;
             Canvas.SetZIndex(container, ++_zindex);
 
             _containerVisual = ElementCompositionPreview.GetElementVisual(container);
 
-            var img = item as UnsplashImage;
-            OnClickItemStarted?.Invoke(img, container);
+            var unsplashImg = item as UnsplashImage;
+
+            var maskBorder = rootGrid.Children[2] as FrameworkElement;
+            var img = rootGrid.Children[1] as FrameworkElement;
+
+            ToggleItemMaskAnimation(maskBorder, img, false);
+
+            OnClickItemStarted?.Invoke(unsplashImg, container);
         }
 
         public void MoveItemAnimation(Vector3 targetOffset, float widthRatio)
@@ -151,69 +159,31 @@ namespace MyerSplash.UC
         private void RootGrid_Loaded(object sender, RoutedEventArgs e)
         {
             var rootGrid = sender as Grid;
-            rootGrid.Clip = new RectangleGeometry()
-            {
-                Rect = new Rect(0, 0, rootGrid.ActualWidth, rootGrid.ActualHeight)
-            };
+           
             rootGrid.PointerEntered += RootGrid_PointerEntered;
             rootGrid.PointerExited += RootGrid_PointerExited;
-        }
 
-        private void RootGrid_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            var rootGrid = sender as Grid;
-            var maskBorder = rootGrid.Children[2];
-            var img = rootGrid.Children[1];
-
+            var maskBorder = rootGrid.Children[2] as FrameworkElement;
             var maskVisual = ElementCompositionPreview.GetElementVisual(maskBorder);
-            var imgVisual = ElementCompositionPreview.GetElementVisual(img);
-
-            maskVisual.Opacity = 1f;
-
-            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            fadeAnimation.InsertKeyFrame(1f, 0f);
-            fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
-
-            var scaleAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            scaleAnimation.InsertKeyFrame(1f, 1f);
-            scaleAnimation.Duration = TimeSpan.FromMilliseconds(500);
-
-            var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
-            maskVisual.StartAnimation("Opacity", fadeAnimation);
-            imgVisual.StartAnimation("Scale.x", scaleAnimation);
-            imgVisual.StartAnimation("Scale.y", scaleAnimation);
-            batch.Completed += (s, ex) =>
-              {
-                  maskBorder.Visibility = Visibility.Collapsed;
-              };
-            batch.End();
-        }
-
-        private void RootGrid_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            var rootGrid = sender as Grid;
-            var maskBorder = rootGrid.Children[2];
-            var img = rootGrid.Children[1] as Image;
-
-            var maskVisual = ElementCompositionPreview.GetElementVisual(maskBorder);
-            var imgVisual = ElementCompositionPreview.GetElementVisual(img);
             maskVisual.Opacity = 0f;
+        }
 
-            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            fadeAnimation.InsertKeyFrame(1f, 1f);
-            fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
+        private void RootGrid_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            var rootGrid = sender as Grid;
+            var maskBorder = rootGrid.Children[2] as FrameworkElement;
+            var img = rootGrid.Children[1] as FrameworkElement;
 
-            var scaleAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            scaleAnimation.InsertKeyFrame(1f, 1.1f);
-            scaleAnimation.Duration = TimeSpan.FromMilliseconds(1000);
+            ToggleItemMaskAnimation(maskBorder, img, false);
+        }
 
-            imgVisual.CenterPoint = new Vector3((float)img.ActualWidth / 2, (float)img.ActualHeight / 2, 0f);
+        private void RootGrid_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            var rootGrid = sender as Grid;
+            var maskBorder = rootGrid.Children[2] as FrameworkElement;
+            var img = rootGrid.Children[1] as FrameworkElement;
 
-            maskBorder.Visibility = Visibility.Visible;
-            maskVisual.StartAnimation("Opacity", fadeAnimation);
-            imgVisual.StartAnimation("Scale.x", scaleAnimation);
-            imgVisual.StartAnimation("Scale.y", scaleAnimation);
-
+            ToggleItemMaskAnimation(maskBorder, img, true);
         }
 
         private void RootGrid_Unloaded(object sender, RoutedEventArgs e)
@@ -221,6 +191,48 @@ namespace MyerSplash.UC
             var rootGrid = sender as Grid;
             rootGrid.PointerEntered -= RootGrid_PointerEntered;
             rootGrid.PointerExited -= RootGrid_PointerExited;
+        }
+
+        private ScalarKeyFrameAnimation CreateScaleAnimation(bool show)
+        {
+            var scaleAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            scaleAnimation.InsertKeyFrame(1f, show ? 1.1f : 1f);
+            scaleAnimation.Duration = TimeSpan.FromMilliseconds(1000);
+
+            return scaleAnimation;
+        }
+
+        private ScalarKeyFrameAnimation CreateFadeAnimation(bool show)
+        {
+            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeAnimation.InsertKeyFrame(1f, show ? 1f : 0f);
+            fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
+
+            return fadeAnimation;
+        }
+
+        private void ToggleItemMaskAnimation(FrameworkElement mask, FrameworkElement img, bool show)
+        {
+            var maskVisual = ElementCompositionPreview.GetElementVisual(mask);
+            var imgVisual = ElementCompositionPreview.GetElementVisual(img);
+
+            var fadeAnimation = CreateFadeAnimation(show);
+            var scaleAnimation = CreateScaleAnimation(show);
+
+            imgVisual.CenterPoint = new Vector3((float)img.ActualHeight / 2, (float)img.ActualHeight / 2, 0f);
+
+            maskVisual.StartAnimation("Opacity", fadeAnimation);
+            imgVisual.StartAnimation("Scale.x", scaleAnimation);
+            imgVisual.StartAnimation("Scale.y", scaleAnimation);
+        }
+
+        private void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var rootGrid = sender as Grid;
+            rootGrid.Clip = new RectangleGeometry()
+            {
+                Rect = new Rect(0, 0, rootGrid.ActualWidth, rootGrid.ActualHeight)
+            };
         }
     }
 }

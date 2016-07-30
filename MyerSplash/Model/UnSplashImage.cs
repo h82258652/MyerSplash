@@ -176,6 +176,31 @@ namespace MyerSplash.Model
             }
         }
 
+        private DateTime _createTime;
+        public DateTime CreateTime
+        {
+            get
+            {
+                return _createTime;
+            }
+            set
+            {
+                if (_createTime != value)
+                {
+                    _createTime = value;
+                    RaisePropertyChanged(() => CreateTime);
+                }
+            }
+        }
+
+        public string CreateTimeString
+        {
+            get
+            {
+                return _createTime.ToString("yyyy-MM-dd");
+            }
+        }
+
         private BackgroundDownloader _backgroundDownloader = new BackgroundDownloader();
 
         public UnsplashImage()
@@ -334,6 +359,7 @@ namespace MyerSplash.Model
             var userName = JsonParser.GetStringFromJsonObj(userObj, "name");
             var id = JsonParser.GetStringFromJsonObj(obj, "id");
             var likes = JsonParser.GetNumberFromJsonObj(obj, "likes");
+            var time = JsonParser.GetStringFromJsonObj(obj, "created_at");
 
             var img = new UnsplashImage();
             img.SmallImageUrl = smallImageUrl;
@@ -347,6 +373,7 @@ namespace MyerSplash.Model
             img.Owner = new UnsplashUser() { Name = userName };
             img.ID = id;
             img.Likes = (int)likes;
+            img.CreateTime = DateTime.Parse(time);
 
             return img;
         }
