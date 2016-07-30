@@ -3,6 +3,7 @@ using MyerSplash.Model;
 using MyerSplash.ViewModel;
 using System;
 using System.Numerics;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
@@ -170,6 +171,10 @@ namespace MyerSplash.UC
 
         private void RootGrid_PointerExited(object sender, PointerRoutedEventArgs e)
         {
+            if (e.Pointer.PointerDeviceType != PointerDeviceType.Mouse)
+            {
+                return;
+            }
             var rootGrid = sender as Grid;
             var maskBorder = rootGrid.Children[2] as FrameworkElement;
             var img = rootGrid.Children[1] as FrameworkElement;
@@ -179,6 +184,10 @@ namespace MyerSplash.UC
 
         private void RootGrid_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
+            if(e.Pointer.PointerDeviceType!=PointerDeviceType.Mouse)
+            {
+                return;
+            }
             var rootGrid = sender as Grid;
             var maskBorder = rootGrid.Children[2] as FrameworkElement;
             var img = rootGrid.Children[1] as FrameworkElement;
