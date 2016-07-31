@@ -92,7 +92,7 @@ namespace MyerSplash.ViewModel
                 await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
             }
             
-            ToastService.SendToast("Clean :D", TimeSpan.FromMilliseconds(1000));
+            ToastService.SendToast("All clear.", TimeSpan.FromMilliseconds(1000));
         }
     }
 }
