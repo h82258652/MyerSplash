@@ -40,7 +40,7 @@
                                 <TextBlock Text="Likes" Foreground="White" FontWeight="Bold" Margin="8,0,0,0"/>
                                 <TextBlock Text="{x:Bind LikesString,Mode=OneWay}" Margin="8,0,0,0" Foreground="White" FontWeight="Bold"/>
                             </StackPanel>
-                            <TextBlock Text="{x:Bind CreateTimeString,Mode=OneWay}" Margin="0,0,8,16" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                            <TextBlock Text="{x:Bind CreateTimeString,Mode=OneWay}" Margin="0,0,16,16" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                         </Grid>
                     </Border>
                 </Grid>

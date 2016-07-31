@@ -2,9 +2,11 @@
 using JP.Utils.Helper;
 using System;
 using Windows.ApplicationModel.Core;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
@@ -40,12 +42,12 @@ namespace MyerSplash.Common
             TransitionCollection collection = new TransitionCollection();
             NavigationThemeTransition theme = new NavigationThemeTransition();
 
-            NavigationTransitionInfo info;
-            if (DeviceHelper.IsMobile)
-            {
-                info = new EntranceNavigationTransitionInfo();
-            }
-            else info = new ContinuumNavigationTransitionInfo();
+            NavigationTransitionInfo info = new ContinuumNavigationTransitionInfo();
+            //if (DeviceHelper.IsMobile)
+            //{
+            //    info = new EntranceNavigationTransitionInfo();
+            //}
+            //else info = new ContinuumNavigationTransitionInfo();
 
             theme.DefaultNavigationTransitionInfo = info;
             collection.Add(theme);

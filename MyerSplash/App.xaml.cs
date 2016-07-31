@@ -9,9 +9,11 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Phone.UI.Input;
 using Windows.Storage;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace MyerSplash
@@ -79,6 +81,7 @@ namespace MyerSplash
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
+                rootFrame.Background = App.Current.Resources["MyerSplashDarkColor"] as SolidColorBrush;
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 

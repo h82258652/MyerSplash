@@ -58,7 +58,8 @@ namespace MyerSplash.View
         }
 
         public static readonly DependencyProperty DrawerOpendedProperty =
-            DependencyProperty.Register("DrawerOpended", typeof(bool), typeof(MainPage), new PropertyMetadata(false, OnDrawerOpenedPropertyChanged));
+            DependencyProperty.Register("DrawerOpended", typeof(bool), typeof(MainPage), 
+                new PropertyMetadata(false, OnDrawerOpenedPropertyChanged));
 
         public static void OnDrawerOpenedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -118,7 +119,7 @@ namespace MyerSplash.View
         {
             _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
             _loadingVisual = ElementCompositionPreview.GetElementVisual(LoadingGrid);
-            _refreshVisual = ElementCompositionPreview.GetElementVisual(LoadingSymbol);
+            _refreshVisual = ElementCompositionPreview.GetElementVisual(RefreshIcon);
             _drawerVisual = ElementCompositionPreview.GetElementVisual(DrawerControl);
             _drawerMaskVisual = ElementCompositionPreview.GetElementVisual(DrawerMaskBorder);
             _titleGridVisual = ElementCompositionPreview.GetElementVisual(TitleGrid);
@@ -140,7 +141,7 @@ namespace MyerSplash.View
             rotateAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
 
             _loadingVisual.IsVisible = true;
-            _refreshVisual.CenterPoint = new Vector3((float)LoadingSymbol.ActualWidth / 2, (float)LoadingSymbol.ActualHeight / 2, 0f);
+            _refreshVisual.CenterPoint = new Vector3((float)LoadingGrid.ActualWidth / 2, (float)LoadingGrid.ActualHeight / 2, 0f);
             _refreshVisual.RotationAngleInDegrees = 0;
 
             _refreshVisual.StopAnimation("RotationAngleInDegrees");
@@ -312,6 +313,17 @@ namespace MyerSplash.View
                     ToggleDrawerAnimation(true);
                     ToggleDrawerMaskAnimation(true);
                 }
+
+                NavigationService.HistoryOperationsBeyondFrame.Push(() =>
+                {
+                    var content = Frame.Content;
+                    if (content.GetType() == typeof(MainPage))
+                    {
+                        MainVM.DrawerOpened = false;
+                        return true;
+                    }
+                    else return false;
+                });
             }
             else
             {
@@ -364,19 +376,5 @@ namespace MyerSplash.View
             }
         }
         #endregion
-
-        private void DrawerControl_OnDrawerSelectedIndexChanged(int index)
-        {
-            if (index == 0)
-            {
-                ToggleRefreshBtnAnimation(true);
-            }
-            else
-            {
-                ToggleRefreshBtnAnimation(false);
-                ToggleTitleBarAnimation(true);
-            }
-
-        }
     }
 }

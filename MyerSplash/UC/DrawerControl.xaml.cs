@@ -18,8 +18,6 @@ namespace MyerSplash.UC
 {
     public sealed partial class DrawerControl : UserControl
     {
-        public event Action<int> OnDrawerSelectedIndexChanged;
-
         private MainViewModel MainVM
         {
             get
@@ -31,11 +29,6 @@ namespace MyerSplash.UC
         public DrawerControl()
         {
             this.InitializeComponent();
-        }
-
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

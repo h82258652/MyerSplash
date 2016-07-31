@@ -272,7 +272,7 @@
             </Setter>
         </Style>
         <Thickness x:Key="ComboBoxItemPadding">11,5,11,7</Thickness>
-        <Style x:Key="ComboBoxItemStyle1" TargetType="ComboBoxItem">
+        <Style x:Key="ComboBoxItemStyle" TargetType="ComboBoxItem">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="TabNavigation" Value="Local" />
             <Setter Property="Padding" Value="{StaticResource ComboBoxItemPadding}" />
@@ -439,9 +439,9 @@
                           SelectedIndex="{Binding Source={StaticResource AppSettings},
                                                   Path=LoadQuality,
                                                   Mode=TwoWay}">
-                    <ComboBoxItem Content="Large" Style="{StaticResource ComboBoxItemStyle1}" />
-                    <ComboBoxItem Content="Small" Style="{StaticResource ComboBoxItemStyle1}" />
-                    <ComboBoxItem Content="Thumb" Style="{StaticResource ComboBoxItemStyle1}" />
+                    <ComboBoxItem Content="Large" Style="{StaticResource ComboBoxItemStyle}" />
+                    <ComboBoxItem Content="Small" Style="{StaticResource ComboBoxItemStyle}" />
+                    <ComboBoxItem Content="Thumb" Style="{StaticResource ComboBoxItemStyle}" />
                 </ComboBox>
                 <TextBlock Margin="10,10,0,0"
                            VerticalAlignment="Center"
@@ -454,9 +454,9 @@
                           SelectedIndex="{Binding Source={StaticResource AppSettings},
                                                   Path=SaveQuality,
                                                   Mode=TwoWay}">
-                    <ComboBoxItem Content="Highest(Up to 8MB)" Style="{StaticResource ComboBoxItemStyle1}" />
-                    <ComboBoxItem Content="High(Up to 3MB)" Style="{StaticResource ComboBoxItemStyle1}" />
-                    <ComboBoxItem Content="Medium(500 KB)" Style="{StaticResource ComboBoxItemStyle1}" />
+                    <ComboBoxItem Content="Highest(Up to 8MB)" Style="{StaticResource ComboBoxItemStyle}" />
+                    <ComboBoxItem Content="High(Up to 3MB)" Style="{StaticResource ComboBoxItemStyle}" />
+                    <ComboBoxItem Content="Medium(500 KB)" Style="{StaticResource ComboBoxItemStyle}" />
                 </ComboBox>
                 <TextBlock Margin="10,20,0,0"
                            HorizontalAlignment="Left"
