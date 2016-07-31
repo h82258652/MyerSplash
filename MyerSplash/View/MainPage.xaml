@@ -24,10 +24,7 @@
                 <Ellipse Width="50"
                          Height="50"
                          Fill="#FFE5E5E5" />
-                <SymbolIcon x:Name="LoadingSymbol"
-                            Foreground="{StaticResource MyerSplashThemeDarkColor}"
-                            RenderTransformOrigin="0.5 0.5"
-                            Symbol="Refresh" />
+                <FontIcon x:Name="RefreshIcon" CacheMode="BitmapCache" FontFamily="Segoe MDL2 Assets" Glyph="&#xE149;" />
             </Grid>
         </Grid>
         <Grid x:Name="TitleGrid"
@@ -41,8 +38,7 @@
                         Tapped="StackPanel_Tapped">
                 <TextBlock FontSize="25" Text="{x:Bind MainVM.SelectedTitle,Mode=OneWay,FallbackValue=FEATURED}" FontWeight="Bold" />
             </StackPanel>
-            
-            <Button Command="{x:Bind MainVM.SearchCommand,Mode=OneWay}" Width="70" Style="{StaticResource ListButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0">
+            <!--<Button Command="{x:Bind MainVM.SearchCommand,Mode=OneWay}" Width="70" Style="{StaticResource ListButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0">
                 <Grid>
                     <FontIcon Margin="5" FontFamily="Segoe MDL2 Assets" Glyph="&#xE094;" RenderTransformOrigin="0.5,0.5" >
                         <FontIcon.RenderTransform>
@@ -50,7 +46,7 @@
                         </FontIcon.RenderTransform>
                     </FontIcon>
                 </Grid>
-            </Button>
+            </Button>-->
             <uc:HamburgerButton Width="70"
                                 HorizontalAlignment="Left"
                                 Background="White"
@@ -120,10 +116,9 @@
                 Canvas.ZIndex="11" />
         <uc:DrawerControl x:Name="DrawerControl"
                           Grid.RowSpan="2"
-                          Width="300"
+                          Width="270"
                           HorizontalAlignment="Left"
                           d:IsHidden="True"
-                          OnDrawerSelectedIndexChanged="DrawerControl_OnDrawerSelectedIndexChanged"
                           Canvas.ZIndex="12"
                           DataContext="{x:Bind MainVM, Mode=OneWay}"
                           ManipulationCompleted="DrawerControl_ManipulationCompleted"

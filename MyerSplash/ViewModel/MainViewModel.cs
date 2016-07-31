@@ -234,10 +234,10 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_goToSettingsCommand != null) return _goToSettingsCommand;
-                return _goToSettingsCommand = new RelayCommand(() =>
+                return _goToSettingsCommand = new RelayCommand(async() =>
                   {
                       DrawerOpened = false;
-                      NavigationService.NaivgateToPage(typeof(SettingsPage));
+                      await NavigationService.NaivgateToPageAsync(typeof(SettingsPage));
                   });
             }
         }
@@ -248,10 +248,10 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_goToAboutCommand != null) return _goToAboutCommand;
-                return _goToAboutCommand = new RelayCommand(() =>
+                return _goToAboutCommand = new RelayCommand(async() =>
                   {
                       DrawerOpened = false;
-                      NavigationService.NaivgateToPage(typeof(AboutPage));
+                      await NavigationService.NaivgateToPageAsync(typeof(AboutPage));
                   });
             }
         }
@@ -348,7 +348,6 @@ namespace MyerSplash.ViewModel
                         else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
                         var task = item.RestoreAsync();
                     }
-                    UpdateNoItemHint();
                     await UpdateLiveTileAsync();
                 }
                 else MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
@@ -371,12 +370,11 @@ namespace MyerSplash.ViewModel
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;
             MainList = MainDataVM.DataList;
-            UpdateNoItemHint();
         }
 
         private void UpdateNoItemHint()
         {
-            if (MainDataVM.DataList?.Count > 0) ShowNoItemHint = Visibility.Collapsed;
+            if (MainList?.Count > 0) ShowNoItemHint = Visibility.Collapsed;
             else ShowNoItemHint = Visibility.Visible;
         }
 

@@ -307,28 +307,5 @@ namespace MyerSplash.UC
             var grid = sender as Grid;
             grid.Clip = new RectangleGeometry() { Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height) };
         }
-
-        public Grid ContentGrid
-        {
-            get
-            {
-                return this.DetailContentGrid;
-            }
-        }
-
-        public Point GetContentGridPosition()
-        {
-            var size = GetContentGridSize();
-            var targetPosX = this.ActualWidth > 600 ? ((this.ActualWidth - 600) / 2) : (0);
-            var targetPosY = (this.ActualHeight - size.Height) / 2;
-            return new Point(targetPosX, targetPosY);
-        }
-
-        public Size GetContentGridSize()
-        {
-            var width = this.ActualWidth > 600 ? 600 : this.ActualWidth;
-            var height = width / 1.5 + 100;
-            return new Size(width, height);
-        }
     }
 }

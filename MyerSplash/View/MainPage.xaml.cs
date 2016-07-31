@@ -58,7 +58,8 @@ namespace MyerSplash.View
         }
 
         public static readonly DependencyProperty DrawerOpendedProperty =
-            DependencyProperty.Register("DrawerOpended", typeof(bool), typeof(MainPage), new PropertyMetadata(false, OnDrawerOpenedPropertyChanged));
+            DependencyProperty.Register("DrawerOpended", typeof(bool), typeof(MainPage), 
+                new PropertyMetadata(false, OnDrawerOpenedPropertyChanged));
 
         public static void OnDrawerOpenedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -118,7 +119,7 @@ namespace MyerSplash.View
         {
             _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
             _loadingVisual = ElementCompositionPreview.GetElementVisual(LoadingGrid);
-            _refreshVisual = ElementCompositionPreview.GetElementVisual(LoadingSymbol);
+            _refreshVisual = ElementCompositionPreview.GetElementVisual(RefreshIcon);
             _drawerVisual = ElementCompositionPreview.GetElementVisual(DrawerControl);
             _drawerMaskVisual = ElementCompositionPreview.GetElementVisual(DrawerMaskBorder);
             _titleGridVisual = ElementCompositionPreview.GetElementVisual(TitleGrid);
@@ -140,7 +141,7 @@ namespace MyerSplash.View
             rotateAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
 
             _loadingVisual.IsVisible = true;
-            _refreshVisual.CenterPoint = new Vector3((float)LoadingSymbol.ActualWidth / 2, (float)LoadingSymbol.ActualHeight / 2, 0f);
+            _refreshVisual.CenterPoint = new Vector3((float)LoadingGrid.ActualWidth / 2, (float)LoadingGrid.ActualHeight / 2, 0f);
             _refreshVisual.RotationAngleInDegrees = 0;
 
             _refreshVisual.StopAnimation("RotationAngleInDegrees");
@@ -234,8 +235,8 @@ namespace MyerSplash.View
             DetailControl.CurrentImage = _clickedImg;
 
             var currentPos = _clickedContainer.TransformToVisual(ListControl).TransformPoint(new Point(0, 0));
-            var targetPos = DetailControl.GetContentGridPosition();
-            var targetRatio = DetailControl.GetContentGridSize().Width / _clickedContainer.ActualWidth;
+            var targetPos = GetTargetPosition();
+            var targetRatio = GetTargetSize().X / _clickedContainer.ActualWidth;
             var targetOffsetX = targetPos.X - currentPos.X;
             var targetOffsetY = targetPos.Y - currentPos.Y;
 
@@ -252,6 +253,29 @@ namespace MyerSplash.View
                 }
                 else return false;
             });
+        }
+
+        private Vector2 GetTargetPosition()
+        {
+            var size = GetTargetSize();
+
+            var x = 0f;
+            var y = 0f;
+            if(size.X!= this.ActualWidth)
+            {
+                x = (float)(this.ActualWidth - size.X) / 2f;
+            }
+            y = (float)(this.ActualHeight - size.Y) / 2f;
+
+            return new Vector2(x, y);
+        }
+
+        private Vector2 GetTargetSize()
+        {
+            var width = Math.Min(600, this.ActualWidth);
+            var height = width / 1.5 + 100;
+
+            return new Vector2((float)width, (float)height);
         }
 
         private void DetailControl_Loaded(object sender, RoutedEventArgs e)
@@ -312,6 +336,17 @@ namespace MyerSplash.View
                     ToggleDrawerAnimation(true);
                     ToggleDrawerMaskAnimation(true);
                 }
+
+                NavigationService.HistoryOperationsBeyondFrame.Push(() =>
+                {
+                    var content = Frame.Content;
+                    if (content.GetType() == typeof(MainPage))
+                    {
+                        MainVM.DrawerOpened = false;
+                        return true;
+                    }
+                    else return false;
+                });
             }
             else
             {
@@ -364,19 +399,5 @@ namespace MyerSplash.View
             }
         }
         #endregion
-
-        private void DrawerControl_OnDrawerSelectedIndexChanged(int index)
-        {
-            if (index == 0)
-            {
-                ToggleRefreshBtnAnimation(true);
-            }
-            else
-            {
-                ToggleRefreshBtnAnimation(false);
-                ToggleTitleBarAnimation(true);
-            }
-
-        }
     }
 }

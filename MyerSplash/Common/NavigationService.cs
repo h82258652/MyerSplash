@@ -20,8 +20,9 @@ namespace MyerSplash.Common
 
         public static Stack<Func<bool>> HistoryOperationsBeyondFrame { get; set; } = new Stack<Func<bool>>();
 
-        public static void NaivgateToPage(Type pagetype, object param = null)
+        public static async Task NaivgateToPageAsync(Type pagetype, object param = null)
         {
+            //await Task.Delay(1);
             RootFrame.Navigate(pagetype, param);
         }
 
