@@ -32,5 +32,10 @@ namespace MyerSplash.UC
         {
             this.InitializeComponent();
         }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

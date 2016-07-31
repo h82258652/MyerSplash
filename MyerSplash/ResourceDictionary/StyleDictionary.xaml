@@ -87,17 +87,23 @@
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="SelectionStates">
                                 <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.25" />
+                                    <VisualTransition GeneratedDuration="0:0:0.10" />
                                 </VisualStateGroup.Transitions>
                                 <VisualState x:Name="Unselected">
-                                     <Storyboard>
+                                    <Storyboard>
                                         <ColorAnimation To="Transparent" Storyboard.TargetName="InnerGrid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SelectedBorder" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.0" Value="Collapsed"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
                                         <ColorAnimation To="{StaticResource ListButtonSelected}" Storyboard.TargetName="InnerGrid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" />
                                         <ColorAnimation To="White" Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="(ContentPresenter.Foreground).(SolidColorBrush.Color)" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SelectedBorder" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.0" Value="Visible"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <!--<VisualState x:Name="SelectedUnfocused">
@@ -141,6 +147,7 @@
                             <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding Content}" ContentTransitions="{TemplateBinding ContentTransitions}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" />
                             <Rectangle x:Name="FocusVisualWhite" Stroke="{ThemeResource FocusVisualWhiteStrokeThemeBrush}" StrokeEndLineCap="Square" StrokeDashArray="1,1" Opacity="0" StrokeDashOffset=".5" />
                             <Rectangle x:Name="FocusVisualBlack" Stroke="{ThemeResource FocusVisualBlackStrokeThemeBrush}" StrokeEndLineCap="Square" StrokeDashArray="1,1" Opacity="0" StrokeDashOffset="1.5" />
+                            <Border x:Name="SelectedBorder" Width="12" HorizontalAlignment="Left" Background="{StaticResource MyerSplashThemeColor}"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>
