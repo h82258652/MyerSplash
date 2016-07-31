@@ -158,6 +158,7 @@
   <ItemGroup>
     <Content Include="Assets\Icon\Logo_black.png" />
     <Content Include="Assets\Icon\Logo_trans.png" />
+    <Content Include="Assets\Icon\Logo_trans_narrow.png" />
     <Content Include="Assets\Icon\Logo_white.png" />
     <Content Include="Assets\Image\The Watchtower.png" />
     <Content Include="Assets\Image\Tutorial.png" />

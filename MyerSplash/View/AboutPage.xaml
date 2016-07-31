@@ -28,7 +28,7 @@
                         Margin="0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                    <Image Width="200" Source="ms-appx:///Assets/Icon/Logo_trans.png" />
+                    <Image Width="200" Source="ms-appx:///Assets/Icon/Logo_trans_narrow.png" Margin="0,0,0,20" />
                     <StackPanel Margin="0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -43,7 +43,7 @@
                     </StackPanel>
                     <TextBlock HorizontalAlignment="Center"
                            FontSize="20"
-                           Foreground="#70FFFFFF"
+                           Foreground="#33FFFFFF"
                            Text="for Windows 10" FontFamily="Segoe UI Light" />
                     <Border Margin="0,10,0,0"
                         HorizontalAlignment="Center"
@@ -67,7 +67,7 @@
                            HorizontalAlignment="Center"
                            FontSize="15"
                            Foreground="#70FFFFFF"
-                           Text="All photos are from the website Unsplash. Sincerely thanks to all the photographers for doing their contributions."
+                           Text="All photos are from the website Unsplash."
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
                     <TextBlock Margin="0,10,0,0"

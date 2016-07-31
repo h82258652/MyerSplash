@@ -15,6 +15,7 @@ using JP.Utils.UI;
 using MyerSplashShared.API;
 using System.Linq;
 using System.Diagnostics;
+using MyerSplashCustomControl;
 
 namespace MyerSplash.ViewModel
 {
@@ -74,6 +75,20 @@ namespace MyerSplash.ViewModel
         public bool IsInView { get; set; }
 
         public bool IsFirstActived { get; set; } = true;
+
+        private RelayCommand _searchCommand;
+        public RelayCommand SearchCommand
+        {
+            get
+            {
+                if (_searchCommand != null) return _searchCommand;
+                return _searchCommand = new RelayCommand(() =>
+                  {
+                      ToastService.SendToast("Still working on this.");
+                  });
+            }
+        }
+
 
         private RelayCommand _refreshCommand;
         public RelayCommand RefreshCommand
@@ -333,7 +348,7 @@ namespace MyerSplash.ViewModel
                         else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
                         var task = item.RestoreAsync();
                     }
-                    this.ShowNoItemHint = Visibility.Collapsed;
+                    UpdateNoItemHint();
                     await UpdateLiveTileAsync();
                 }
                 else MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
@@ -356,6 +371,13 @@ namespace MyerSplash.ViewModel
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;
             MainList = MainDataVM.DataList;
+            UpdateNoItemHint();
+        }
+
+        private void UpdateNoItemHint()
+        {
+            if (MainDataVM.DataList?.Count > 0) ShowNoItemHint = Visibility.Collapsed;
+            else ShowNoItemHint = Visibility.Visible;
         }
 
         private async Task GetCategoriesAsync()

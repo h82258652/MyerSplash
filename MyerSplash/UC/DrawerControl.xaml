@@ -74,17 +74,21 @@
                         Background="{x:Null}"
                         Command="{x:Bind MainVM.GoToSettingsCommand, Mode=OneWay}"
                         Style="{StaticResource ListButtonStyle}">
-                    <Grid>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="20" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <SymbolIcon Foreground="White" Symbol="Setting" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets"
+                                  FontSize="20"
+                                  Foreground="#99FFFFFF"
+                                  Glyph="&#xE115;" />
                         <TextBlock x:Uid="SettingsTB"
                                    Grid.Column="1"
+                                   Margin="12,0,0,0"
                                    VerticalAlignment="Center"
-                                   FontSize="17"
-                                   Foreground="White"
+                                   FontSize="15"
+                                   Foreground="#99FFFFFF"
                                    Text="SETTINGS" />
                     </Grid>
                 </Button>
@@ -95,23 +99,20 @@
                         Background="{x:Null}"
                         Command="{x:Bind MainVM.GoToAboutCommand, Mode=OneWay}"
                         Style="{StaticResource ListButtonStyle}">
-                    <Grid>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="20" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   AutomationProperties.Name="Favorite"
-                                   FontFamily="Segoe MDL2 Assets"
-                                   FontSize="20"
-                                   Foreground="White"
-                                   Text="&#xE76E;" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets"
+                                  Foreground="#99FFFFFF"
+                                  Glyph="&#xED54;" />
                         <TextBlock x:Uid="AboutTB"
                                    Grid.Column="1"
+                                   Margin="12,0,0,0"
                                    VerticalAlignment="Center"
-                                   FontSize="17"
-                                   Foreground="White"
+                                   FontSize="15"
+                                   Foreground="#99FFFFFF"
                                    Text="ABOUT" />
                     </Grid>
                 </Button>

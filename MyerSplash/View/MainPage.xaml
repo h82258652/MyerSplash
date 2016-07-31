@@ -39,8 +39,18 @@
                         CacheMode="BitmapCache"
                         Orientation="Horizontal"
                         Tapped="StackPanel_Tapped">
-                <TextBlock FontSize="25" Text="{x:Bind MainVM.SelectedTitle,Mode=OneWay}" FontWeight="Bold" />
+                <TextBlock FontSize="25" Text="{x:Bind MainVM.SelectedTitle,Mode=OneWay,FallbackValue=FEATURED}" FontWeight="Bold" />
             </StackPanel>
+            
+            <Button Command="{x:Bind MainVM.SearchCommand,Mode=OneWay}" Width="70" Style="{StaticResource ListButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0">
+                <Grid>
+                    <FontIcon Margin="5" FontFamily="Segoe MDL2 Assets" Glyph="&#xE094;" RenderTransformOrigin="0.5,0.5" >
+                        <FontIcon.RenderTransform>
+                            <CompositeTransform ScaleX="-1"/>
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
+                </Grid>
+            </Button>
             <uc:HamburgerButton Width="70"
                                 HorizontalAlignment="Left"
                                 Background="White"
@@ -51,7 +61,7 @@
               Grid.RowSpan="2"
               Margin="0"
               Canvas.ZIndex="5">
-            <Grid x:Name="NoItemHint" Visibility="{x:Bind MainVM.ShowNoItemHint, Mode=OneWay}">
+            <Grid x:Name="NoItemHint" Visibility="{x:Bind MainVM.ShowNoItemHint, Mode=OneWay,FallbackValue=Collapsed}">
                 <StackPanel HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Opacity="0.3">
@@ -98,6 +108,7 @@
         </Grid>
         <uc:PhotoDetailControl x:Name="DetailControl"
                                Grid.RowSpan="2"
+                               d:IsHidden="True"
                                Canvas.ZIndex="10"
                                Loaded="DetailControl_Loaded"
                                OnHideControl="DetailControl_OnHideControl" />
