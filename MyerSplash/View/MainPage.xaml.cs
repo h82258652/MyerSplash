@@ -235,8 +235,8 @@ namespace MyerSplash.View
             DetailControl.CurrentImage = _clickedImg;
 
             var currentPos = _clickedContainer.TransformToVisual(ListControl).TransformPoint(new Point(0, 0));
-            var targetPos = DetailControl.GetContentGridPosition();
-            var targetRatio = DetailControl.GetContentGridSize().Width / _clickedContainer.ActualWidth;
+            var targetPos = GetTargetPosition();
+            var targetRatio = GetTargetSize().X / _clickedContainer.ActualWidth;
             var targetOffsetX = targetPos.X - currentPos.X;
             var targetOffsetY = targetPos.Y - currentPos.Y;
 
@@ -253,6 +253,29 @@ namespace MyerSplash.View
                 }
                 else return false;
             });
+        }
+
+        private Vector2 GetTargetPosition()
+        {
+            var size = GetTargetSize();
+
+            var x = 0f;
+            var y = 0f;
+            if(size.X!= this.ActualWidth)
+            {
+                x = (float)(this.ActualWidth - size.X) / 2f;
+            }
+            y = (float)(this.ActualHeight - size.Y) / 2f;
+
+            return new Vector2(x, y);
+        }
+
+        private Vector2 GetTargetSize()
+        {
+            var width = Math.Min(600, this.ActualWidth);
+            var height = width / 1.5 + 100;
+
+            return new Vector2((float)width, (float)height);
         }
 
         private void DetailControl_Loaded(object sender, RoutedEventArgs e)

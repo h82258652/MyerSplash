@@ -42,12 +42,12 @@ namespace MyerSplash.Common
             TransitionCollection collection = new TransitionCollection();
             NavigationThemeTransition theme = new NavigationThemeTransition();
 
-            NavigationTransitionInfo info = new ContinuumNavigationTransitionInfo();
-            //if (DeviceHelper.IsMobile)
-            //{
-            //    info = new EntranceNavigationTransitionInfo();
-            //}
-            //else info = new ContinuumNavigationTransitionInfo();
+            NavigationTransitionInfo info;
+            if (DeviceHelper.IsMobile)
+            {
+                info = new EntranceNavigationTransitionInfo();
+            }
+            else info = new ContinuumNavigationTransitionInfo();
 
             theme.DefaultNavigationTransitionInfo = info;
             collection.Add(theme);

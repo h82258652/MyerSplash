@@ -234,10 +234,10 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_goToSettingsCommand != null) return _goToSettingsCommand;
-                return _goToSettingsCommand = new RelayCommand(() =>
+                return _goToSettingsCommand = new RelayCommand(async() =>
                   {
                       DrawerOpened = false;
-                      NavigationService.NaivgateToPage(typeof(SettingsPage));
+                      await NavigationService.NaivgateToPageAsync(typeof(SettingsPage));
                   });
             }
         }
@@ -248,10 +248,10 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_goToAboutCommand != null) return _goToAboutCommand;
-                return _goToAboutCommand = new RelayCommand(() =>
+                return _goToAboutCommand = new RelayCommand(async() =>
                   {
                       DrawerOpened = false;
-                      NavigationService.NaivgateToPage(typeof(AboutPage));
+                      await NavigationService.NaivgateToPageAsync(typeof(AboutPage));
                   });
             }
         }
