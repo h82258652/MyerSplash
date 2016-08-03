@@ -28,6 +28,10 @@ namespace MyerSplash.View
         private double _lastVerticalOffset = 0;
         private bool _isHideTitleGrid = false;
 
+        private UnsplashImage _clickedImg;
+        private FrameworkElement _clickedContainer;
+        private bool _waitForToggleDetailAnimation;
+
         public bool IsLoading
         {
             get { return (bool)GetValue(IsLoadingProperty); }
@@ -54,7 +58,8 @@ namespace MyerSplash.View
         }
 
         public static readonly DependencyProperty DrawerOpendedProperty =
-            DependencyProperty.Register("DrawerOpended", typeof(bool), typeof(MainPage), new PropertyMetadata(false, OnDrawerOpenedPropertyChanged));
+            DependencyProperty.Register("DrawerOpended", typeof(bool), typeof(MainPage), 
+                new PropertyMetadata(false, OnDrawerOpenedPropertyChanged));
 
         public static void OnDrawerOpenedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -114,7 +119,7 @@ namespace MyerSplash.View
         {
             _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
             _loadingVisual = ElementCompositionPreview.GetElementVisual(LoadingGrid);
-            _refreshVisual = ElementCompositionPreview.GetElementVisual(LoadingSymbol);
+            _refreshVisual = ElementCompositionPreview.GetElementVisual(RefreshIcon);
             _drawerVisual = ElementCompositionPreview.GetElementVisual(DrawerControl);
             _drawerMaskVisual = ElementCompositionPreview.GetElementVisual(DrawerMaskBorder);
             _titleGridVisual = ElementCompositionPreview.GetElementVisual(TitleGrid);
@@ -136,7 +141,7 @@ namespace MyerSplash.View
             rotateAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
 
             _loadingVisual.IsVisible = true;
-            _refreshVisual.CenterPoint = new Vector3((float)LoadingSymbol.ActualWidth / 2, (float)LoadingSymbol.ActualHeight / 2, 0f);
+            _refreshVisual.CenterPoint = new Vector3((float)LoadingGrid.ActualWidth / 2, (float)LoadingGrid.ActualHeight / 2, 0f);
             _refreshVisual.RotationAngleInDegrees = 0;
 
             _refreshVisual.StopAnimation("RotationAngleInDegrees");
@@ -200,13 +205,38 @@ namespace MyerSplash.View
 
         private void ListControl_OnClickItemStarted(UnsplashImage img, FrameworkElement container)
         {
+            _clickedContainer = container;
+            _clickedImg = img;
+
             DetailControl.Visibility = Visibility.Visible;
+            if (DetailControl.ActualHeight == 0)
+            {
+                _waitForToggleDetailAnimation = true;
+            }
+            else
+            {
+                _waitForToggleDetailAnimation = false;
+                ToggleDetailControlAnimation();
+            }
+        }
 
-            DetailControl.UnsplashImage = img;
+        private void DetailControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (_waitForToggleDetailAnimation)
+            {
+                _waitForToggleDetailAnimation = false;
 
-            var currentPos = container.TransformToVisual(ListControl).TransformPoint(new Point(0, 0));
-            var targetPos = DetailControl.GetContentGridPosition();
-            var targetRatio = DetailControl.GetContentGridSize().Width / container.ActualWidth;
+                ToggleDetailControlAnimation();
+            }
+        }
+
+        private void ToggleDetailControlAnimation()
+        {
+            DetailControl.CurrentImage = _clickedImg;
+
+            var currentPos = _clickedContainer.TransformToVisual(ListControl).TransformPoint(new Point(0, 0));
+            var targetPos = GetTargetPosition();
+            var targetRatio = GetTargetSize().X / _clickedContainer.ActualWidth;
             var targetOffsetX = targetPos.X - currentPos.X;
             var targetOffsetY = targetPos.Y - currentPos.Y;
 
@@ -215,14 +245,44 @@ namespace MyerSplash.View
 
             NavigationService.HistoryOperationsBeyondFrame.Push(() =>
             {
-                DetailControl.HideDetailControl();
-                return true;
+                var content = Frame.Content;
+                if (content.GetType() == typeof(MainPage))
+                {
+                    DetailControl.HideDetailControl();
+                    return true;
+                }
+                else return false;
             });
+        }
+
+        private Vector2 GetTargetPosition()
+        {
+            var size = GetTargetSize();
+
+            var x = 0f;
+            var y = 0f;
+            if(size.X!= this.ActualWidth)
+            {
+                x = (float)(this.ActualWidth - size.X) / 2f;
+            }
+            y = (float)(this.ActualHeight - size.Y) / 2f;
+
+            return new Vector2(x, y);
+        }
+
+        private Vector2 GetTargetSize()
+        {
+            var width = Math.Min(600, this.ActualWidth);
+            var height = width / 1.5 + 100;
+
+            return new Vector2((float)width, (float)height);
         }
 
         private void DetailControl_Loaded(object sender, RoutedEventArgs e)
         {
             DetailControl.Visibility = Visibility.Collapsed;
+            DetailControl.SizeChanged -= DetailControl_SizeChanged;
+            DetailControl.SizeChanged += DetailControl_SizeChanged;
         }
 
         #region Scrolling
@@ -267,7 +327,7 @@ namespace MyerSplash.View
         {
             if (e.Cumulative.Translation.X >= 70)
             {
-                if(!DrawerOpended)
+                if (!DrawerOpended)
                 {
                     DrawerOpended = true;
                 }
@@ -276,6 +336,17 @@ namespace MyerSplash.View
                     ToggleDrawerAnimation(true);
                     ToggleDrawerMaskAnimation(true);
                 }
+
+                NavigationService.HistoryOperationsBeyondFrame.Push(() =>
+                {
+                    var content = Frame.Content;
+                    if (content.GetType() == typeof(MainPage))
+                    {
+                        MainVM.DrawerOpened = false;
+                        return true;
+                    }
+                    else return false;
+                });
             }
             else
             {
@@ -304,6 +375,8 @@ namespace MyerSplash.View
 
         private void DrawerControl_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
+            if (e.Delta.Translation.X > 0) return;
+
             if (_drawerMaskVisual.Opacity > 0)
             {
                 _drawerMaskVisual.Opacity -= 0.01f;
@@ -314,7 +387,7 @@ namespace MyerSplash.View
 
         private void DrawerControl_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         {
-            DrawerMaskBorder.Visibility = Visibility.Collapsed;
+            //DrawerMaskBorder.Visibility = Visibility.Collapsed;
 
             if (e.Cumulative.Translation.X <= -30)
             {

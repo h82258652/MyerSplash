@@ -1,12 +1,12 @@
 ﻿using JP.Utils.Framework;
 using JP.Utils.Helper;
 using System;
-using System.Diagnostics;
 using Windows.ApplicationModel.Core;
-using Windows.Phone.UI.Input;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
@@ -104,7 +104,6 @@ namespace MyerSplash.Common
             {
                 Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
             }
-            UmengSDK.UmengAnalytics.TrackPageStart(this.GetType().ToString());
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -124,7 +123,6 @@ namespace MyerSplash.Common
             {
                 Window.Current.CoreWindow.KeyDown -= CoreWindow_KeyDown;
             }
-            UmengSDK.UmengAnalytics.TrackPageEnd(this.GetType().ToString());
         }
     }
 }

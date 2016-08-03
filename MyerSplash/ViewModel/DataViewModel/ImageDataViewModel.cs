@@ -20,14 +20,17 @@ namespace MyerSplash.ViewModel
         [IgnoreDataMember]
         public MainViewModel MainVM { get; set; }
 
-        public ImageDataViewModel(MainViewModel mainVM)
+        public string RequestUrl { get; set; }
+
+        public ImageDataViewModel(MainViewModel mainVM, string url)
         {
             this.MainVM = mainVM;
+            this.RequestUrl = url;
         }
 
-        public ImageDataViewModel()
+        public ImageDataViewModel(string url)
         {
-
+            this.RequestUrl = url;
         }
 
         protected override void ClickItem(UnsplashImage item)
@@ -39,8 +42,13 @@ namespace MyerSplash.ViewModel
         {
             try
             {
-                var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(2000).Token);
-                if (result.IsSuccessful)
+                if (pageIndex >= 2)
+                {
+                    MainVM.ShowFooterLoading = Visibility.Visible;
+                }
+
+                var result = await CloudService.GetImages(pageIndex, (int)DEFAULT_PER_PAGE, CTSFactory.MakeCTS(10000).Token, RequestUrl);
+                if (result.IsRequestSuccessful)
                 {
                     var list = UnsplashImage.ParseListFromJson(result.JsonSrc);
                     return list;

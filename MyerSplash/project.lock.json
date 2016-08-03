@@ -1884,7 +1884,7 @@
           "lib/netcore451/UmengAnalyticsUniversal.dll": {}
         }
       },
-      "Win2D.uwp/1.17.0": {
+      "Win2D.uwp/1.18.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
         },
@@ -3650,7 +3650,7 @@
           "lib/netcore451/UmengAnalyticsUniversal.dll": {}
         }
       },
-      "Win2D.uwp/1.17.0": {
+      "Win2D.uwp/1.18.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
         },
@@ -5363,7 +5363,7 @@
           "lib/netcore451/UmengAnalyticsUniversal.dll": {}
         }
       },
-      "Win2D.uwp/1.17.0": {
+      "Win2D.uwp/1.18.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
         },
@@ -7126,7 +7126,7 @@
           "lib/netcore451/UmengAnalyticsUniversal.dll": {}
         }
       },
-      "Win2D.uwp/1.17.0": {
+      "Win2D.uwp/1.18.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
         },
@@ -8839,7 +8839,7 @@
           "lib/netcore451/UmengAnalyticsUniversal.dll": {}
         }
       },
-      "Win2D.uwp/1.17.0": {
+      "Win2D.uwp/1.18.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
         },
@@ -10602,7 +10602,7 @@
           "lib/netcore451/UmengAnalyticsUniversal.dll": {}
         }
       },
-      "Win2D.uwp/1.17.0": {
+      "Win2D.uwp/1.18.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
         },
@@ -12315,7 +12315,7 @@
           "lib/netcore451/UmengAnalyticsUniversal.dll": {}
         }
       },
-      "Win2D.uwp/1.17.0": {
+      "Win2D.uwp/1.18.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
         },
@@ -15821,11 +15821,11 @@
         "lib/wpa81/UmengAnalyticsUniversal.dll"
       ]
     },
-    "Win2D.uwp/1.17.0": {
-      "sha512": "G5rG8c4dBX4Aq1RKzjvmtjM3Q/us7GdzllyqF1rsiy65eQg3UE5Kc8R09ROSnHeptqf5l6W6GDZ7uJMKdHKP0Q==",
+    "Win2D.uwp/1.18.0": {
+      "sha512": "qPRgHJF9l7vKLyM/adOjUHE9OE90nYFCpa3/IOaBu1lMyiMwcfXyV2JEri+beNir0eo7luzz8dRBpyBIkjK9qw==",
       "type": "package",
       "files": [
-        "Win2D.uwp.1.17.0.nupkg.sha512",
+        "Win2D.uwp.1.18.0.nupkg.sha512",
         "Win2D.uwp.nuspec",
         "Win2d.githash.txt",
         "build/native/Win2D.uwp.targets",
@@ -15847,7 +15847,7 @@
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.1.0",
       "MvvmLight >= 5.3.0",
       "NotificationsExtensions.Win10 >= 14295.0.1",
-      "Win2D.uwp >= 1.17.0"
+      "Win2D.uwp >= 1.18.0"
     ],
     "UAP,Version=v10.0": []
   }

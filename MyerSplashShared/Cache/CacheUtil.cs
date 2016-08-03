@@ -35,13 +35,13 @@ namespace MyerSplashShared.API
             await SaveAsync();
         }
 
-        public async Task<StorageFile> DownloadImageAsync(string url,string desireName="img.jpg")
+        public async Task<StorageFile> DownloadImageAsync(string url, string desireName = "img.jpg")
         {
             if (CachedFiles.ContainsKey(url))
             {
                 return await StorageFile.GetFileFromPathAsync(CachedFiles[url]);
             }
-            using (var stream = await FileDownloadUtil.GetIRandomAccessStreamFromUrlAsync(url,CTSFactory.MakeCTS().Token))
+            using (var stream = await FileDownloadUtil.GetIRandomAccessStreamFromUrlAsync(url, CTSFactory.MakeCTS().Token))
             {
                 var newFile = await GetTempFolder().CreateFileAsync(desireName, CreationCollisionOption.GenerateUniqueName);
                 var bytes = new byte[stream.AsStream().Length];
@@ -62,9 +62,16 @@ namespace MyerSplashShared.API
 
         public async Task LoadAsync()
         {
-            var tempFolder = GetCachedFileFolder();
-            this.CachedFiles = await SerializerHelper.DeserializeFromJsonByFileName<Dictionary<string, string>>("CachedFiles", tempFolder);
-            if (this.CachedFiles == null)
+            try
+            {
+                var tempFolder = GetCachedFileFolder();
+                this.CachedFiles = await SerializerHelper.DeserializeFromJsonByFile<Dictionary<string, string>>("CachedFiles", tempFolder);
+                if (this.CachedFiles == null)
+                {
+                    CachedFiles = new Dictionary<string, string>();
+                }
+            }
+            catch (Exception)
             {
                 CachedFiles = new Dictionary<string, string>();
             }

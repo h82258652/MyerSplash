@@ -1,0 +1,2 @@
+MainPackage=D:\Dev\MyerSplash\MyerSplash\bin\x64\Release\Upload\MyerSplash_1.0.0.0_x64.appx
+SymbolPackage=D:\Dev\MyerSplash\MyerSplash\AppPackages\MyerSplash_1.0.0.0\MyerSplash_1.0.0.0_x64.appxsym

@@ -24,7 +24,7 @@ namespace MyerSplash.UC
         private Visual _detailGridVisual;
         private Visual _borderGridVisual;
         private Visual _downloadBtnVisual;
-        private Visual _likeBtnVisual;
+        private Visual _shareBtnVisual;
         private Visual _infoGridVisual;
         private Visual _downloadingHintGridVisual;
         private Visual _loadingPath;
@@ -32,14 +32,18 @@ namespace MyerSplash.UC
 
         private CancellationTokenSource _cts;
 
-        public UnsplashImage UnsplashImage
+        public UnsplashImage CurrentImage
         {
             get { return (UnsplashImage)GetValue(UnsplashImageProperty); }
             set { SetValue(UnsplashImageProperty, value); }
         }
 
         public static readonly DependencyProperty UnsplashImageProperty =
-            DependencyProperty.Register("UnsplashImage", typeof(UnsplashImage), typeof(PhotoDetailControl), new PropertyMetadata(null, OnImageChanged));
+            DependencyProperty.Register("CurrentImage", typeof(UnsplashImage), typeof(PhotoDetailControl), new PropertyMetadata(null, OnImageChanged));
+
+        private DataTransferManager _dataTransferManager;
+
+        public bool IsShown { get; set; }
 
         private static void OnImageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -62,13 +66,26 @@ namespace MyerSplash.UC
                 control.CopyUrlBorder.Background = new SolidColorBrush(Colors.White);
                 control.CopyUrlTB.Foreground = new SolidColorBrush(Colors.Black);
             }
-            control.UpdateLikeState();
         }
 
         public PhotoDetailControl()
         {
             InitializeComponent();
             InitComposition();
+
+            _dataTransferManager = DataTransferManager.GetForCurrentView();
+            _dataTransferManager.DataRequested += _dataTransferManager_DataRequested;
+        }
+
+        private async void _dataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequestDeferral deferral = args.Request.GetDeferral();
+            sender.TargetApplicationChosen += (s, e) =>
+              {
+                  deferral.Complete();
+              };
+            await CurrentImage.SetDataRequestData(args.Request);
+            deferral.Complete();
         }
 
         private void InitComposition()
@@ -81,7 +98,7 @@ namespace MyerSplash.UC
             _downloadingHintGridVisual = ElementCompositionPreview.GetElementVisual(LoadingHintGrid);
             _loadingPath = ElementCompositionPreview.GetElementVisual(LoadingPath);
             _okVisual = ElementCompositionPreview.GetElementVisual(OKBtn);
-            _likeBtnVisual = ElementCompositionPreview.GetElementVisual(LikeBtn);
+            _shareBtnVisual = ElementCompositionPreview.GetElementVisual(ShareBtn);
 
             ResetVisualInitState();
         }
@@ -90,7 +107,7 @@ namespace MyerSplash.UC
         {
             _infoGridVisual.Offset = new Vector3(0f, -100f, 0);
             _downloadBtnVisual.Offset = new Vector3(100f, 0f, 0f);
-            _likeBtnVisual.Offset = new Vector3(150f, 0f, 0f);
+            _shareBtnVisual.Offset = new Vector3(150f, 0f, 0f);
             _detailGridVisual.Opacity = 0;
             _okVisual.Offset = new Vector3(100f, 0f, 0f);
             _downloadingHintGridVisual.Offset = new Vector3(100f, 0f, 0f);
@@ -106,7 +123,8 @@ namespace MyerSplash.UC
         public void HideDetailControl()
         {
             ToggleDownloadBtnAnimation(false);
-            ToggleLikeBtnAnimation(false);
+            ToggleShareBtnAnimation(false);
+            ToggleOkBtnAnimation(false);
             ToggleDownloadingBtnAnimation(false);
 
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
@@ -121,6 +139,8 @@ namespace MyerSplash.UC
 
         public void ToggleDetailGridAnimation(bool show)
         {
+            IsShown = show;
+
             DetailGrid.Visibility = Visibility.Visible;
 
             var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
@@ -134,7 +154,7 @@ namespace MyerSplash.UC
             if (show)
             {
                 ToggleDownloadBtnAnimation(true);
-                ToggleLikeBtnAnimation(true);
+                ToggleShareBtnAnimation(true);
                 ToggleInfoGridAnimation(true);
             }
 
@@ -159,14 +179,14 @@ namespace MyerSplash.UC
             _downloadBtnVisual.StartAnimation("Offset", offsetAnimation);
         }
 
-        private void ToggleLikeBtnAnimation(bool show)
+        private void ToggleShareBtnAnimation(bool show)
         {
             var offsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
             offsetAnimation.InsertKeyFrame(1f, new Vector3(show ? 0f : 150f, 0f, 0f));
             offsetAnimation.Duration = TimeSpan.FromMilliseconds(show ? 1000 : 400);
             offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(show ? 400 : 0);
 
-            _likeBtnVisual.StartAnimation("Offset", offsetAnimation);
+            _shareBtnVisual.StartAnimation("Offset", offsetAnimation);
         }
 
         private void ToggleInfoGridAnimation(bool show)
@@ -215,10 +235,15 @@ namespace MyerSplash.UC
             try
             {
                 _cts = new CancellationTokenSource();
-                await this.UnsplashImage.DownloadFullImage(_cts.Token);
+                await this.CurrentImage.DownloadFullImage(_cts.Token);
                 ToggleDownloadingBtnAnimation(false);
-                ToggleOkBtnAnimation(true);
-                ToastService.SendToast("Saved :D", TimeSpan.FromMilliseconds(1000));
+
+                //Still in this page
+                if (IsShown)
+                {
+                    ToggleOkBtnAnimation(true);
+                    ToastService.SendToast("Saved :D", TimeSpan.FromMilliseconds(1000));
+                }
             }
             catch (OperationCanceledException)
             {
@@ -256,35 +281,17 @@ namespace MyerSplash.UC
         }
         #endregion
 
-        //TODO:
-        private void LikeBtn_Click(object sender, RoutedEventArgs e)
+        private void ShareBtn_Click(object sender, RoutedEventArgs e)
         {
-            UnsplashImage.LikeCommand.Execute(null);
-            UpdateLikeState();
-        }
-
-        private void UpdateLikeState()
-        {
-            if(UnsplashImage.Liked)
-            {
-                LikedFontIcon.Visibility = Visibility.Visible;
-                UnlikedFontIcon.Visibility = Visibility.Collapsed;
-                LikeColorStoryboard.Begin();
-            }
-            else
-            {
-                LikedFontIcon.Visibility = Visibility.Collapsed;
-                UnlikedFontIcon.Visibility = Visibility.Visible;
-                UnlikeColorStoryboard.Begin();
-            }
+            DataTransferManager.ShowShareUI();
         }
 
         private void CopyURLBtn_Click(object sender, RoutedEventArgs e)
         {
             DataPackage dataPackage = new DataPackage();
-            dataPackage.SetText(UnsplashImage.GetSaveImageUrlFromSettings());
+            dataPackage.SetText(CurrentImage.GetSaveImageUrlFromSettings());
             Clipboard.SetContent(dataPackage);
-            ToastService.SendToast("Copied :D");
+            ToastService.SendToast("Copied.");
         }
 
         private void DetailGrid_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
@@ -299,29 +306,6 @@ namespace MyerSplash.UC
         {
             var grid = sender as Grid;
             grid.Clip = new RectangleGeometry() { Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height) };
-        }
-
-        public Grid ContentGrid
-        {
-            get
-            {
-                return this.DetailContentGrid;
-            }
-        }
-
-        public Point GetContentGridPosition()
-        {
-            var size = GetContentGridSize();
-            var targetPosX = this.ActualWidth > 600 ? ((this.ActualWidth - 600) / 2) : (0);
-            var targetPosY = (this.ActualHeight - size.Height) / 2;
-            return new Point(targetPosX, targetPosY);
-        }
-
-        public Size GetContentGridSize()
-        {
-            var width = this.ActualWidth > 600 ? 600 : this.ActualWidth;
-            var height = width / 1.5 + 100;
-            return new Size(width, height);
         }
     }
 }

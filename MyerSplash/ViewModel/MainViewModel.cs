@@ -10,11 +10,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
-using System;
 using Windows.UI.Xaml.Media;
 using JP.Utils.UI;
 using MyerSplashShared.API;
 using System.Linq;
+using System.Diagnostics;
+using MyerSplashCustomControl;
 
 namespace MyerSplash.ViewModel
 {
@@ -37,23 +38,6 @@ namespace MyerSplash.ViewModel
             }
         }
 
-        private ObservableCollection<UnsplashImage> _likedList;
-        public ObservableCollection<UnsplashImage> LikedList
-        {
-            get
-            {
-                return _likedList;
-            }
-            set
-            {
-                if (_likedList != value)
-                {
-                    _likedList = value;
-                    RaisePropertyChanged(() => LikedList);
-                }
-            }
-        }
-
         private ObservableCollection<UnsplashImage> _mainList;
         public ObservableCollection<UnsplashImage> MainList
         {
@@ -71,9 +55,40 @@ namespace MyerSplash.ViewModel
             }
         }
 
+        private ObservableCollection<UnsplashCategory> _categories;
+        public ObservableCollection<UnsplashCategory> Categories
+        {
+            get
+            {
+                return _categories;
+            }
+            set
+            {
+                if (_categories != value)
+                {
+                    _categories = value;
+                    RaisePropertyChanged(() => Categories);
+                }
+            }
+        }
+
         public bool IsInView { get; set; }
 
         public bool IsFirstActived { get; set; } = true;
+
+        private RelayCommand _searchCommand;
+        public RelayCommand SearchCommand
+        {
+            get
+            {
+                if (_searchCommand != null) return _searchCommand;
+                return _searchCommand = new RelayCommand(() =>
+                  {
+                      ToastService.SendToast("Still working on this.");
+                  });
+            }
+        }
+
 
         private RelayCommand _refreshCommand;
         public RelayCommand RefreshCommand
@@ -83,7 +98,7 @@ namespace MyerSplash.ViewModel
                 if (_refreshCommand != null) return _refreshCommand;
                 return _refreshCommand = new RelayCommand(async () =>
                   {
-                      await RefreshAsync();
+                      await RefreshAllAsync();
                   });
             }
         }
@@ -94,7 +109,7 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_retryCommand != null) return _retryCommand;
-                return _retryCommand = new RelayCommand(async() =>
+                return _retryCommand = new RelayCommand(async () =>
                   {
                       ShowFooterLoading = Visibility.Visible;
                       ShowFooterReloadGrid = Visibility.Collapsed;
@@ -112,7 +127,7 @@ namespace MyerSplash.ViewModel
                 return _openDrawerCommand = new RelayCommand(() =>
                   {
                       DrawerOpened = !DrawerOpened;
-                      if(DrawerOpened)
+                      if (DrawerOpened)
                       {
                           NavigationService.HistoryOperationsBeyondFrame.Push(() =>
                           {
@@ -219,10 +234,10 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_goToSettingsCommand != null) return _goToSettingsCommand;
-                return _goToSettingsCommand = new RelayCommand(() =>
+                return _goToSettingsCommand = new RelayCommand(async() =>
                   {
                       DrawerOpened = false;
-                      NavigationService.NaivgateToPage(typeof(SettingsPage));
+                      await NavigationService.NaivgateToPageAsync(typeof(SettingsPage));
                   });
             }
         }
@@ -233,10 +248,10 @@ namespace MyerSplash.ViewModel
             get
             {
                 if (_goToAboutCommand != null) return _goToAboutCommand;
-                return _goToAboutCommand = new RelayCommand(() =>
+                return _goToAboutCommand = new RelayCommand(async() =>
                   {
                       DrawerOpened = false;
-                      NavigationService.NaivgateToPage(typeof(AboutPage));
+                      await NavigationService.NaivgateToPageAsync(typeof(AboutPage));
                   });
             }
         }
@@ -254,18 +269,33 @@ namespace MyerSplash.ViewModel
                 {
                     _selectedIndex = value;
                     RaisePropertyChanged(() => SelectedIndex);
+                    RaisePropertyChanged(() => SelectedTitle);
                     DrawerOpened = false;
                     if (value == 0)
                     {
-                        RestoreHintState();
-                        MainList = MainDataVM.DataList;
+                        MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
                     }
-                    else if (value == 1)
+                    else if (Categories?.Count > 0)
                     {
-                        SaveHintState();
-                        MainList = LikedList;
+                        MainDataVM = new ImageDataViewModel(this, Categories[value].RequestUrl);
+                    }
+                    if (MainDataVM != null)
+                    {
+                        var task = RefreshListAsync();
                     }
                 }
+            }
+        }
+
+        public string SelectedTitle
+        {
+            get
+            {
+                if (Categories?.Count > 0)
+                {
+                    return Categories[SelectedIndex].Title.ToUpper();
+                }
+                else return "FEATURED";
             }
         }
 
@@ -274,14 +304,14 @@ namespace MyerSplash.ViewModel
         public MainViewModel()
         {
             MainList = new ObservableCollection<UnsplashImage>();
-            LikedList = new ObservableCollection<UnsplashImage>();
 
-            ShowFooterLoading = Visibility.Visible;
+            ShowFooterLoading = Visibility.Collapsed;
             ShowNoItemHint = Visibility.Collapsed;
             ShowFooterReloadGrid = Visibility.Collapsed;
-            SelectedIndex = 0;
 
             App.MainVM = this;
+
+            SelectedIndex = -1;
         }
 
         private void SaveHintState()
@@ -305,13 +335,12 @@ namespace MyerSplash.ViewModel
             var file = await CacheUtil.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.MainListFileName);
             if (file != null)
             {
-                var list = await SerializerHelper.DeserializeFromJsonByFileName<IncrementalLoadingCollection<UnsplashImage>>(CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
+                var list = await SerializerHelper.DeserializeFromJsonByFile<IncrementalLoadingCollection<UnsplashImage>>(CachedFileNames.MainListFileName, CacheUtil.GetCachedFileFolder());
                 if (list != null)
                 {
-                    this.MainDataVM = new ImageDataViewModel(this);
+                    this.MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
                     list.ToList().ForEach(s => MainDataVM.DataList.Add(s));
 
-                    this.MainList = MainDataVM.DataList;
                     for (int i = 0; i < MainDataVM.DataList.Count; i++)
                     {
                         var item = MainDataVM.DataList[i];
@@ -319,46 +348,52 @@ namespace MyerSplash.ViewModel
                         else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
                         var task = item.RestoreAsync();
                     }
-                    this.ShowNoItemHint = Visibility.Collapsed;
                     await UpdateLiveTileAsync();
                 }
-                else MainDataVM = new ImageDataViewModel(this);
+                else MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
             }
-            else MainDataVM = new ImageDataViewModel(this);
+            else MainDataVM = new ImageDataViewModel(this, UrlHelper.GetFeaturedImages);
         }
 
-        private async Task RestoreLikedListDataAsync()
+        private async Task RefreshAllAsync()
         {
-            var file = await CacheUtil.GetCachedFileFolder().TryGetFileAsync(CachedFileNames.LikedListFileName);
-            if (file != null)
-            {
-                var list = await SerializerHelper.DeserializeFromJsonByFileName<ObservableCollection<UnsplashImage>>(CachedFileNames.LikedListFileName, CacheUtil.GetCachedFileFolder());
-                if (list != null)
-                {
-                    this.LikedList = list;
-                    for (int i = 0; i < LikedList.Count; i++)
-                    {
-                        var item = LikedList[i];
-                        if (i % 2 == 0) item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF2E2E2E").Value);
-                        else item.BackColor = new SolidColorBrush(ColorConverter.HexToColor("#FF383838").Value);
-                        var task = item.RestoreAsync();
-                    }
-                }
-            }
+            var task1 = GetCategoriesAsync();
+            await RefreshListAsync();
+            await SaveMainListDataAsync();
+            await UpdateLiveTileAsync();
         }
 
-        private async Task RefreshAsync()
+        private async Task RefreshListAsync()
         {
             MainDataVM.MainVM = this;
-
-            MainList = MainDataVM.DataList;
-
             IsRefreshing = true;
             await MainDataVM.RefreshAsync();
             IsRefreshing = false;
+            MainList = MainDataVM.DataList;
+        }
 
-            await SaveMainListDataAsync();
-            await UpdateLiveTileAsync();
+        private void UpdateNoItemHint()
+        {
+            if (MainList?.Count > 0) ShowNoItemHint = Visibility.Collapsed;
+            else ShowNoItemHint = Visibility.Visible;
+        }
+
+        private async Task GetCategoriesAsync()
+        {
+            if (Categories?.Count > 0) return;
+
+            var result = await CloudService.GetCategories(CTSFactory.MakeCTS(20000).Token);
+            if (result.IsRequestSuccessful)
+            {
+                var list = UnsplashCategory.GenerateListFromJson(result.JsonSrc);
+                this.Categories = list;
+                this.Categories.Insert(0, new UnsplashCategory()
+                {
+                    Title = "Featured",
+                });
+
+                SelectedIndex = 0;
+            }
         }
 
         private async Task SaveMainListDataAsync()
@@ -372,27 +407,6 @@ namespace MyerSplash.ViewModel
                 //}
             }
         }
-
-        private async Task SaveLikedListDataAsync()
-        {
-            if (this.LikedList?.Count > 0)
-            {
-                await SerializerHelper.SerializerToJson<ObservableCollection<UnsplashImage>>(this.LikedList, CachedFileNames.LikedListFileName, CacheUtil.GetCachedFileFolder());
-            }
-        }
-
-        public async Task AddToLlikedListAndSaveAsync(UnsplashImage img)
-        {
-            LikedList.Add(img);
-            await SaveLikedListDataAsync();
-        }
-
-        public async Task RemoveFromLlikedListAndSaveAsync(UnsplashImage img)
-        {
-            LikedList.Remove(img);
-            await SaveLikedListDataAsync();
-        }
-
         private async Task UpdateLiveTileAsync()
         {
             var list = new List<string>();
@@ -405,6 +419,7 @@ namespace MyerSplash.ViewModel
             }
             if (App.AppSettings.EnableTile && list.Count > 0)
             {
+                Debug.WriteLine("About to update tile.");
                 await LiveTileUpdater.UpdateImagesTileAsync(list);
             }
         }
@@ -425,8 +440,7 @@ namespace MyerSplash.ViewModel
             {
                 IsFirstActived = false;
                 await RestoreMainListDataAsync();
-                await RestoreLikedListDataAsync();
-                await RefreshAsync();
+                await RefreshAllAsync();
             }
         }
     }

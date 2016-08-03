@@ -14,6 +14,11 @@ using Windows.Networking.BackgroundTransfer;
 using MyerSplash.Common;
 using GalaSoft.MvvmLight.Command;
 using MyerSplashCustomControl;
+using JP.Utils.Data;
+using MyerSplash.ViewModel;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage.Streams;
+using System.Collections.Generic;
 
 namespace MyerSplash.Model
 {
@@ -145,35 +150,94 @@ namespace MyerSplash.Model
             }
         }
 
-        private RelayCommand _likeCommand;
-        public RelayCommand LikeCommand
+        private int _likes;
+        public int Likes
         {
             get
             {
-                if (_likeCommand != null) return _likeCommand;
-                return _likeCommand = new RelayCommand(async() =>
-                  {
-                      Liked =! Liked;
-                      if(Liked)
-                      {
-                          await App.MainVM.AddToLlikedListAndSaveAsync(this);
-                          ToastService.SendToast("Liked this photo.");
-                      }
-                      else
-                      {
-                          await App.MainVM.RemoveFromLlikedListAndSaveAsync(this);
-                          ToastService.SendToast("Unliked this photo.");
-                      }
-                  });
+                return _likes;
+            }
+            set
+            {
+                if (_likes != value)
+                {
+                    _likes = value;
+                    RaisePropertyChanged(() => Likes);
+                    RaisePropertyChanged(() => LikesString);
+                }
             }
         }
 
+        public string LikesString
+        {
+            get
+            {
+                return Likes.ToString();
+            }
+        }
+
+        private DateTime _createTime;
+        public DateTime CreateTime
+        {
+            get
+            {
+                return _createTime;
+            }
+            set
+            {
+                if (_createTime != value)
+                {
+                    _createTime = value;
+                    RaisePropertyChanged(() => CreateTime);
+                }
+            }
+        }
+
+        public string CreateTimeString
+        {
+            get
+            {
+                return _createTime.ToString("yyyy-MM-dd");
+            }
+        }
 
         private BackgroundDownloader _backgroundDownloader = new BackgroundDownloader();
 
         public UnsplashImage()
         {
-            
+
+        }
+
+        public async Task SetDataRequestData(DataRequest request)
+        {
+            DataPackage requestData = request.Data;
+            requestData.Properties.Title = "Share photo";
+            requestData.Properties.ContentSourceWebLink = new Uri(FullImageUrl);
+            requestData.Properties.ContentSourceApplicationLink = new Uri(FullImageUrl);
+
+            var shareText = $"Share {this.Owner.Name}'s amazing photo from MyerSplash UWP app. {FullImageUrl}";
+
+            requestData.SetText(shareText);
+
+            DataPackage dataPackage = new DataPackage();
+            dataPackage.SetText(shareText);
+            Clipboard.SetContent(dataPackage);
+
+            DataRequestDeferral deferral = request.GetDeferral();
+
+            var file = await StorageFile.GetFileFromPathAsync(ListImageCachedFilePath);
+            if (file != null)
+            {
+                List<IStorageItem> imageItems = new List<IStorageItem>();
+                imageItems.Add(file);
+                requestData.SetStorageItems(imageItems);
+
+                RandomAccessStreamReference imageStreamRef = RandomAccessStreamReference.CreateFromFile(file);
+                requestData.SetBitmap(imageStreamRef);
+                requestData.Properties.Thumbnail = imageStreamRef;
+            }
+
+            deferral.Complete();
         }
 
         public async Task RestoreAsync()
@@ -188,7 +252,7 @@ namespace MyerSplash.Model
 
             if (string.IsNullOrEmpty(url)) return;
 
-            var file = await App.CacheUtilInstance.DownloadImageAsync(url, this.ID);
+            var file = await App.CacheUtilInstance.DownloadImageAsync(url, this.ID + ".jpg");
             ListImageCachedFilePath = file.Path;
             using (var stream = await file.OpenAsync(FileAccessMode.Read))
             {
@@ -227,12 +291,30 @@ namespace MyerSplash.Model
 
             if (string.IsNullOrEmpty(url)) return;
 
-            var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
+            ToastService.SendToast("Downloading in background...", 2000);
 
+            StorageFolder folder = null;
+            if (LocalSettingHelper.HasValue(SettingsViewModel.SAVING_POSITION))
+            {
+                var path = LocalSettingHelper.GetValue(SettingsViewModel.SAVING_POSITION);
+                if (path == SettingsViewModel.DEFAULT_SAVING_POSITION)
+                {
+                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
+                }
+                else
+                {
+                    folder = await StorageFolder.GetFolderFromPathAsync(path);
+                }
+            }
+            if (folder == null)
+            {
+                folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
+            }
             var newFile = await folder.CreateFileAsync($"{ID}.jpg", CreationCollisionOption.GenerateUniqueName);
 
             //backgroundDownloader.FailureToastNotification = ToastHelper.CreateToastNotification("Failed to download :-(", "You may cancel it. Otherwise please check your network.");
-            _backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Savad:D", "You can find it in MySplash folder.");
+            _backgroundDownloader.SuccessToastNotification = ToastHelper.CreateToastNotification("Saved:D",
+                $"You can find it in {folder.Path}.");
 
             var downloadOperation = _backgroundDownloader.CreateDownload(new Uri(url), newFile);
 
@@ -276,6 +358,8 @@ namespace MyerSplash.Model
             var userObj = JsonParser.GetJsonObjFromJsonObj(obj, "user");
             var userName = JsonParser.GetStringFromJsonObj(userObj, "name");
             var id = JsonParser.GetStringFromJsonObj(obj, "id");
+            var likes = JsonParser.GetNumberFromJsonObj(obj, "likes");
+            var time = JsonParser.GetStringFromJsonObj(obj, "created_at");
 
             var img = new UnsplashImage();
             img.SmallImageUrl = smallImageUrl;
@@ -288,6 +372,8 @@ namespace MyerSplash.Model
             img.Height = height;
             img.Owner = new UnsplashUser() { Name = userName };
             img.ID = id;
+            img.Likes = (int)likes;
+            img.CreateTime = DateTime.Parse(time);
 
             return img;
         }
